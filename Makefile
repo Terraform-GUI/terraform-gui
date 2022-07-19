@@ -9,8 +9,12 @@ DOCKER_COMPOSE		= docker-compose
 PHP_VERSION 			= 8.1
 BREW 							= brew
 
+install: 
+	$(DOCKER_COMPOSE) build 
+	$(COMPOSER) install
+
 start:
-	$(DOCKER_COMPOSE) up --build -d
+	$(DOCKER_COMPOSE) up -d
 
 stop:
 	$(DOCKER_COMPOSE) down
