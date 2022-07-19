@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - '8082:80'
+    volumes:
+      - .:/var/www/html
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-root}
+    ports:
+      - target: 27017
+        published: 27017
+        protocol: tcp
