@@ -46,4 +46,4 @@ make fix
 | :bug: `:bug:`                                             | Fixing bug                                            |
 | :construction: `:construction:`                           | Something unfinished - WIP                            |
 | :twisted_rightwards_arrows: `:twisted_rightwards_arrows:` | Merging branches                                      |
-| :wastebasket: `:wastebasket:`                             | Deleting files or renoming files/folders,...          |
+| :wastebasket: `:wastebasket:`                             | Deleting or renaming files/folders,...                |
