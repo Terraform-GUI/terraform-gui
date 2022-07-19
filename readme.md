@@ -34,16 +34,16 @@ make fix
 
 ## Git Commit Convention
 
-| Symbol                                                    | When to use :                                   |
-| --------------------------------------------------------- | ----------------------------------------------- |
-| :sparkles: `:sparkles:`                                   | Small feature or improvement                    |
-| :fire: `:fire:`                                           | big feature                                     |
-| :tada: `:tada:`                                           | initialization of files or creating something   |
-| :pencil2: `:pencil2:`                                     | Changing wording                                |
-| :package: `:package:`                                     | adding package in composer.json or package.json |
-| :arrow_up: `:arrow_up:`                                   |                                                 |
-| :art: `:art:`                                             | CSS related                                     |
-| :bug: `:bug:`                                             | Fixing bug                                      |
-| :construction: `:construction:`                           | Something unfinished - WIP                      |
-| :twisted_rightwards_arrows: `:twisted_rightwards_arrows:` | merging branches                                |
-| :wastebasket: `:wastebasket:`                             | Deleting files or renoming files/folders,...    |
+| Symbol                                                    | When to use :                                         |
+| --------------------------------------------------------- | ----------------------------------------------------- |
+| :sparkles: `:sparkles:`                                   | Small feature or improvement                          |
+| :fire: `:fire:`                                           | Big feature                                           |
+| :tada: `:tada:`                                           | Initialization of files or creating something         |
+| :pencil2: `:pencil2:`                                     | Updating wording, content, comments, translations,... |
+| :package: `:package:`                                     | Adding package in composer.json or package.json       |
+| :arrow_up: `:arrow_up:`                                   | Upgrading dependancies                                |
+| :art: `:art:`                                             | CSS related                                           |
+| :bug: `:bug:`                                             | Fixing bug                                            |
+| :construction: `:construction:`                           | Something unfinished - WIP                            |
+| :twisted_rightwards_arrows: `:twisted_rightwards_arrows:` | Merging branches                                      |
+| :wastebasket: `:wastebasket:`                             | Deleting files or renoming files/folders,...          |
