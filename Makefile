@@ -9,9 +9,10 @@ DOCKER_COMPOSE		= docker-compose
 PHP_VERSION 			= 8.1
 BREW 							= brew
 
-install: 
+install:
 	$(DOCKER_COMPOSE) build 
 	$(COMPOSER) install
+	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
 
 start:
 	$(DOCKER_COMPOSE) up -d
