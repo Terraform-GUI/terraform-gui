@@ -15,11 +15,9 @@ link-php:
 
 start:
 	$(DOCKER_COMPOSE) up -d
-	$(SYMFONY) server:start --daemon
 
 stop:
 	$(DOCKER_COMPOSE) down
-	$(SYMFONY) server:stop
 
-fix: 
+fix:
 	php-cs-fixer fix src
