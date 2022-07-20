@@ -16,7 +16,7 @@ install:
 
 start:
 	$(DOCKER_COMPOSE) up -d
-	open "http://localhost:8082"
+	open "http://localhost:8080"
 
 stop:
 	$(DOCKER_COMPOSE) down

@@ -5,9 +5,10 @@ services:
       context: .
       target: dev
     ports:
-      - '8082:80'
+      - '8080:80'
     volumes:
       - .:/var/www/html
+      - ./docker/apache2/apache2.conf:/etc/apache2/sites-enabled/000-default.conf
 
   mongo:
     image: mongo
