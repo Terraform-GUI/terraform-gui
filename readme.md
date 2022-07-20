@@ -48,7 +48,7 @@ You need to execute this command in your app container (see previous command)
 php bin/console app:user:create <email> <password>
 ```
 
-### Example :
+#### Example :
 
 ```
 php bin/console app:user:create user@terraformgui.fr toto
