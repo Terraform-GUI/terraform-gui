@@ -10,7 +10,7 @@ class Validator
     {
     }
 
-    public function getErrors($entity): array
+    public function getErrors($entity, bool $withPrefix = true): array
     {
         $errors = $this->validator->validate($entity);
 
@@ -18,7 +18,13 @@ class Validator
 
         if (count($errors) > 0) {
             foreach ($errors as $violation) {
-                $messages[$violation->getPropertyPath()][] = $violation->getPropertyPath().' '.$violation->getMessage();
+                $errorMessage = $violation->getMessage();
+
+                if ($withPrefix) {
+                    $errorMessage = $violation->getPropertyPath().' '.$errorMessage;
+                }
+
+                $messages[$violation->getPropertyPath()][] = $errorMessage;
             }
         }
 
