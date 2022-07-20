@@ -7,12 +7,11 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     a2enmod rewrite && a2enmod headers
 
-COPY . .
-COPY docker/apache2/apache2.conf /etc/apache2/sites-enabled/000-default.conf
-
-
 FROM base as dev
+
+## Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+## Install symfony cli
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony

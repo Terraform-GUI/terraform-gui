@@ -14,7 +14,7 @@ make install
 make start
 ```
 
-> App should now be available on : [http://localhost:8082](http://localhost:8082/)
+> App should now be available on : [http://localhost:8080](http://localhost:8080/)
 
 ## Database
 
