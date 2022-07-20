@@ -26,11 +26,35 @@ make start
 
 ## Usefull commands
 
+### Lint your PHP code
+
 ```
 make fix
 ```
 
 > This command will lint all your php code, usefull before commiting
+
+### Access the app docker container
+
+```
+docker-compose exec app bash
+```
+
+### Create a test User in db
+
+You need to execute this command in your app container (see previous command)
+
+```
+php bin/console app:user:create <email> <password>
+```
+
+### Example :
+
+```
+php bin/console app:user:create user@terraformgui.fr toto
+```
+
+> This will create a user with email : `user@terraformgui.fr` and password `toto`
 
 ## Git Commit Convention
 
