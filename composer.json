@@ -30,7 +30,8 @@
       "composer/package-versions-deprecated": true,
       "symfony/flex": true,
       "symfony/runtime": true,
-      "phpro/grumphp": true
+      "phpro/grumphp": true,
+      "phpro/grumphp-shim": true
     },
     "optimize-autoloader": true,
     "preferred-install": {
@@ -81,6 +82,7 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.9",
     "phpro/grumphp": "^1.13",
+    "phpro/grumphp-shim": "^1.13",
     "phpstan/phpstan": "^1.8",
     "symfony/maker-bundle": "^1.44"
   }
