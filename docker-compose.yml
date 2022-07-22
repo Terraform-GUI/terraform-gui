@@ -25,7 +25,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - .:/var/www/html
+      - ./api:/var/www/html
       - ./build/package/api/apache2.conf:/etc/apache2/sites-enabled/000-default.conf
     networks:
       - main

@@ -1,13 +1,14 @@
 # VARIABLES
 
-EXEC_PHP					= php
-CONSOLE						= $(EXEC_PHP) bin/console
 COMPOSER					= composer
 YARN							= yarn
 SYMFONY						= symfony
-DOCKER_COMPOSE		= docker-compose
 PHP_VERSION 			= 8.1
 BREW 							= brew
+PHP_CONTAINER_SERVICE    =  api
+EXEC_PHP                 =  exec $(PHP_CONTAINER_SERVICE) bash -c 
+DOCKER_COMPOSE		= docker-compose
+
 
 # COMMANDS
 
@@ -38,20 +39,25 @@ logs: ## Display logs of your containers
 	docker-compose logs --follow
 
 init:
-	make setup lint start logs
+	make setup start logs
 
 reload:
-	make stop lint start logs
+	make stop start logs
 
 hreload:
-	make stop lint start logs
+	make stop start logs
+
+api-test:
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "php bin/console cache:clear"
 
 api-setup:
-	$(COMPOSER) install
-	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "composer install"
+
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "php bin/console lexik:jwt:generate-keypair --skip-if-exists"
+
 
 api-fix:
-	php-cs-fixer fix src
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "vendor/bin/php-cs-fixer fix src"
 
 
 .PHONY: help
