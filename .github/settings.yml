@@ -1,0 +1,51 @@
+labels:
+  # type of issue
+  - name: "bug"
+    color: "#B60205"
+    description: "Related to non-working things or strange behaviors"
+  - name: "feat"
+    color: "#0E8A16"
+    description: "Related to new features and implementations"
+  - name: "explo"
+    color: "#FBCA04"
+    description: "Related to new things I don't know how to do"
+
+  # languages
+  - name: "symfony"
+    color: "#00A9DA"
+    description: "Related to Golang files modifications"
+  - name: "js"
+    color: "#F0EE00"
+    description: "Related to Vuejs / JavaScript files modifications"
+  - name: "docker"
+    color: "#2497ED"
+    description: "Related to Dockerfiles and Docker Compose files modifications"
+  - name: "terraform"
+    color: "#7B42BC"
+    description: "Related to Terraform files modifications"
+
+  # scope
+  - name: "dev" 
+    color: "#5319E7"
+    description: "Related to CI/CD files modifications"
+  - name: "ops" 
+    color: "#D93F0B"
+    description: "Related to CI/CD files modifications"
+  - name: "cicd" 
+    color: "#006B75"
+    description: "Related to CI/CD files modifications"
+  - name: "doc"
+    color: "#0052CC"
+    description: "Related to documentation, project illustrations"
+  
+  # us
+  - name: "[US] developer"
+    color: "#C2E0C6"
+    description: "As a developer, I want to [...]"
+  - name: "[US] user"
+    color: "#C5DEF5"
+    description: "As a user, I want to [...]"
+  - name: "[US] ops/repo manager"
+    color: "#D4C5F9"
+    description: "As a repowner, I want to [...]"
+

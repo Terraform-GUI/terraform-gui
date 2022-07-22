@@ -1,0 +1,37 @@
+# languages
+symfony:
+  - "api/**/*"
+  - "composer.*"
+  - "symfony.*"
+js:
+  - "web/**/*"
+  - "**/*.js"
+  - "**/*.json"
+  - "**/*.vue"
+docker:
+  - "**/Dockerfile"
+  - "**/Dockerfile.*"
+  - "**/docker-compose.*"
+terraform:
+  - "terraform/**/*"
+  - "tf/**/*"
+  - "**/*.tf"
+
+# scope
+dev:
+  - "cmd/**/*"
+  - "config/**/*"
+  - "internal/**/*"
+  - "pkg/**/*"
+  - "web/**/*"
+ops:
+  - "build/**/*"
+  - "deploy/**/*"
+  - "scripts/**/*"
+cicd:
+  - ".github/**/*.yml"
+doc:
+  - "**/*.md"
+  - "**/*.txt"
+  - "assets/**/*"
+
