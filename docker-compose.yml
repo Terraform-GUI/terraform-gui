@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+
+  mongo:
+    container_name: tf-gui_mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-root}
+    ports:
+      - target: 27017
+        published: 27017
+        protocol: tcp
+    networks:
+      - main
+
+  api:
+    container_name: tf-gui_api
+    build:
+      context: .
+      dockerfile: build/package/api/Dockerfile
+      target: development
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+      - ./build/package/api/apache2.conf:/etc/apache2/sites-enabled/000-default.conf
+    networks:
+      - main
+
+  web:
+    container_name: tf-gui_web
+    build:
+      context: .
+      dockerfile: build/package/web/Dockerfile
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web:/app
+    networks:
+      - main
+
+networks:
+  main:
