@@ -1,0 +1,47 @@
+name: " WEB [CI]"
+
+on:
+  push:
+    paths:
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.vue'
+      - "web/"
+
+
+jobs:
+  BUILD:
+    name: BUILD
+    runs-on: ubuntu-latest
+    env:
+      wd: web/
+    steps:
+      # Checkout to current workspace
+    - name: 1 - CHECKOUT
+      uses: actions/checkout@v2
+
+      # Install Golang with specific version
+    - name: 2 - SETUP GO@1.15
+      uses:  actions/setup-go@v1
+      with:
+          go-version: 1.15
+
+      # Cache Go modules to make the build faster
+    - name: 3 - CACHE NODE MODULES
+      uses: actions/cache@v2
+      with:
+        path: |
+          web/node_modules
+        key: node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          node-
+
+    # Install packages
+    - name: 3 - NPM INSTALL
+      run: npm install
+      working-directory: ${{ env.wd }}
+
+    # Build apps
+    - name: 4 - BUILD
+      run: npm run build
+      working-directory: ${{ env.wd }}
