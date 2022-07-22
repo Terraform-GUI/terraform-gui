@@ -45,3 +45,5 @@ jobs:
     - name: 4 - BUILD
       run: npm run build
       working-directory: ${{ env.wd }}
+      env:
+        CI: "" 
