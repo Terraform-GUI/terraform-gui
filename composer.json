@@ -22,6 +22,7 @@
     "symfony/framework-bundle": "6.1.*",
     "symfony/runtime": "6.1.*",
     "symfony/security-bundle": "6.1.*",
+    "symfony/serializer": "6.1.*",
     "symfony/validator": "6.1.*",
     "symfony/yaml": "6.1.*"
   },
@@ -82,6 +83,10 @@
     "friendsofphp/php-cs-fixer": "^3.9",
     "phpro/grumphp": "^1.13",
     "phpstan/phpstan": "^1.8",
-    "symfony/maker-bundle": "^1.44"
+    "phpunit/phpunit": "^9.5",
+    "symfony/browser-kit": "6.1.*",
+    "symfony/css-selector": "6.1.*",
+    "symfony/maker-bundle": "^1.44",
+    "symfony/phpunit-bridge": "^6.1"
   }
 }
