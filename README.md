@@ -1,35 +1,35 @@
 <p align="center">
   <img src="./assets/logo.png" width="256"><br/>
     <br/>
-    <a href="https://github.com/blyndusk/go-yave/releases">
-      <img src="https://img.shields.io/github/v/release/blyndusk/go-yave"/>
+    <a href="https://github.com/Terraform-GUI/terraform-gui/releases">
+      <img src="https://img.shields.io/github/v/release/Terraform-GUI/terraform-gui"/>
     </a>
-    <a href="https://github.com/blyndusk/go-yave/commits/main">
-      <img src="https://img.shields.io/github/release-date/blyndusk/go-yave"/>
+    <a href="https://github.com/Terraform-GUI/terraform-gui/commits/main">
+      <img src="https://img.shields.io/github/release-date/Terraform-GUI/terraform-gui"/>
     </a>
-    <a href="https://github.com/blyndusk/go-yave/issues">
-      <img src="https://img.shields.io/github/issues/blyndusk/go-yave"/>
+    <a href="https://github.com/Terraform-GUI/terraform-gui/issues">
+      <img src="https://img.shields.io/github/issues/Terraform-GUI/terraform-gui"/>
     </a>
-    <a href="https://github.com/blyndusk/go-yave/pulls">
-      <img src="https://img.shields.io/github/issues-pr/blyndusk/go-yave"/>
+    <a href="https://github.com/Terraform-GUI/terraform-gui/pulls">
+      <img src="https://img.shields.io/github/issues-pr/Terraform-GUI/terraform-gui"/>
     </a>
-    <a href="https://github.com/blyndusk/go-yave/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/blyndusk/go-yave"/>
+    <a href="https://github.com/Terraform-GUI/terraform-gui/blob/main/LICENSE">
+      <img src="https://img.shields.io/github/license/Terraform-GUI/terraform-gui"/>
     </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/blyndusk/go-yave/actions/workflows/web.ci.yml">
-      <img src="https://github.com/blyndusk/go-yave/actions/workflows/web.ci.yml/badge.svg"/>
+  <a href="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.ci.yml">
+      <img src="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.ci.yml/badge.svg"/>
     </a>
-       <a href="https://github.com/blyndusk/go-yave/actions/workflows/web.cd.yml">
-      <img src="https://github.com/blyndusk/go-yave/actions/workflows/web.cd.yml/badge.svg"/>
+       <a href="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.cd.yml">
+      <img src="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.cd.yml/badge.svg"/>
     </a>
-     <a href="https://github.com/blyndusk/go-yave/actions/workflows/api.ci.yml">
-      <img src="https://github.com/blyndusk/go-yave/actions/workflows/api.ci.yml/badge.svg"/>
+     <a href="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.ci.yml">
+      <img src="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.ci.yml/badge.svg"/>
     </a>
-     <a href="https://github.com/blyndusk/go-yave/actions/workflows/api.cd.yml">
-      <img src="https://github.com/blyndusk/go-yave/actions/workflows/api.cd.yml/badge.svg"/>
+     <a href="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.cd.yml">
+      <img src="https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.cd.yml/badge.svg"/>
     </a>
 </p>
 
@@ -120,7 +120,7 @@ You can **add, edit or remove** them. To automatically update these labels, you 
 
 ### A - CI
 
-[![GO](https://github.com/blyndusk/go-yave/actions/workflows/ci.go.yml/badge.svg)](https://github.com/blyndusk/go-yave/actions/workflows/ci.go.yml)
+[![GO](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/ci.go.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/ci.go.yml)
 
 The **CI** workflow is located at [.github/workflows/ci.go.yml](.github/workflows/ci.go.yml). It's triggered a **each push** on **all branches**.
 
@@ -133,7 +133,7 @@ It consist of:
 
 ### B - CD
 
-[![DOCKER](https://github.com/blyndusk/go-yave/actions/workflows/cd.docker.yml/badge.svg)](https://github.com/blyndusk/go-yave/actions/workflows/cd.docker.yml)
+[![DOCKER](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/cd.docker.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/cd.docker.yml)
 
 The **CD** workflow is located at [.github/workflows/cd.docker.yml](.github/workflows/cd.docker.yml). It's triggered a **each push** on **`main` branch**.
 
@@ -152,9 +152,9 @@ LABEL org.opencontainers.image.source = "https://github.com/<username>/<reposito
 
 ### C - Release
 
-[![RELEASE](https://github.com/blyndusk/go-yave/actions/workflows/md.release.yml/badge.svg)](https://github.com/blyndusk/go-yave/actions/workflows/md.release.yml)
+[![RELEASE](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/md.release.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/md.release.yml)
 
-The **release** workflow is located at [.github/workflows/md.release.yml](.github/workflows/md.release.yml). It's triggered **manually by user input** at: [Actions > RELEASE](https://github.com/blyndusk/go-yave/actions/workflows/md.release.yml).
+The **release** workflow is located at [.github/workflows/md.release.yml](.github/workflows/md.release.yml). It's triggered **manually by user input** at: [Actions > RELEASE](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/md.release.yml).
 
 > IMPORTANT: you need to set the **image tag** in the action input, for the action to be able to push the docker image and create a release **with a specific version**. The image tag is a [SemVer](https://en.wikipedia.org/wiki/Software_versioning) tag, e.g. `1.0.2`.
 
@@ -168,7 +168,7 @@ After that, you can check the release at `https://github.com/<username>/<reposit
 
 ### D - Labeler
 
-[![LABELER](https://github.com/blyndusk/go-yave/actions/workflows/ci.labeler.yml/badge.svg)](https://github.com/blyndusk/go-yave/actions/workflows/ci.labeler.yml)
+[![LABELER](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/ci.labeler.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/ci.labeler.yml)
 
 The **labeler** workflow consists in **assigning specific labels** on **pull requests** according to the files that have been modified in the **commits attached to this pull request**.
 
