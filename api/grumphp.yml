@@ -1,7 +1,7 @@
 grumphp:
   tasks:
     composer:
-      file: ./composer.json
+      file: ./api/composer.json
       no_check_all: false
       no_check_lock: false
       no_check_publish: false
@@ -33,7 +33,7 @@ grumphp:
         - /^src\/tests\/(.*)/
 
     securitychecker_symfony:
-      lockfile: ./composer.lock
+      lockfile: ./api/composer.lock
       format: ~
       run_always: false
 
@@ -48,5 +48,5 @@ grumphp:
       verbose: true
       diff: false
       triggered_by: ['php']
-      cache_file: '.php-cs-fixer.cache'
-      config: '.php-cs-fixer.dist.php'
+      cache_file: './api/.php-cs-fixer.cache'
+      config: './api/.php-cs-fixer.dist.php'
