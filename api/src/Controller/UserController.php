@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Document\User;
 use App\Form\UserRegistrationType;
-use App\Form\UserPasswordForgetType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
