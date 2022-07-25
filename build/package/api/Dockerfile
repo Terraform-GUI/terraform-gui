@@ -18,4 +18,4 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
-RUN /usr/local/bin/composer install
+CMD composer install; apache2-foreground
