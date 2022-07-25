@@ -51,7 +51,7 @@ class UserController extends AbstractController
             $dm->flush();
 
             $email = (new Email())
-            ->from('no-reply@terraform-gui.com')
+            ->from($_ENV['MAILER_FROM_EMAIL'])
             ->to($user->getEmail())
             ->subject('Welcome to Terraform GUI')
             ->text('Welcome to Terraform GUI!')
