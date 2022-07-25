@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Document\User;
 use App\Form\UserRegistrationType;
+use App\Form\UserPasswordForgetType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: ['POST'])]
-    public function create(Request $request, UserPasswordHasherInterface $passwordHasher, DocumentManager $dm, Validator $validator): JsonResponse
+    public function create(Request $request, UserPasswordHasherInterface $passwordHasher, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -44,6 +47,15 @@ class UserController extends AbstractController
 
             $dm->persist($user);
             $dm->flush();
+
+            $email = (new Email())
+            ->from('no-reply@terraform-gui.com')
+            ->to($user->getEmail())
+            ->subject('Welcome to Terraform GUI')
+            ->text('Welcome to Terraform GUI!')
+            ->html('<p>Welcome to Terraform GUI!</p>');
+
+            $mailer->send($email);
 
             return $this->json(['success' => true], Response::HTTP_CREATED);
         }
