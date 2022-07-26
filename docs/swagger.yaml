@@ -1,0 +1,611 @@
+openapi: 3.0.0
+info:
+  version: '0.1'
+  title: TerraformGUI
+  description: A convenient way to use and learn Terraform
+paths:
+  /register:
+    post:
+      description: Creates an user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - user_id
+                - data
+              properties:
+                user_id:
+                  type: integer
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Successfully created a new user
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - user_id
+                  - data
+                properties:
+                  user_id: 
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+  
+  /login:
+    post:
+      description: Returns a specific user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - mail
+                - password
+              properties:
+                mail:
+                  type: string
+                password: 
+                  type: string
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - data
+                properties:
+                  user_id:
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+                    
+  /users/{user_id}:
+    put:
+      description: Updates an user
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the user to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Successfully updated the required user
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - user_id
+                  - data
+                properties:
+                  user_id: 
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    delete:
+      description: Deletes a user
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the user to delete
+      responses:
+        '200':
+          description: Successfully deleted the required user
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+                    
+  /users/{user_id}/reset-password:
+    get:
+      description: Resets a user's password
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the required user
+      responses:
+        '200':
+          description: Successfully sent confirmation mail
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+  /nodes/aws:
+    get:
+      description: Returns a list of available aws services
+      responses:
+        '200':
+          description: Successfully returned the aws services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - type
+                    - text
+                    - options
+                  properties:
+                    type:
+                      type: string
+                    text:
+                      type: string
+                    options:
+                      type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+                    
+  /projects:
+    get:
+      description: Returns a user's projects
+      parameters:
+        - name: user_id
+          in: query
+          description: The id of the current user
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned the user's projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - user_id
+                    - project_id
+                    - data
+                  properties:
+                    user_id:
+                      type: integer
+                    project_id:
+                      type: integer
+                    data:
+                      type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    post:
+      description: Creates a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - user_id
+                - data
+              properties:
+                user_id:
+                  type: integer
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Successfully created a new project
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - project_id
+                  - data
+                properties:
+                  project_id: 
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+  
+  /projects/{project_id}:
+    get:
+      description: Returns a specific project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the required project
+      responses:
+        '200':
+          description: Successfully returned the required project
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - project_id
+                  - data
+                properties:
+                  user_id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    put:
+      description: Updates a project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the project to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Successfully updated the required project
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - project_id
+                  - data
+                properties:
+                  project_id: 
+                    type: integer
+                  data:
+                    type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    delete:
+      description: Deletes a project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the project to delete
+      responses:
+        '200':
+          description: Successfully deleted the required project
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+  /projects/{project_id}/hcl-preview:
+    post:
+      description: Triggers the hcl preview generation for the required project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the required project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              properties:
+                project_id:
+                  type: integer
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Successfully generated hcl preview
+          content:
+            application/json:
+              schema:
+                type: string 
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+                    
+  /projects/{project_id}/variables:
+    get:
+      description: Returns a project's variables
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the current project
+      responses:
+        '200':
+          description: Successfully returned the project's variables
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - project_id
+                    - variable_id
+                    - name
+                  properties:
+                    project_id:
+                      type: integer
+                    variable_id:
+                      type: integer
+                    name:
+                      type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    post:
+      description: Creates a variable
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the current project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - name
+                - data
+              properties:
+                name:
+                  type: string
+                data: 
+                  type: object
+      responses:
+        '200':
+          description: Successfully created a new variable
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - variable_id
+                  - project_id
+                  - name
+                properties:
+                  variable_id: 
+                    type: string
+                  project_id: 
+                    type: integer
+                  name:
+                    type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+  /projects/{project_id}/variables/{variable_id}:
+    put:
+      description: Updates a variable
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the current project
+        - in: path
+          name: variable_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the variable to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - name
+                - data
+              properties:
+                name:
+                  type: string
+                data: 
+                  type: object
+      responses:
+        '200':
+          description: Successfully updated the required variable
+          content:
+            application/json:
+              schema:
+                type: object 
+                required:
+                  - variable_id
+                  - project_id
+                  - name
+                properties:
+                  variable_id:
+                    type: integer
+                  project_id: 
+                    type: integer
+                  name:
+                    type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+
+    delete:
+      description: Deletes a variable
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the current project
+        - in: path
+          name: variable_id
+          schema:
+            type: integer
+          required: true
+          description: the id of the variable to delete
+      responses:
+        '200':
+          description: Successfully deleted the required variable
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lucaslehot/TerraformGUI/0.1
+components:
+  schemas: {}

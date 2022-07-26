@@ -1,2 +1,0 @@
-gesdinet_jwt_refresh_token:
-  refresh_token_class: App\Document\RefreshToken
