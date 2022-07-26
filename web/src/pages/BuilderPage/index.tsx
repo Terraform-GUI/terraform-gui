@@ -3,10 +3,11 @@ import './index.css';
 
 import SchemaUI from '../../components/SchemaUI';
 import {useNodesState} from "react-flow-renderer";
-import ResourceNodeData from "../../interfaces/ResourceNodeData";
+import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
 import {Node} from "react-flow-renderer";
+import ResourceSideBar from "../../components/ResourceSideBar";
 
-function Index() {
+function BuilderPage() {
     const data_nodes: Node<ResourceNodeData>[] = [
         {
             id: '1',
@@ -14,8 +15,12 @@ function Index() {
             data: {
                 type: 'RDS',
                 label: (
-                    "<>Welcome to <strong>React Flow!</strong></>"
+                    'RDS'
                 ),
+                arguments: [{
+                    name: 'IP',
+                    value: '127.0.0.1'
+                }]
             },
             position: { x: 250, y: 0 },
         },
@@ -25,8 +30,15 @@ function Index() {
             data: {
                 type: 'EC2',
                 label: (
-                    `<>This is a <strong>default node</strong></>`
+                    'EC2'
                 ),
+                arguments: [{
+                    name: 'IP',
+                    value: '127.0.0.1'
+                }, {
+                    name: 'name',
+                    value: 'tf-gui-app'
+                }]
             },
             position: { x: 100, y: 100 },
         },
@@ -36,7 +48,9 @@ function Index() {
 
     return (
         <div className="wrapper">
-            <div className="one">One</div>
+            <div className="one">
+                <ResourceSideBar nodes={nodes} setNodes={setNodes}/>
+            </div>
             <div className="two">
                 <SchemaUI nodes={nodes} setNodes={setNodes} onNodesChange={onNodesChange}/>
             </div>
@@ -46,4 +60,4 @@ function Index() {
     );
 }
 
-export default Index;
+export default BuilderPage;

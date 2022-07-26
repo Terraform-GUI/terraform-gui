@@ -68,3 +68,7 @@
   background-color: yellow;
   opacity: 50%;
 }
+
+.react-flow__node.selected {
+  background-color: red;
+}

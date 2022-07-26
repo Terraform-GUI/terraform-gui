@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useCallback} from "react";
 import "./index.css";
-import ResourceNodeData from "../../interfaces/ResourceNodeData";
+import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
 
 import ReactFlow, {
     addEdge,
@@ -35,12 +35,11 @@ function SchemaUI(props: SchemaUIProps) {
     const [edges, setEdges, onEdgesChange] = useEdgesState(data_edges);
 
     const addNode = () => {
-        console.log(props.nodes.length);
         const newData = [
             {
                 id: "3",
                 type: "output",
-                data: { label: "My new data", type:"RDS" },
+                data: { label: "My new data", type:"RDS", arguments: [] },
                 position: { x: 1, y: 1 },
             },
         ];
