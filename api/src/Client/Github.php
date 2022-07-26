@@ -16,7 +16,7 @@ class Github
     public function createState(): string
     {
         $date         = new DateTimeImmutable();
-        $expireAt     = $date->modify('+6 minutes')->getTimestamp();      // Add 60 seconds
+        $expireAt     = $date->modify('+6 minutes')->getTimestamp();
         $payload      = [
             'iat'  => $date->getTimestamp(),
             'iss'  => $_ENV['DOMAIN'],
@@ -87,9 +87,7 @@ class Github
             ],
         ]);
 
-        $accessToken = $response->toArray()['access_token'] ?? null;
-
-        return $accessToken;
+        return $response->toArray()['access_token'] ?? null;
     }
 
     public function getEmail(string $accessToken): ?string
