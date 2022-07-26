@@ -2,26 +2,26 @@
 
 namespace App\Form;
 
-use App\Document\Embed\NodePosition;
+use App\Document\Embed\NodeData;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NodePositionCreationType extends AbstractType
+class NodeDataEditionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('x', NumberType::class)
-            ->add('y', NumberType::class)
+            ->add('label', TextType::class)
+            ->add('resource', NodeDataResourceEditionType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'      => NodePosition::class,
+            'data_class'      => NodeData::class,
             'csrf_protection' => false,
         ]);
     }

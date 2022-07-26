@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Document\Project;
 use App\Document\User;
-use App\Form\ProjectCreationType;
+use App\Form\ProjectEditionType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
@@ -64,7 +64,7 @@ class ProjectController extends AbstractController
         $project  = new Project();
 
         $project->setUserId($user->getId());
-        $form = $this->createForm(ProjectCreationType::class, $project);
+        $form = $this->createForm(ProjectEditionType::class, $project);
 
         $data = json_decode($request->getContent(), true);
         $form->submit(array_merge($data, $request->request->all()));
@@ -109,7 +109,7 @@ class ProjectController extends AbstractController
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
 
-        $form = $this->createForm(ProjectCreationType::class, $project);
+        $form = $this->createForm(ProjectEditionType::class, $project);
 
         $data = json_decode($request->getContent(), true);
         $form->submit(array_merge($data, $request->request->all()));
