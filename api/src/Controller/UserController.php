@@ -53,45 +53,4 @@ class UserController extends AbstractController
 
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
-
-    #[Route('/users/{user_id}', name: 'update-user', methods: ['PUT'])]
-    public function update(Request $request, DocumentManager $dm, Validator $validator, $user_id): JsonResponse
-    {
-        $user = $dm->getRepository(User::class)->find($user_id);
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
-        }
-
-        $data = json_decode($request->getContent(), true);
-        $form = $this->createForm(UserType::class);
-        $form->submit($data);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-        
-            $user->setEmail($formData['email']);
-
-            $dm->flush();
-        
-            return $this->json(['success' => true], Response::HTTP_OK);
-        }
-        
-        $errors = $validator->getErrors($form, false);
-        
-        return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-    #[Route('/users/{user_id}', name: 'delete-user', methods: ['DELETE'])]
-    public function delete(DocumentManager $dm, $user_id): JsonResponse
-    {
-        $user = $dm->getRepository(User::class)->find($user_id);
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
-        }
-        
-        $dm->remove($user);
-        $dm->flush();
-        
-        return $this->json(['success' => true], Response::HTTP_OK);
-    }
 }
