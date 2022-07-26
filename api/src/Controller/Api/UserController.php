@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Document\PasswordRecoveryRequest;
 use App\Document\User;
 use App\Form\UserUpdateEmailType;
 use App\Utils\Validator;
@@ -10,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api', name: 'api_user_')]
@@ -30,7 +30,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-        
+
             $user->setEmail($formData['email']);
 
             $errors = $validator->getErrors($user);
@@ -40,12 +40,12 @@ class UserController extends AbstractController
             }
 
             $dm->flush();
-        
+
             return $this->json(['success' => true], Response::HTTP_OK);
         }
-        
+
         $errors = $validator->getErrors($form, false);
-        
+
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -56,10 +56,16 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
-        
+
+        $qb = $dm->createQueryBuilder(PasswordRecoveryRequest::class);
+        $qb->remove()
+            ->field('email')->equals($user->getEmail())
+            ->getQuery()
+            ->execute();
+
         $dm->remove($user);
         $dm->flush();
-        
+
         return $this->json(['success' => true], Response::HTTP_OK);
     }
 }

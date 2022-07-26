@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Client\Github;
 use App\Document\User;
 use App\Form\UserRegistrationType;
-use App\Form\UserType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
