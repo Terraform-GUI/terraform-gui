@@ -44,11 +44,11 @@ class ProjectController extends AbstractController
 
             $this->denyAccessUnlessGranted('view', $project);
         } catch (NotFoundHttpException $e) {
-            return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
-            return $this->json(['error' => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_UNAUTHORIZED);
         } catch (Exception $e) {
-            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
 
         return $this->json([
@@ -83,6 +83,51 @@ class ProjectController extends AbstractController
             }
 
             return $this->json(['project' => $project], Response::HTTP_CREATED);
+        }
+
+        $errors = $validator->getErrors($form, false);
+
+        return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    #[Route('/projects/{id}', name: 'update_project', methods: 'PUT')]
+    public function update(string $id, Request $request, DocumentManager $dm, Validator $validator): JsonResponse
+    {
+        try {
+            $project = $dm->getRepository(Project::class)->find($id);
+
+            if (!$project) {
+                throw $this->createNotFoundException('This project does not exist!');
+            }
+
+            $this->denyAccessUnlessGranted('edit', $project);
+        } catch (NotFoundHttpException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
+        } catch (AccessDeniedException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_UNAUTHORIZED);
+        } catch (Exception $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
+
+        $form = $this->createForm(ProjectCreationType::class, $project);
+
+        $data = json_decode($request->getContent(), true);
+        $form->submit(array_merge($data, $request->request->all()));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $errors = $validator->getErrors($project);
+            if (count($errors) > 0) {
+                return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            try {
+                $dm->persist($project);
+                $dm->flush();
+            } catch (Exception $e) {
+                return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+            }
+
+            return $this->json(['project' => $project], Response::HTTP_OK);
         }
 
         $errors = $validator->getErrors($form, false);
