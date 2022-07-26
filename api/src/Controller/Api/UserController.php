@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Document\User;
+use App\Document\PasswordRecoveryRequest;
 use App\Form\UserUpdateEmailType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -56,7 +57,13 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
-        
+       
+        $qb = $dm->createQueryBuilder(PasswordRecoveryRequest::class);
+        $qb->remove()
+            ->field('email')->equals($user->getEmail())
+            ->getQuery()
+            ->execute();
+
         $dm->remove($user);
         $dm->flush();
         
