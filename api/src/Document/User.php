@@ -21,11 +21,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected ?string $email = null;
 
     #[MongoDB\Field(type: 'string')]
-    #[Assert\NotBlank]
     protected ?string $password = null;
 
     #[MongoDB\Field(type: 'collection')]
     protected $roles = [];
+
+    #[MongoDB\Field(type: 'boolean')]
+    protected $viaGithub = false;
 
     public function getId(): string
     {
@@ -86,5 +88,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getViaGithub(): bool
+    {
+        return $this->viaGithub;
+    }
+
+    public function setViaGithub(bool $viaGithub): void
+    {
+        $this->viaGithub = $viaGithub;
     }
 }

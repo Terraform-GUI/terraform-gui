@@ -1,7 +1,6 @@
-version: "3.8"
+version: '3.8'
 
 services:
-
   mongo:
     container_name: tf-gui_mongo
     image: mongo
@@ -40,6 +39,15 @@ services:
       - 3000:3000
     volumes:
       - ./web:/app
+    networks:
+      - main
+
+  mail:
+    container_name: tf-gui_mail
+    image: schickling/mailcatcher
+    restart: always
+    ports:
+      - 1080:1080
     networks:
       - main
 
