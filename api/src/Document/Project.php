@@ -6,15 +6,13 @@ use App\Document\Embed\Node;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'projects')]
 class Project
 {
     #[MongoDB\Id]
-    #[Ignore]
-    private string $id;
+    protected string $id;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotNull]
