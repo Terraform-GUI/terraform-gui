@@ -52,4 +52,16 @@ class NodeDataResource
     {
         return $this->arguments;
     }
+
+    public function addArgument(NodeDataResourceArgument $argument): void
+    {
+        if (!$this->arguments->contains($argument)) {
+            $this->arguments[] = $argument;
+        }
+    }
+
+    public function removeArgument(Node $argument): void
+    {
+        $this->arguments->removeElement($argument);
+    }
 }

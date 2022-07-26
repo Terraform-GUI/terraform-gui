@@ -4,10 +4,13 @@ namespace App\Controller\Api;
 
 use App\Document\Project;
 use App\Document\User;
+use App\Form\ProjectCreationType;
+use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 #[Route('/api', name: 'api_')]
 class ProjectController extends AbstractController
 {
-    #[Route('/projects', name: 'projects')]
+    #[Route('/projects', name: 'get_all_projects', methods: 'GET')]
     public function getAll(DocumentManager $dm): JsonResponse
     {
         /** @var User $user */
@@ -29,7 +32,7 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projects/{id}', name: 'project')]
+    #[Route('/projects/{id}', name: 'get_project', methods: 'GET')]
     public function get(string $id, DocumentManager $dm): JsonResponse
     {
         try {
@@ -51,5 +54,39 @@ class ProjectController extends AbstractController
         return $this->json([
             'project' => $project,
         ]);
+    }
+
+    #[Route('/projects', name: 'create_project', methods: 'POST')]
+    public function create(Request $request, DocumentManager $dm, Validator $validator): JsonResponse
+    {
+        /** @var User $user */
+        $user     = $this->getUser();
+        $project  = new Project();
+
+        $project->setUserId($user->getId());
+        $form = $this->createForm(ProjectCreationType::class, $project);
+
+        $data = json_decode($request->getContent(), true);
+        $form->submit(array_merge($data, $request->request->all()));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $errors = $validator->getErrors($project);
+            if (count($errors) > 0) {
+                return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            try {
+                $dm->persist($project);
+                $dm->flush();
+            } catch (Exception $e) {
+                return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+            }
+
+            return $this->json(['project' => $project], Response::HTTP_CREATED);
+        }
+
+        $errors = $validator->getErrors($form, false);
+
+        return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
