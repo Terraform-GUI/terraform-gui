@@ -1,0 +1,92 @@
+{
+  "name": "hetic/terraform-gui-back",
+  "description": "Terraform GUI Backend",
+  "type": "project",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.1",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "doctrine/annotations": "^1.13",
+    "doctrine/mongodb-odm": "^2.4",
+    "doctrine/mongodb-odm-bundle": "^4.5",
+    "gesdinet/jwt-refresh-token-bundle": "^1.1",
+    "lexik/jwt-authentication-bundle": "^2.16",
+    "symfony/apache-pack": "^1.0",
+    "symfony/console": "6.1.*",
+    "symfony/dotenv": "6.1.*",
+    "symfony/flex": "^2",
+    "symfony/form": "6.1.*",
+    "symfony/framework-bundle": "6.1.*",
+    "symfony/runtime": "6.1.*",
+    "symfony/security-bundle": "6.1.*",
+    "symfony/serializer": "6.1.*",
+    "symfony/validator": "6.1.*",
+    "symfony/yaml": "6.1.*"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "symfony/flex": true,
+      "symfony/runtime": true,
+      "phpro/grumphp": true
+    },
+    "optimize-autoloader": true,
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "replace": {
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php72": "*",
+    "symfony/polyfill-php73": "*",
+    "symfony/polyfill-php74": "*",
+    "symfony/polyfill-php80": "*",
+    "symfony/polyfill-php81": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": "true",
+      "require": "6.1.*"
+    }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.9",
+    "phpro/grumphp": "^1.13",
+    "phpstan/phpstan": "^1.8",
+    "phpunit/phpunit": "^9.5",
+    "symfony/browser-kit": "6.1.*",
+    "symfony/css-selector": "6.1.*",
+    "symfony/maker-bundle": "^1.44",
+    "symfony/phpunit-bridge": "^6.1"
+  }
+}
