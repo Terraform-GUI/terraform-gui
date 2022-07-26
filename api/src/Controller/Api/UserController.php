@@ -56,7 +56,6 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
-
         $qb = $dm->createQueryBuilder(PasswordRecoveryRequest::class);
         $qb->remove()
             ->field('email')->equals($user->getEmail())
