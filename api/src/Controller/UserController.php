@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: ['POST'])]
-    public function create(Request $request, UserPasswordHasherInterface $passwordHasher, DocumentManager $dm, Validator $validator): JsonResponse
+    public function create(Request $request, UserPasswordHasherInterface $passwordHasher, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -47,6 +49,15 @@ class UserController extends AbstractController
 
             $dm->persist($user);
             $dm->flush();
+
+            $email = (new Email())
+            ->from($_ENV['MAILER_FROM_EMAIL'])
+            ->to($user->getEmail())
+            ->subject('Welcome to Terraform GUI')
+            ->text('Welcome to Terraform GUI!')
+            ->html('<p>Welcome to Terraform GUI!</p>');
+
+            $mailer->send($email);
 
             return $this->json(['success' => true], Response::HTTP_CREATED);
         }
@@ -107,7 +118,7 @@ class UserController extends AbstractController
             $errors = $validator->getErrors($user);
 
             if (count($errors) > 0) {
-                return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->redirect($_ENV['FRONT_URL'].'/login?'.http_build_query(['error' => true]));
             }
 
             $dm->persist($user);
