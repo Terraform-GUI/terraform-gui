@@ -12,6 +12,7 @@ class NodeDataResourceArgument
     #[Assert\NotBlank]
     private ?string $name = null;
 
+    #[MongoDB\Field(type: 'string')]
     private mixed $value = null;
 
     public function getName(): ?string
