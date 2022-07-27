@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Client\Github;
 use App\Document\EmailUpdateRequest;
 use App\Document\User;
+use App\Form\UserConfirmEmailType;
 use App\Form\UserRegistrationType;
-use App\Form\UserUpdateEmailType;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
@@ -134,12 +134,12 @@ class UserController extends AbstractController
         return $this->redirect($_ENV['FRONT_URL'].'?'.http_build_query($tokens));
     }
 
-    #[Route('/users/{user_id}/email-update', name: 'email_update', methods: ['POST'])]
+    #[Route('/users/confirm/email', name: 'email_update', methods: ['PATCH'])]
     public function updateEmail(Request $request, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $form = $this->createForm(UserUpdateEmailType::class);
+        $form = $this->createForm(UserConfirmEmailType::class);
 
         $form->submit(array_merge($data, $request->request->all()));
 
@@ -158,7 +158,7 @@ class UserController extends AbstractController
                 return $this->json(['errors' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
             }
 
-            if ($emailUpdateRequest->getCreatedAt()->diff(new \DateTimeImmutable())->s > (int) $_ENV['PASSWORD_RESET_EXPIRATION']) {
+            if ($emailUpdateRequest->getCreatedAt()->diff(new \DateTimeImmutable())->s > (int) $_ENV['EMAIL_UPDATE_RESET_EXPIRATION']) {
                 return $this->json(['errors' => 'Token expired'], Response::HTTP_UNAUTHORIZED);
             }
 

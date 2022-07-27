@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'api_user_')]
 class UserController extends AbstractController
 {
-    #[Route('/users/{user_id}/request-email-update', name: 'request_update_email', methods: ['POST'])]
+    #[Route('/users/{user_id}/email', name: 'request_update_email', methods: ['PATCH'])]
     public function requestEmailUpdate(Request $request, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -59,12 +59,13 @@ class UserController extends AbstractController
 
             $dm->flush();
 
+            $route = $_ENV['FRONT_URL'].'?confirm-token='.$emailUpdateRequest->getToken();
             $email = (new Email())
                 ->from($_ENV['MAILER_FROM_EMAIL'])
                 ->to($emailUpdateRequest->getNewEmail())
                 ->subject('Verify your email address')
                 ->text('Verify your email address')
-                ->html('<p>You have requested an email update. Please click the following link to confirm your new email address.</p> <a href="'.$_ENV['FRONT_URL'].'users/'.$user->getId().'/email-update?token='.$emailUpdateRequest->getToken().'">Confirm your email</a>');
+                ->html('<p>You have requested an email update. Please click the following link to confirm your new email address.</p> <a href="'.$route.'">Confirm your email</a>');
 
             $mailer->send($email);
 
