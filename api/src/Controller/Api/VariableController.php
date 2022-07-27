@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'api_variables_')]
 class VariableController extends AbstractController
 {
-    #[Route('/projects/{project_id}/variables', name: 'get-variables', methods: ['GET'])]
+    #[Route('/projects/{project_id}/variables', name: 'get_variables', methods: ['GET'])]
     public function get(string $project_id, DocumentManager $dm): JsonResponse
     {
         $variables = $dm->getRepository(Variable::class)->findBy(['projectId' => $project_id]);
@@ -23,7 +23,7 @@ class VariableController extends AbstractController
         return $this->json($variables, Response::HTTP_OK);
     }
 
-    #[Route('/projects/{project_id}/variables', name: 'create-variable', methods: ['POST'])]
+    #[Route('/projects/{project_id}/variables', name: 'create_variable', methods: ['POST'])]
     public function create(Request $request, DocumentManager $dm, Validator $validator, $project_id): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -57,7 +57,7 @@ class VariableController extends AbstractController
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    #[Route('/projects/{project_id}/variables/{variable_id}', name: 'update-variable', methods: ['PUT'])]
+    #[Route('/projects/{project_id}/variables/{variable_id}', name: 'update_variable', methods: ['PUT'])]
     public function update(Request $request, DocumentManager $dm, Validator $validator, $project_id, $variable_id): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -94,7 +94,7 @@ class VariableController extends AbstractController
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    #[Route('/projects/{project_id}/variables/{variable_id}', name: 'delete-variable', methods: ['DELETE'])]
+    #[Route('/projects/{project_id}/variables/{variable_id}', name: 'delete_variable', methods: ['DELETE'])]
     public function delete(DocumentManager $dm, $project_id, $variable_id): JsonResponse
     {
         $variable = $dm->getRepository(Variable::class)->findOneBy(['projectId' => $project_id, 'id' => $variable_id]);
