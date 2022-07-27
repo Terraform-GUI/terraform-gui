@@ -38,11 +38,11 @@ variable "rds" {
   default = {
     type                = "db.t3.micro"
     engine              = "postgres"
-    version             = "1.13"
-    family             = "postgres13"
+    version             = "13"
+    family              = "postgres13"
     username            = "alpha"
-    password            = "alpha"
-    publicly_accessible = true
+    password            = "alphaalphaalpha"
+    publicly_accessible = false
     skip_final_snapshot = true
   }
 }
