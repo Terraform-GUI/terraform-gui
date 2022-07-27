@@ -101,6 +101,27 @@ class ProjectController extends AbstractController
             }
 
             $this->denyAccessUnlessGranted('edit', $project);
+
+            $form = $this->createForm(ProjectEditionType::class, $project);
+
+            $data = json_decode($request->getContent(), true);
+            $form->submit(array_merge($data, $request->request->all()));
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $errors = $validator->getErrors($project);
+                if (count($errors) > 0) {
+                    return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+
+                $dm->persist($project);
+                $dm->flush();
+
+                return $this->json(['project' => $project], Response::HTTP_OK);
+            }
+
+            $errors = $validator->getErrors($form, false);
+
+            return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (NotFoundHttpException $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
@@ -108,31 +129,6 @@ class ProjectController extends AbstractController
         } catch (Exception $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
-
-        $form = $this->createForm(ProjectEditionType::class, $project);
-
-        $data = json_decode($request->getContent(), true);
-        $form->submit(array_merge($data, $request->request->all()));
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $errors = $validator->getErrors($project);
-            if (count($errors) > 0) {
-                return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
-
-            try {
-                $dm->persist($project);
-                $dm->flush();
-            } catch (Exception $e) {
-                return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
-            }
-
-            return $this->json(['project' => $project], Response::HTTP_OK);
-        }
-
-        $errors = $validator->getErrors($form, false);
-
-        return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     #[Route('/projects/{id}', name: 'delete_project', methods: 'DELETE')]
