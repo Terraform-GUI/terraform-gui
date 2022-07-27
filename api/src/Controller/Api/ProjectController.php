@@ -134,4 +134,29 @@ class ProjectController extends AbstractController
 
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    #[Route('/projects/{id}', name: 'delete_project', methods: 'DELETE')]
+    public function delete(string $id, DocumentManager $dm): JsonResponse
+    {
+        try {
+            $project = $dm->getRepository(Project::class)->find($id);
+
+            if (!$project) {
+                throw $this->createNotFoundException('This project does not exist!');
+            }
+
+            $this->denyAccessUnlessGranted('edit', $project);
+
+            $dm->remove($project);
+            $dm->flush();
+
+            return $this->json(['success' => true], Response::HTTP_OK);
+        } catch (NotFoundHttpException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
+        } catch (AccessDeniedException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_UNAUTHORIZED);
+        } catch (Exception $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }
