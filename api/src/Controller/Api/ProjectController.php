@@ -28,9 +28,7 @@ class ProjectController extends AbstractController
         $projects = $dm->getRepository(Project::class)
             ->findBy(['userId' => $user->getId()]);
 
-        return $this->json([
-            'projects' => $projects,
-        ]);
+        return $this->json(['projects' => $projects], context: ['groups' => 'get_all_projects']);
     }
 
     #[Route('/projects/{id}', name: 'get_project', methods: 'GET')]
@@ -117,7 +115,7 @@ class ProjectController extends AbstractController
                 $dm->persist($project);
                 $dm->flush();
 
-                return $this->json(['project' => $project], Response::HTTP_OK);
+                return $this->json(['project' => $project]);
             }
 
             $errors = $validator->getErrors($form, false);

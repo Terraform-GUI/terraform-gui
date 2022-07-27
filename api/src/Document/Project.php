@@ -6,20 +6,24 @@ use App\Document\Embed\Node;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'projects')]
 class Project
 {
     #[MongoDB\Id]
+    #[Groups(['get_all_projects'])]
     protected string $id;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotNull]
+    #[Groups(['get_all_projects'])]
     private string $name;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotNull]
+    #[Groups(['get_all_projects'])]
     private string $userId;
 
     #[MongoDB\EmbedMany(targetDocument: Node::class)]
