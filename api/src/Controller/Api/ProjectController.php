@@ -25,7 +25,7 @@ class ProjectController extends AbstractController
         /** @var User $user */
         $user     = $this->getUser();
         $projects = $dm->getRepository(Project::class)
-            ->findBy(['user_id' => $user->getId()]);
+            ->findBy(['userId' => $user->getId()]);
 
         return $this->json([
             'projects' => $projects,
