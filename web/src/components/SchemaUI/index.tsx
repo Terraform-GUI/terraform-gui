@@ -25,9 +25,6 @@ function SchemaUI(props: SchemaUIProps) {
         []
     );
 
-    const onInit = (reactFlowInstance: any) =>
-        console.log("flow loaded:", reactFlowInstance);
-
     const data_edges = [
         { id: 'e1-2', source: '1', target: '2', label: 'this is an edge label' }
     ]
@@ -56,7 +53,6 @@ function SchemaUI(props: SchemaUIProps) {
                 onNodesChange={props.onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                onInit={onInit}
                 fitView
                 attributionPosition="top-right"
             >
