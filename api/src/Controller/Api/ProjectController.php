@@ -42,7 +42,7 @@ class ProjectController extends AbstractController
                 throw $this->createNotFoundException('This project does not exist!');
             }
 
-            $this->denyAccessUnlessGranted('view', $project);
+            $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
         } catch (NotFoundHttpException $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
