@@ -141,7 +141,7 @@ class ProjectController extends AbstractController
                 throw $this->createNotFoundException('This project does not exist!');
             }
 
-            $this->denyAccessUnlessGranted('edit', $project);
+            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
             $dm->remove($project);
             $dm->flush();
