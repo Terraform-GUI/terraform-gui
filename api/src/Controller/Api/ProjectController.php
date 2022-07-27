@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Document\Project;
 use App\Document\User;
 use App\Form\ProjectEditionType;
+use App\Security\ProjectVoter;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
