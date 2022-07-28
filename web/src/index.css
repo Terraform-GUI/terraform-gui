@@ -61,6 +61,11 @@ code {
   height: 45px;
 
 }
+
+.react-flow__node.selected {
+  background-color: red;
+}
+
 @media (max-width: 1600px)
 {
     .wrapper {

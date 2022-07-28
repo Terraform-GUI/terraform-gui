@@ -1,21 +1,27 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
-
+import React, { useState, useRef, useCallback, Dispatch, SetStateAction } from "react";
 import ReactFlow, {
   addEdge,
   Controls,
   Background,
-  useNodesState,
   useEdgesState,
   ReactFlowProvider,
+    OnNodesChange,
+    Node
 } from "react-flow-renderer";
-
+import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
 
 let id = 0;
 const getId = () => `ressource_${id++}`;
 
-function SchemaUI({saves} : any) {
+interface SchemaUIProps {
+    nodes: Node<ResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
+    onNodesChange: OnNodesChange,
+    saves: boolean
+}
+
+function SchemaUI(props: SchemaUIProps) {
   const reactFlowWrapper: any = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
   
@@ -47,14 +53,18 @@ function SchemaUI({saves} : any) {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      const newNode = {
+      const newNode: Node<ResourceNodeData> = {
         id: getId(),
         type,
         position,
-        data: { label: `AWS ${type}` },
+        data: {
+            label: type,
+            type: type,
+            arguments: [] // TODO fill arguments from the resource
+        },
       };
 
-      setNodes((nds) => nds.concat(newNode));
+      props.setNodes((nds) => nds.concat(newNode));
     },
     [reactFlowInstance]
   );
@@ -63,9 +73,9 @@ function SchemaUI({saves} : any) {
     <ReactFlowProvider>
       <div className="wrapper_reactflow" ref={reactFlowWrapper}>
         <ReactFlow
-          nodes={nodes}
+          nodes={props.nodes}
           edges={edges}
-          onNodesChange={onNodesChange}
+          onNodesChange={props.onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onInit={setReactFlowInstance}
