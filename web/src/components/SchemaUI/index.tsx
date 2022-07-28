@@ -1,81 +1,97 @@
-import React, {Dispatch, SetStateAction, useCallback} from "react";
-import "./index.css";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import React, { useState, useRef, useCallback, Dispatch, SetStateAction } from "react";
 
 import ReactFlow, {
     addEdge,
-    MiniMap,
     Controls,
     Background,
     useEdgesState,
-    OnNodesChange,
-    Node
+    ReactFlowProvider,
+    Node,
+    OnNodesChange
 } from "react-flow-renderer";
+import { ResourceNodeData } from "../../interfaces/ResourceNodeData";
 
+
+let id = 0;
+const getId = () => `ressource_${id++}`;
 
 interface SchemaUIProps {
     nodes: Node<ResourceNodeData>[],
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
-    onNodesChange: OnNodesChange
+    onNodesChange: OnNodesChange,
+    saves: boolean
 }
 
 function SchemaUI(props: SchemaUIProps) {
+    const reactFlowWrapper: any = useRef(null);
+
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
+
+
     const onConnect = useCallback(
         (params: any) => setEdges((eds) => addEdge(params, eds)),
         []
     );
 
-    const data_edges = [
-        { id: 'e1-2', source: '1', target: '2', label: 'this is an edge label' }
-    ]
+    const onDragOver = useCallback((event: any) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }, []);
 
-    const [edges, setEdges, onEdgesChange] = useEdgesState(data_edges);
+    const onDrop = useCallback(
+        (event: any) => {
+            event.preventDefault();
 
-    const addNode = () => {
-        const newData = [
-            {
-                id: "3",
-                type: "output",
-                data: { label: "My new data", type:"RDS", arguments: [] },
-                position: { x: 1, y: 1 },
-            },
-        ];
+            const reactFlowBounds: any =
+                reactFlowWrapper.current.getBoundingClientRect();
+            const type = event.dataTransfer.getData("application/reactflow");
 
-        props.setNodes([...props.nodes, ...newData]);
-    };
+            // check if the dropped element is valid
+            if (typeof type === "undefined" || !type) {
+                return;
+            }
 
+            const position: any = reactFlowInstance.project({
+                x: event.clientX - reactFlowBounds.left,
+                y: event.clientY - reactFlowBounds.top,
+            });
+            const newNode: Node<ResourceNodeData> = {
+                id: getId(),
+                type,
+                position,
+                data: {
+                    label: `AWS ${type}`,
+                    type: 'resource type', // TODO fill type
+                    arguments: [] // TODO fill arguments
+                },
+            };
+
+            props.setNodes((nds) => nds.concat(newNode));
+        },
+        [reactFlowInstance]
+    );
 
     return (
-        <div style={{ height: 960 }}>
-            <ReactFlow
-                nodes={props.nodes}
-                edges={edges}
-                onNodesChange={props.onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                fitView
-                attributionPosition="top-right"
-            >
-                <MiniMap
-                    nodeStrokeColor={(n: any) => {
-                        if (n.style?.background) return n.style.background;
-                        if (n.type === "input") return "#0041d0";
-                        if (n.type === "output") return "#ff0072";
-                        if (n.type === "default") return "#1a192b";
-                        return "#eee";
-                    }}
-                    nodeColor={(n: any) => {
-                        if (n.style?.background) return n.style.background;
-                        return "#fff";
-                    }}
-                    nodeBorderRadius={2}
-                />
-                <Controls />
-                <Background color="#aaa" gap={16} />
-            </ReactFlow>
-        </div>
+        <ReactFlowProvider>
+            <div className="wrapper_reactflow" ref={reactFlowWrapper}>
+                <ReactFlow
+                    nodes={props.nodes}
+                    edges={edges}
+                    onNodesChange={props.onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    onInit={setReactFlowInstance}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    fitView
+                >
+                    <Controls />
+                    <Background color="#aaa" gap={16} />
+                </ReactFlow>
+            </div>
+        </ReactFlowProvider>
     );
 }
 
 export default SchemaUI;
-        

@@ -1,13 +1,13 @@
-import React from 'react';
-import './index.css';
-
-import SchemaUI from '../../components/SchemaUI';
-import {useNodesState} from "react-flow-renderer";
+import React, {useState} from 'react';
+import {Node, useNodesState} from "react-flow-renderer";
 import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
-import {Node} from "react-flow-renderer";
+import SchemaUI from '../../components/SchemaUI';
+import HeaderRessourceBar from '../../components/HeaderRessourceBar';
+import Description from '../../components/Description';
 import ResourceSideBar from "../../components/ResourceSideBar";
 
 function BuilderPage() {
+    // TODO get nodes from existing project if exist
     const data_nodes: Node<ResourceNodeData>[] = [
         {
             id: '1',
@@ -45,17 +45,27 @@ function BuilderPage() {
     ]
 
     const [nodes, setNodes, onNodesChange] = useNodesState(data_nodes);
+    const [save, setSave] = useState(Boolean);
+
+    const isBoolean = (res : boolean) => {
+        setSave(res)
+    }
 
     return (
         <div className="wrapper">
-            <div className="one">
+            <div className="ressourceSideBar">
                 <ResourceSideBar nodes={nodes} setNodes={setNodes}/>
             </div>
-            <div className="two">
-                <SchemaUI nodes={nodes} setNodes={setNodes} onNodesChange={onNodesChange}/>
+            <div className="header">
+                <HeaderRessourceBar saves={isBoolean}/>
             </div>
-            <div className="three">Trois</div>
-            <div className="four">Quatre</div>
+            <div className="schemaUI">
+                <SchemaUI saves={save} nodes={nodes} setNodes={setNodes} onNodesChange={onNodesChange}/>
+            </div>
+            <div className="renderCode">Render Code</div>
+            <div className="descriptions">
+                <Description/>
+            </div>
         </div>
     );
 }
