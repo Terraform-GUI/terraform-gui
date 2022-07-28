@@ -61,8 +61,8 @@ function SchemaUI(props: SchemaUIProps) {
                 type,
                 position,
                 data: {
-                    label: `AWS ${type}`,
-                    type: 'resource type', // TODO fill type
+                    label: type,
+                    type: type,
                     arguments: [] // TODO fill arguments
                 },
             };
