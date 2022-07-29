@@ -9,30 +9,27 @@ const RessourceList = () => {
     event.dataTransfer.effectAllowed = "move";
   };
 
-  const handleClicks = () => {
-    console.info("You clicked the Chip.");
-  };
 
   return (
     <aside>
       <Stack direction="row" spacing={1}>
         <div onDragStart={(event) => onDragStart(event, "RDS")} draggable>
-          <Chip label="RDS" variant="outlined" onClick={handleClicks} />
+          <Chip label="RDS" variant="outlined" />
         </div>
         <div onDragStart={(event) => onDragStart(event, "EC2")} draggable>
-          <Chip label="EC2" variant="outlined" onClick={handleClicks} />
+          <Chip label="EC2" variant="outlined" />
         </div>
         <div onDragStart={(event) => onDragStart(event, "SQS")} draggable>
-          <Chip label="SQS" variant="outlined" onClick={handleClicks} />
+          <Chip label="SQS" variant="outlined" />
         </div>
         <div onDragStart={(event) => onDragStart(event, "Lambda")} draggable>
-          <Chip label="Lambda" variant="outlined" onClick={handleClicks} />
+          <Chip label="Lambda" variant="outlined" />
         </div>
         <div onDragStart={(event) => onDragStart(event, "VPC")} draggable>
-          <Chip label="VPC" variant="outlined" onClick={handleClicks} />
+          <Chip label="VPC" variant="outlined" />
         </div>
         <div onDragStart={(event) => onDragStart(event, "secretManager")} draggable>
-          <Chip label="secretManager" variant="outlined" onClick={handleClicks} />
+          <Chip label="secretManager" variant="outlined" />
         </div>
       </Stack>
     </aside>
