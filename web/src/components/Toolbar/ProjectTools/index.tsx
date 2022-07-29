@@ -4,6 +4,7 @@ import {Dispatch, SetStateAction} from "react";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import CurrentProject from "./CurrentProject";
+import CreateProject from "./CreateProject";
 
 interface ProjectToolsProps {
     project: Project,
@@ -16,6 +17,7 @@ function ProjectTools(props: ProjectToolsProps) {
         <>
             <ChangeProject setProject={props.setProject} setNodes={props.setNodes} project={props.project} />
             <CurrentProject project={props.project} />
+            <CreateProject setProject={props.setProject} setNodes={props.setNodes} />
         </>
     )
 }
