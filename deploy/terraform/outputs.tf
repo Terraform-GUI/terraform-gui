@@ -41,3 +41,10 @@ output "rds_username" {
   value       = aws_db_instance.alpha.username
   sensitive   = true
 }
+
+# - SQS ---------------------------------------------------------------- #
+
+output "sqs_id" {
+  description = "ID of SQS"
+  value       = aws_sqs_queue.alpha.id
+}
