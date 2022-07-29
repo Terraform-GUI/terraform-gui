@@ -83,7 +83,11 @@ function ChangeProject(props: ChangeProjectProps) {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = (project: Project) => {
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleCloseWithProject = (project: Project) => {
         props.setProject(project);
         props.setNodes(project.nodes);
         setAnchorEl(null);
@@ -102,8 +106,8 @@ function ChangeProject(props: ChangeProjectProps) {
             <Popover
                 id={"1"}
                 open={open}
-                anchorEl={anchorEl}
                 onClose={handleClose}
+                anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'left',
@@ -123,7 +127,7 @@ function ChangeProject(props: ChangeProjectProps) {
                             {props.project.id != project.id && (
                                 <ListItem
                                     disablePadding
-                                    onClick={() => handleClose(project)}
+                                    onClick={() => handleCloseWithProject(project)}
                                     key={index}
                                 >
                                     <ListItemButton>
