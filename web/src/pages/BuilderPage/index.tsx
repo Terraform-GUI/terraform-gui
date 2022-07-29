@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import SchemaUI from '../../components/SchemaUI';
-import HeaderRessourceBar from '../../components/HeaderRessourceBar';
+import Toolbar from '../../components/Toolbar';
 import Description from '../../components/Description';
 import {useNodesState, Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
@@ -58,7 +58,7 @@ function BuilderPage() {
                 <ResourceSidebar nodes={nodes} setNodes={setNodes} />
             </div>
             <div className="header">
-                <HeaderRessourceBar saves={isBoolean}/>
+                <Toolbar saves={isBoolean}/>
             </div>
             <div className="schemaUI">
                 <SchemaUI saves={save} nodes={nodes} setNodes={setNodes} onNodesChange={onNodesChange}/>

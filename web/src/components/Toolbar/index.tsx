@@ -1,13 +1,12 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import MuiToolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Index from "./ResourceList.tsx";
 
-import RessourceList from "./ressourceList";
 
-
-const Header = ({ saves }: any) => {
+const Toolbar = ({ saves }: any) => {
 
   const save = () => {
     saves(true);
@@ -17,13 +16,13 @@ const Header = ({ saves }: any) => {
     <div>
       <AppBar style={{ backgroundColor: "brown" }} position="static">
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
-                <RessourceList /> 
+          <MuiToolbar disableGutters>
+                <Index />
               <Button onClick={() => save()}>SAVE</Button>
-          </Toolbar>
+          </MuiToolbar>
         </Container>
       </AppBar>
     </div>
   );
 };
-export default Header;
+export default Toolbar;
