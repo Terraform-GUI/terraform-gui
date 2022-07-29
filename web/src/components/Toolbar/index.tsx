@@ -30,7 +30,7 @@ const Toolbar = (props: ToolbarProps) => {
         <Container maxWidth="xl">
           <MuiToolbar disableGutters>
                 <ProjectTools project={props.project} setProject={props.setProject} setNodes={props.setNodes} />
-                <Divider orientation="vertical" variant="middle" flexItem style={{marginRight: '10px'}} />
+                <Divider orientation="vertical" variant="middle" flexItem style={{marginRight: '20px', marginLeft: '20px'}} />
                 <ResourceList />
               <Button onClick={() => save()}>SAVE</Button>
           </MuiToolbar>
