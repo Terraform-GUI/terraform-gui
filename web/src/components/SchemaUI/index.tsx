@@ -55,7 +55,7 @@ function SchemaUI(props: SchemaUIProps) {
       });
       const newNode: Node<ResourceNodeData> = {
         id: getId(),
-        type,
+        type : "default",
         position,
         data: {
             label: type,
