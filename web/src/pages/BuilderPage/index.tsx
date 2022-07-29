@@ -4,49 +4,18 @@ import SchemaUI from '../../components/SchemaUI';
 import Toolbar from '../../components/Toolbar';
 import Description from '../../components/Description';
 import {useNodesState, Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
 import ResourceSidebar from "../../components/ResourceSidebar";
+import {Project} from "../../interfaces/Project";
 
 function BuilderPage() {
-    // TODO get nodes from project if exists
-    const data_nodes: Node<ResourceNodeData>[] = [
-        {
-            id: '1',
-            type: 'input',
-            data: {
-                type: 'RDS',
-                label: (
-                    'RDS'
-                ),
-                arguments: [{
-                    name: 'IP',
-                    value: '127.0.0.1'
-                }]
-            },
-            position: { x: 250, y: 0 },
-        },
-        {
-            id: '2',
-            type: 'input',
-            data: {
-                type: 'EC2',
-                label: (
-                    'EC2'
-                ),
-                arguments: [{
-                    name: 'IP',
-                    value: '127.0.0.1'
-                }, {
-                    name: 'name',
-                    value: 'tf-gui-app'
-                }]
-            },
-            position: { x: 100, y: 100 },
-        },
-    ]
-
-    const [nodes, setNodes, onNodesChange] = useNodesState(data_nodes);
+    const [project, setProject] = useState({
+        id: null,
+        name: 'Unnamed project',
+        nodes: []
+    } as Project);
+    const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
     const [save, setSave] = useState(Boolean);
+
 
     const isBoolean = (res : boolean) => {
         setSave(res)
@@ -58,7 +27,7 @@ function BuilderPage() {
                 <ResourceSidebar nodes={nodes} setNodes={setNodes} />
             </div>
             <div className="header">
-                <Toolbar saves={isBoolean}/>
+                <Toolbar saves={isBoolean} project={project} setProject={setProject} setNodes={setNodes} />
             </div>
             <div className="schemaUI">
                 <SchemaUI saves={save} nodes={nodes} setNodes={setNodes} onNodesChange={onNodesChange}/>

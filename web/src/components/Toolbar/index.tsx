@@ -3,13 +3,25 @@ import AppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Index from "./ResourceList.tsx";
+import ResourceList from "./ResourceList.tsx";
+import ProjectTools from "./ProjectTools";
+import {Divider} from "@mui/material";
+import {Project} from "../../interfaces/Project";
+import {Dispatch, SetStateAction} from "react";
+import {Node} from "react-flow-renderer";
+import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
 
+interface ToolbarProps {
+    saves: any,
+    project: Project,
+    setProject: Dispatch<SetStateAction<Project>>,
+    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+}
 
-const Toolbar = ({ saves }: any) => {
+const Toolbar = (props: ToolbarProps) => {
 
   const save = () => {
-    saves(true);
+    props.saves(true);
   };
 
   return (
@@ -17,7 +29,9 @@ const Toolbar = ({ saves }: any) => {
       <AppBar style={{ backgroundColor: "brown" }} position="static">
         <Container maxWidth="xl">
           <MuiToolbar disableGutters>
-                <Index />
+                <ProjectTools project={props.project} setProject={props.setProject} setNodes={props.setNodes} />
+                <Divider orientation="vertical" variant="middle" flexItem style={{marginRight: '10px'}} />
+                <ResourceList />
               <Button onClick={() => save()}>SAVE</Button>
           </MuiToolbar>
         </Container>
