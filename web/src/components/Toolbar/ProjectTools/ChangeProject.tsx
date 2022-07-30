@@ -88,6 +88,7 @@ function ChangeProject(props: ChangeProjectProps) {
     };
 
     const handleCloseWithProject = (project: Project) => {
+        // TODO load project details from api
         props.setProject(project);
         props.setNodes(project.nodes);
         setAnchorEl(null);
