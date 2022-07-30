@@ -5,6 +5,7 @@ import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import CurrentProject from "./CurrentProject";
 import CreateProject from "./CreateProject";
+import DeleteProject from "./DeleteProject";
 
 interface ProjectToolsProps {
     project: Project,
@@ -18,6 +19,7 @@ function ProjectTools(props: ProjectToolsProps) {
             <ChangeProject setProject={props.setProject} setNodes={props.setNodes} project={props.project} />
             <CurrentProject project={props.project} />
             <CreateProject setProject={props.setProject} setNodes={props.setNodes} />
+            <DeleteProject project={props.project} />
         </>
     )
 }
