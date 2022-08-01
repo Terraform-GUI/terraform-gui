@@ -18,8 +18,8 @@ interface SchemaUIProps {
     nodes: Node<ResourceNodeData>[],
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
     onNodesChange: OnNodesChange,
-    saves: boolean,
     project: Project,
+    setIsProjectSaved: Dispatch<SetStateAction<boolean>>
 }
 
 function SchemaUI(props: SchemaUIProps) {
@@ -36,6 +36,7 @@ function SchemaUI(props: SchemaUIProps) {
             }
             return true;
         })
+        props.setIsProjectSaved(false);
     };
 
     const onConnect = useCallback(
@@ -78,6 +79,7 @@ function SchemaUI(props: SchemaUIProps) {
 
             props.setNodes((nds) => nds.concat(newNode));
             props.project.nodes.push(newNode)
+            props.setIsProjectSaved(false);
         },
         [reactFlowInstance]
     );
@@ -91,6 +93,8 @@ function SchemaUI(props: SchemaUIProps) {
                     onNodesDelete={deleteNodesFromProject}
                     onNodesChange={props.onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onNodeDragStart={() => props.setIsProjectSaved(false)}
+                    onEdgeClick={() => props.setIsProjectSaved(false)}
                     onConnect={onConnect}
                     onInit={setReactFlowInstance}
                     onDrop={onDrop}

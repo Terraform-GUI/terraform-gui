@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import SchemaUI from '../../components/SchemaUI';
 import Toolbar from '../../components/Toolbar';
@@ -8,18 +8,15 @@ import ResourceSidebar from "../../components/ResourceSidebar";
 import {Project} from "../../interfaces/Project";
 
 function BuilderPage() {
+
+    const [isProjectSaved, setIsProjectSaved] = useState(true as boolean);
+
     const [project, setProject] = useState({
         id: null,
         name: 'Unnamed project',
         nodes: []
     } as Project);
     const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
-    const [save, setSave] = useState(Boolean);
-
-
-    const isBoolean = (res : boolean) => {
-        setSave(res)
-    }
 
     return (
         <div className="wrapper">
@@ -28,19 +25,20 @@ function BuilderPage() {
             </div>
             <div className="header">
                 <Toolbar
-                    saves={isBoolean}
                     project={project}
                     setProject={setProject}
                     setNodes={setNodes}
+                    isProjectSaved={isProjectSaved}
+                    setIsProjectSaved={setIsProjectSaved}
                 />
             </div>
             <div className="schemaUI">
                 <SchemaUI
-                    saves={save}
                     nodes={nodes}
                     setNodes={setNodes}
                     onNodesChange={onNodesChange}
                     project={project}
+                    setIsProjectSaved={setIsProjectSaved}
                 />
             </div>
             <div className="renderCode">Render Code</div>

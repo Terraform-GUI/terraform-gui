@@ -1,14 +1,30 @@
-import {IconButton, List, ListItem, ListItemButton, ListItemText, ListSubheader, Popover, Tooltip} from "@mui/material";
-import React, {Dispatch, SetStateAction} from "react";
+import {
+    Button, Dialog,
+    DialogActions,
+    DialogContent, DialogContentText,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    ListSubheader,
+    Popover,
+    Tooltip
+} from "@mui/material";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import SaveProject from "../SaveProject";
 
 interface ChangeProjectProps {
     setProject: Dispatch<SetStateAction<Project>>,
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    project: Project
+    project: Project,
+    isProjectSaved: boolean,
+    setIsProjectSaved: Dispatch<SetStateAction<boolean>>
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -77,38 +93,43 @@ function ChangeProject(props: ChangeProjectProps) {
         }
     ];
 
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+    const [projectToSwitch, setProjectToSwitch] = useState<Project|null>(null);
 
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
+    const selectProject = (project: Project) => {
+        if (props.isProjectSaved) {
+            switchProject(project);
+            return;
+        }
+
+        setProjectToSwitch(project);
+        setIsDialogOpen(true);
+        setIsPopoverOpen(false);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleCloseWithProject = (project: Project) => {
+    const switchProject = (project: Project) => {
+        props.setIsProjectSaved(true);
+        setIsDialogOpen(false);
+        setIsPopoverOpen(false);
         // TODO load project details from api
         props.setProject(project);
         props.setNodes(project.nodes);
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
+        console.log(props.isProjectSaved)
+    }
 
     return (
         <>
             <Tooltip title="Change project">
-                <IconButton aria-label="change project" onClick={handleClick}>
+                <IconButton aria-label="change project" onClick={() => setIsPopoverOpen(true)}>
                     <ArrowDropDownIcon />
                 </IconButton>
             </Tooltip>
 
             <Popover
                 id={"1"}
-                open={open}
-                onClose={handleClose}
-                anchorEl={anchorEl}
+                open={isPopoverOpen}
+                onClose={() => setIsPopoverOpen(false)}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'left',
@@ -128,7 +149,7 @@ function ChangeProject(props: ChangeProjectProps) {
                             {props.project.id != project.id && (
                                 <ListItem
                                     disablePadding
-                                    onClick={() => handleCloseWithProject(project)}
+                                    onClick={() => selectProject(project)}
                                     key={index}
                                 >
                                     <ListItemButton>
@@ -142,6 +163,34 @@ function ChangeProject(props: ChangeProjectProps) {
                     ))}
                 </List>
             </Popover>
+
+            <Dialog
+                open={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Unsaved project
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to switch {projectToSwitch && (<>to <b>{projectToSwitch.name}</b></>)} without saving ?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        if (projectToSwitch) switchProject(projectToSwitch)
+                    }}>Change project</Button>
+                    <SaveProject
+                        setIsProjectSaved={props.setIsProjectSaved}
+                        project={props.project}
+                        secondaryAction={() => {
+                            if (projectToSwitch) switchProject(projectToSwitch)
+                        }}
+                    />
+                </DialogActions>
+            </Dialog>
 
         </>
     )
