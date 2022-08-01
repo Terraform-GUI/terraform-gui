@@ -1,17 +1,17 @@
 import Button from "@mui/material/Button";
 import * as React from "react";
-import {Dispatch, SetStateAction} from "react";
-import {Project} from "../../../interfaces/Project";
+import {useContext} from "react";
+import ProjectContext from "../../../contexts/ProjectContext";
 
 interface SaveProjectProps {
-    setIsProjectSaved: Dispatch<SetStateAction<boolean>>
-    project: Project,
     secondaryAction?: Function,
 }
 
 function SaveProject(props: SaveProjectProps) {
+    const {setIsProjectSaved} = useContext(ProjectContext);
+
     const save = () => {
-        props.setIsProjectSaved(true);
+        setIsProjectSaved(true);
         // TODO save props.project through api
     };
 

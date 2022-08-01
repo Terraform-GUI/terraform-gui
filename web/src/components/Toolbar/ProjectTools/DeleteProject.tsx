@@ -1,18 +1,11 @@
-import {
-    Button,
-    IconButton,
-    Tooltip
-} from "@mui/material";
+import {Button, IconButton, Tooltip} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Project} from "../../../interfaces/Project";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import ConfirmDialog from "../../ConfirmDialog";
+import ProjectContext from "../../../contexts/ProjectContext";
 
-interface DeleteProjectProps {
-    project: Project
-}
-
-function DeleteProject(props: DeleteProjectProps) {
+function DeleteProject() {
+    const {currentProject} = useContext(ProjectContext);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleDelete = () => {
@@ -32,7 +25,7 @@ function DeleteProject(props: DeleteProjectProps) {
                 open={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 title={'Delete project'}
-                textContent={`Are you sure you want to delete ${props.project.name} ?`}
+                textContent={`Are you sure you want to delete ${currentProject.name} ?`}
                 dialogActions={[
                     <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>,
                     <Button onClick={handleDelete} autoFocus variant="contained">

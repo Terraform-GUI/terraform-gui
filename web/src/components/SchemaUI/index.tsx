@@ -1,15 +1,7 @@
-import React, { useState, useRef, useCallback, Dispatch, SetStateAction } from "react";
-import ReactFlow, {
-    addEdge,
-    Controls,
-    Background,
-    useEdgesState,
-    ReactFlowProvider,
-    OnNodesChange,
-    Node,
-} from "react-flow-renderer";
+import React, {useState, useRef, useCallback, Dispatch, SetStateAction, useContext} from "react";
+import ReactFlow, {addEdge, Controls, Background, useEdgesState, ReactFlowProvider, OnNodesChange, Node,} from "react-flow-renderer";
 import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
-import {Project} from "../../interfaces/Project";
+import ProjectContext from "../../contexts/ProjectContext";
 
 let id = 0;
 const getId = () => `ressource_${id++}`;
@@ -18,17 +10,16 @@ interface SchemaUIProps {
     nodes: Node<ResourceNodeData>[],
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
     onNodesChange: OnNodesChange,
-    project: Project,
-    setIsProjectSaved: Dispatch<SetStateAction<boolean>>
 }
 
 function SchemaUI(props: SchemaUIProps) {
     const reactFlowWrapper: any = useRef(null);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
+    const {currentProject, setIsProjectSaved} = useContext(ProjectContext);
 
     const deleteNodesFromProject = (elementsToRemove: Node<ResourceNodeData>[]) => {
-        props.project.nodes = props.project.nodes.filter((node: Node<ResourceNodeData>) => {
+        currentProject.nodes = currentProject.nodes.filter((node: Node<ResourceNodeData>) => {
             for (const nodeToRemove of elementsToRemove) {
                 if (nodeToRemove.id == node.id) {
                     return false;
@@ -36,7 +27,7 @@ function SchemaUI(props: SchemaUIProps) {
             }
             return true;
         })
-        props.setIsProjectSaved(false);
+        setIsProjectSaved(false);
     };
 
     const onConnect = useCallback(
@@ -78,8 +69,8 @@ function SchemaUI(props: SchemaUIProps) {
             };
 
             props.setNodes((nds) => nds.concat(newNode));
-            props.project.nodes.push(newNode)
-            props.setIsProjectSaved(false);
+            currentProject.nodes.push(newNode)
+            setIsProjectSaved(false);
         },
         [reactFlowInstance]
     );
@@ -93,8 +84,8 @@ function SchemaUI(props: SchemaUIProps) {
                     onNodesDelete={deleteNodesFromProject}
                     onNodesChange={props.onNodesChange}
                     onEdgesChange={onEdgesChange}
-                    onNodeDragStart={() => props.setIsProjectSaved(false)}
-                    onEdgeClick={() => props.setIsProjectSaved(false)}
+                    onNodeDragStart={() => setIsProjectSaved(false)}
+                    onEdgeClick={() => setIsProjectSaved(false)}
                     onConnect={onConnect}
                     onInit={setReactFlowInstance}
                     onDrop={onDrop}

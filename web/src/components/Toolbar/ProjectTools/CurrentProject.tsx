@@ -1,19 +1,15 @@
 import {TextField} from "@mui/material";
-import {Project} from "../../../interfaces/Project";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, {useContext, useState} from "react";
+import ProjectContext from "../../../contexts/ProjectContext";
 
-interface CurrentProjectProps {
-    project: Project,
-    setIsProjectSaved: Dispatch<SetStateAction<boolean>>,
-}
-
-function CurrentProject(props: CurrentProjectProps) {
-    const [projectName, setProjectName] = useState(props.project.name);
+function CurrentProject() {
+    const {currentProject, setIsProjectSaved} = useContext(ProjectContext);
+    const [projectName, setProjectName] = useState<string>(currentProject.name);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setProjectName(event.target.value);
-        props.setIsProjectSaved(false);
-        props.project.name = event.target.value;
+        setIsProjectSaved(false);
+        currentProject.name = event.target.value;
     };
 
     return (
@@ -22,7 +18,7 @@ function CurrentProject(props: CurrentProjectProps) {
                 id="standard-basic"
                 label="Current project"
                 variant="standard"
-                value={props.project.name}
+                value={currentProject.name}
                 onChange={handleChange}
             />
         </>

@@ -1,31 +1,25 @@
-import {
-    Button,
-    IconButton,
-    Tooltip
-} from "@mui/material";
+import {Button, IconButton, Tooltip} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
+import ProjectContext from "../../../contexts/ProjectContext";
 
 interface CreateProjectProps {
-    setProject: Dispatch<SetStateAction<Project>>
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    project: Project,
-    setIsProjectSaved: Dispatch<SetStateAction<boolean>>,
-    isProjectSaved: boolean
 }
 
 function CreateProject(props: CreateProjectProps) {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const {setCurrentProject, setIsProjectSaved, isProjectSaved} = useContext(ProjectContext);
 
     const createProject = () => {
-        props.setIsProjectSaved(true);
+        setIsProjectSaved(true);
         setIsDialogOpen(false);
-        props.setProject({
+        setCurrentProject({
             id: null,
             name: 'Unnamed project',
             nodes: []
@@ -36,7 +30,7 @@ function CreateProject(props: CreateProjectProps) {
         <>
             <Tooltip title="Create new project">
                 <IconButton aria-label="create" onClick={() => {
-                    if (props.isProjectSaved) {
+                    if (isProjectSaved) {
                         createProject();
                         return;
                     }
@@ -55,8 +49,6 @@ function CreateProject(props: CreateProjectProps) {
                 dialogActions={[
                     <Button onClick={createProject}>Create project</Button>,
                     <SaveProject
-                        setIsProjectSaved={props.setIsProjectSaved}
-                        project={props.project}
                         secondaryAction={createProject}
                     />
                 ]}

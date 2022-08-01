@@ -1,28 +1,15 @@
-import {
-    Button,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    ListSubheader,
-    Popover,
-    Tooltip
-} from "@mui/material";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import {Button, IconButton, List, ListItem, ListItemButton, ListItemText, ListSubheader, Popover, Tooltip} from "@mui/material";
+import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
+import ProjectContext from "../../../contexts/ProjectContext";
 
 interface ChangeProjectProps {
-    setProject: Dispatch<SetStateAction<Project>>,
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    project: Project,
-    isProjectSaved: boolean,
-    setIsProjectSaved: Dispatch<SetStateAction<boolean>>
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -94,9 +81,10 @@ function ChangeProject(props: ChangeProjectProps) {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [projectToSwitch, setProjectToSwitch] = useState<Project|null>(null);
+    const {isProjectSaved, setIsProjectSaved, currentProject, setCurrentProject} = useContext(ProjectContext);
 
     const selectProject = (project: Project) => {
-        if (props.isProjectSaved) {
+        if (isProjectSaved) {
             switchProject(project);
             return;
         }
@@ -107,11 +95,11 @@ function ChangeProject(props: ChangeProjectProps) {
     };
 
     const switchProject = (project: Project) => {
-        props.setIsProjectSaved(true);
+        setIsProjectSaved(true);
         setIsDialogOpen(false);
         setIsPopoverOpen(false);
         // TODO load project details from api
-        props.setProject(project);
+        setCurrentProject(project);
         props.setNodes(project.nodes);
     }
 
@@ -143,7 +131,7 @@ function ChangeProject(props: ChangeProjectProps) {
                 >
                     {projects.map((project: Project, index: number) => (
                         <>
-                            {props.project.id != project.id && (
+                            {currentProject.id != project.id && (
                                 <ListItem
                                     disablePadding
                                     onClick={() => selectProject(project)}
@@ -171,8 +159,6 @@ function ChangeProject(props: ChangeProjectProps) {
                         if (projectToSwitch) switchProject(projectToSwitch)
                     }}>Change project</Button>,
                     <SaveProject
-                        setIsProjectSaved={props.setIsProjectSaved}
-                        project={props.project}
                         secondaryAction={() => {
                             if (projectToSwitch) switchProject(projectToSwitch)
                         }}
