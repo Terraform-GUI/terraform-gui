@@ -2,7 +2,6 @@
 
 namespace App\Command\DataFixtures;
 
-use App\Document\User;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -11,15 +10,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(name: 'load:fixtures', description: 'Load data fixtures')]
 class LoadDataFixturesCommand extends Command
 {
     public function __construct(
         protected DocumentManager $documentManager,
-        protected UserPasswordHasherInterface $passwordHasher,
-        protected AwsResourceFixtures $awsResourceFixtures
+        protected AwsResourceFixtures $awsResourceFixtures,
+        protected UserFixtures $userFixtures
     ) {
         parent::__construct();
     }
@@ -42,7 +40,7 @@ class LoadDataFixturesCommand extends Command
         $this->purgeDatabase();
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'purging database'));
         $this->awsResourceFixtures->loadResources($output);
-        $this->loadUser($output);
+        $this->userFixtures->loadUser($output);
 
         return Command::SUCCESS;
     }
@@ -57,18 +55,5 @@ class LoadDataFixturesCommand extends Command
         foreach ($db->listCollections() as $collection) {
             $db->dropCollection($collection->getName());
         }
-    }
-
-    private function loadUser(OutputInterface $output): void
-    {
-        $user           = new User();
-        $hashedPassword = $this->passwordHasher->hashPassword($user, 'toto');
-        $user->setPassword($hashedPassword);
-        $user->setEmail('john@doe.fr');
-
-        $this->documentManager->persist($user);
-        $this->documentManager->flush();
-
-        $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'loading 1 App\Document\User'));
     }
 }
