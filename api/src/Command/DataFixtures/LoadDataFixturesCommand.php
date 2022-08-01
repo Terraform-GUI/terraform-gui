@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\DataFixtures;
 
-use App\Document\Embed\ResourceArgument;
-use App\Document\Resource;
 use App\Document\User;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
@@ -20,13 +18,16 @@ class LoadDataFixturesCommand extends Command
 {
     public function __construct(
         protected DocumentManager $documentManager,
-        protected UserPasswordHasherInterface $passwordHasher
+        protected UserPasswordHasherInterface $passwordHasher,
+        protected AwsResourceFixtures $awsResourceFixtures
     ) {
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output,
+    ): int {
         $io = new SymfonyStyle($input, $output);
 
         if ($input->isInteractive()) {
@@ -40,7 +41,7 @@ class LoadDataFixturesCommand extends Command
 
         $this->purgeDatabase();
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'purging database'));
-        $this->loadResource($output);
+        $this->awsResourceFixtures->loadResources($output);
         $this->loadUser($output);
 
         return Command::SUCCESS;
@@ -56,31 +57,6 @@ class LoadDataFixturesCommand extends Command
         foreach ($db->listCollections() as $collection) {
             $db->dropCollection($collection->getName());
         }
-    }
-
-    private function loadResource(OutputInterface $output): void
-    {
-        $argument = (new ResourceArgument())
-            ->setName('engine')
-            ->setType(ResourceArgument::TYPE_STRING)
-            ->setRequired(true)
-            ->setDefaultValue('MySQL')
-            ->addValue('MySQL')
-            ->addValue('Aurora DB')
-            ->addValue('PostgreSQL')
-        ;
-
-        $resource = (new Resource())
-            ->setProvider(Resource::PROVIDER_AWS)
-            ->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris finibus eros ut tempus cursus. Praesent fermentum, libero eu ultricies fermentum, sapien ligula fermentum mi, vel laoreet est elit quis tortor.')
-            ->setType('rds')
-            ->addArgument($argument)
-        ;
-
-        $this->documentManager->persist($resource);
-        $this->documentManager->flush();
-
-        $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'loading 1 App\Document\Resource'));
     }
 
     private function loadUser(OutputInterface $output): void
