@@ -1,10 +1,5 @@
 import {
     Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     IconButton,
     Tooltip
 } from "@mui/material";
@@ -14,6 +9,7 @@ import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import SaveProject from "../SaveProject";
+import ConfirmDialog from "../../ConfirmDialog";
 
 interface CreateProjectProps {
     setProject: Dispatch<SetStateAction<Project>>
@@ -51,29 +47,20 @@ function CreateProject(props: CreateProjectProps) {
                 </IconButton>
             </Tooltip>
 
-            <Dialog
+            <ConfirmDialog
                 open={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Unsaved project
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to create a new project without saving ?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={createProject}>Create project</Button>
+                title={'Unsaved changes'}
+                textContent={'Are you sure you want to create a new project without saving'}
+                dialogActions={[
+                    <Button onClick={createProject}>Create project</Button>,
                     <SaveProject
                         setIsProjectSaved={props.setIsProjectSaved}
                         project={props.project}
                         secondaryAction={createProject}
                     />
-                </DialogActions>
-            </Dialog>
+                ]}
+            />
         </>
     )
 }

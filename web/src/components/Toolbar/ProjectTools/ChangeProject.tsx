@@ -1,8 +1,5 @@
 import {
-    Button, Dialog,
-    DialogActions,
-    DialogContent, DialogContentText,
-    DialogTitle,
+    Button,
     IconButton,
     List,
     ListItem,
@@ -18,6 +15,7 @@ import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 import SaveProject from "../SaveProject";
+import ConfirmDialog from "../../ConfirmDialog";
 
 interface ChangeProjectProps {
     setProject: Dispatch<SetStateAction<Project>>,
@@ -115,7 +113,6 @@ function ChangeProject(props: ChangeProjectProps) {
         // TODO load project details from api
         props.setProject(project);
         props.setNodes(project.nodes);
-        console.log(props.isProjectSaved)
     }
 
     return (
@@ -164,24 +161,15 @@ function ChangeProject(props: ChangeProjectProps) {
                 </List>
             </Popover>
 
-            <Dialog
+            <ConfirmDialog
                 open={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Unsaved project
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to switch {projectToSwitch && (<>to <b>{projectToSwitch.name}</b></>)} without saving ?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
+                title={'Unsaved project'}
+                textContent={`Are you sure you want to switch ${projectToSwitch && `to ${projectToSwitch.name}`} without saving ?`}
+                dialogActions={[
                     <Button onClick={() => {
                         if (projectToSwitch) switchProject(projectToSwitch)
-                    }}>Change project</Button>
+                    }}>Change project</Button>,
                     <SaveProject
                         setIsProjectSaved={props.setIsProjectSaved}
                         project={props.project}
@@ -189,9 +177,8 @@ function ChangeProject(props: ChangeProjectProps) {
                             if (projectToSwitch) switchProject(projectToSwitch)
                         }}
                     />
-                </DialogActions>
-            </Dialog>
-
+                ]}
+            />
         </>
     )
 }
