@@ -18,7 +18,7 @@ function ConfirmDialog(props: ConfirmDialogProps) {
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                Unsaved project
+                {props.title}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
