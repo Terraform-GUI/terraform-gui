@@ -84,6 +84,10 @@ function ChangeProject(props: ChangeProjectProps) {
                             )}
                         </>
                     ))}
+
+                    {projectList.length === 0 && (
+                        <p style={{paddingLeft: '16px'}}>You don't have any project yet.</p>
+                    )}
                 </List>
             </Popover>
 
