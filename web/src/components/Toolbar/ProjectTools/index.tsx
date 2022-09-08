@@ -17,7 +17,7 @@ function ProjectTools(props: ProjectToolsProps) {
             <ChangeProject setNodes={props.setNodes} />
             <CurrentProject />
             <CreateProject setNodes={props.setNodes} />
-            <DeleteProject />
+            <DeleteProject setNodes={props.setNodes} />
         </>
     )
 }

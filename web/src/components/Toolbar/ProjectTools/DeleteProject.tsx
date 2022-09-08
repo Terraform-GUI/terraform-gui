@@ -1,16 +1,55 @@
 import {Button, IconButton, Tooltip} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, {useContext, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
+import {Project} from "../../../interfaces/Project";
+import {Node} from "react-flow-renderer";
+import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
 
-function DeleteProject() {
-    const {currentProject} = useContext(ProjectContext);
+interface DeleteProjectProps {
+    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+}
+
+function DeleteProject(props: DeleteProjectProps) {
+    const {setNodes} = props;
+    const {currentProject, setCurrentProject, setProjectList} = useContext(ProjectContext);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleDelete = () => {
-        setIsDialogOpen(false);
-        // TODO call api to delete project, then get all projects and load the first one, if there is no project, create a new one
+        const createProject = () => {
+            setIsDialogOpen(false);
+            setCurrentProject({
+                id: null,
+                name: 'Unnamed project',
+                nodes: []
+            } as Project);
+            setNodes([]);
+        }
+
+        const changeCurrentProject = (updatedProjectList: Project[]) => {
+            if (updatedProjectList.length === 0 ) {
+                createProject();
+                return;
+            }
+
+            setCurrentProject(updatedProjectList[0]);
+            setNodes(updatedProjectList[0].nodes);
+        }
+
+        const updateInterface = () => {
+            setIsDialogOpen(false);
+            setProjectList((projectList: Project[]) => {
+                const updatedProjectList =  projectList.filter((project: Project) => project.id !== currentProject.id);
+                changeCurrentProject(updatedProjectList);
+
+                return updatedProjectList;
+            });
+        }
+
+        updateInterface();
+
+        // TODO call api to delete project
     }
 
     return (

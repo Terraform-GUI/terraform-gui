@@ -13,70 +13,8 @@ interface ChangeProjectProps {
 }
 
 function ChangeProject(props: ChangeProjectProps) {
-    // TODO get users project from api
-    const projects: Project[] = [{
-        id: '1',
-        name: 'My first project',
-        nodes: [{
-            id: '1',
-            type: 'input',
-            data: {
-                type: 'RDS',
-                label: (
-                    'RDS'
-                ),
-                arguments: [{
-                    name: 'IP',
-                    value: '127.0.0.1'
-                }]
-            },
-            position: { x: 250, y: 0 },
-        },
-            {
-                id: '2',
-                type: 'input',
-                data: {
-                    type: 'EC2',
-                    label: (
-                        'EC2'
-                    ),
-                    arguments: [{
-                        name: 'IP',
-                        value: '127.0.0.1'
-                    }, {
-                        name: 'name',
-                        value: 'tf-gui-app'
-                    }]
-                },
-                position: { x: 100, y: 100 },
-            },
-        ]
-    },
-        {
-            id: '2',
-            name: 'My second project',
-            nodes: [{
-                id: '1',
-                type: 'input',
-                data: {
-                    type: 'RDS',
-                    label: (
-                        'RDS'
-                    ),
-                    arguments: [{
-                        name: 'IP',
-                        value: '127.0.0.1'
-                    }]
-                },
-                position: { x: 250, y: 0 },
-            }]
-        },
-        {
-            id: '3',
-            name: 'My third project',
-            nodes: []
-        }
-    ];
+
+    const {projectList} = useContext(ProjectContext);
 
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -129,9 +67,9 @@ function ChangeProject(props: ChangeProjectProps) {
                         </ListSubheader>
                     }
                 >
-                    {projects.map((project: Project, index: number) => (
+                    {projectList.map((project: Project, index: number) => (
                         <>
-                            {currentProject.id != project.id && (
+                            {currentProject.id !== project.id && (
                                 <ListItem
                                     disablePadding
                                     onClick={() => selectProject(project)}
