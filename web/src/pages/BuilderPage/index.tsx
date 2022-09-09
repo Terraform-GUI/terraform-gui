@@ -102,7 +102,7 @@ function BuilderPage() {
                     <ResourceSidebar nodes={nodes} setNodes={setNodes} />
                 </div>
                 <div className="header">
-                    <Toolbar setNodes={setNodes} />
+                    <Toolbar setNodes={setNodes} nodes={nodes} />
                 </div>
                 <div className="schemaUI">
                     <SchemaUI

@@ -8,15 +8,16 @@ import DeleteProject from "./DeleteProject";
 
 interface ProjectToolsProps {
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+    nodes: Node<ResourceNodeData>[],
 }
 
 function ProjectTools(props: ProjectToolsProps) {
 
     return (
         <>
-            <ChangeProject setNodes={props.setNodes} />
+            <ChangeProject setNodes={props.setNodes} nodes={props.nodes} />
             <CurrentProject />
-            <CreateProject setNodes={props.setNodes} />
+            <CreateProject setNodes={props.setNodes} nodes={props.nodes} />
             <DeleteProject setNodes={props.setNodes} />
         </>
     )

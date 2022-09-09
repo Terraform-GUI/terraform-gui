@@ -10,6 +10,7 @@ import ProjectContext from "../../../contexts/ProjectContext";
 
 interface CreateProjectProps {
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+    nodes: Node<ResourceNodeData>[],
 }
 
 function CreateProject(props: CreateProjectProps) {
@@ -50,6 +51,7 @@ function CreateProject(props: CreateProjectProps) {
                     <Button onClick={createProject}>Create project</Button>,
                     <SaveProject
                         secondaryAction={createProject}
+                        nodes={props.nodes}
                     />
                 ]}
             />

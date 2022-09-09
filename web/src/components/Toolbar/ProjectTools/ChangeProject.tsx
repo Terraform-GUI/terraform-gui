@@ -10,6 +10,7 @@ import ProjectContext from "../../../contexts/ProjectContext";
 
 interface ChangeProjectProps {
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+    nodes: Node<ResourceNodeData>[],
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -104,6 +105,7 @@ function ChangeProject(props: ChangeProjectProps) {
                         secondaryAction={() => {
                             if (projectToSwitch) switchProject(projectToSwitch)
                         }}
+                        nodes={props.nodes}
                     />
                 ]}
             />

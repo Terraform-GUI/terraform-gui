@@ -12,6 +12,7 @@ import SaveProject from "./SaveProject";
 
 interface ToolbarProps {
     setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+    nodes: Node<ResourceNodeData>[],
 }
 
 const Toolbar = (props: ToolbarProps) => {
@@ -20,10 +21,10 @@ const Toolbar = (props: ToolbarProps) => {
             <AppBar style={{ backgroundColor: "brown" }} position="static">
                 <Container maxWidth="xl">
                     <MuiToolbar disableGutters>
-                        <ProjectTools setNodes={props.setNodes} />
+                        <ProjectTools setNodes={props.setNodes} nodes={props.nodes}/>
                         <Divider orientation="vertical" variant="middle" flexItem style={{marginRight: '20px', marginLeft: '20px'}} />
                         <ResourceList />
-                        <SaveProject />
+                        <SaveProject nodes={props.nodes} />
                     </MuiToolbar>
                 </Container>
             </AppBar>
