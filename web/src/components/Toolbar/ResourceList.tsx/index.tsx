@@ -3,7 +3,7 @@ import React from "react";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 
-const RessourceList = () => {
+const ResourceList = () => {
   const onDragStart = (event: any, nodeType: any) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -36,4 +36,4 @@ const RessourceList = () => {
   );
 };
 
-export default RessourceList;
+export default ResourceList;
