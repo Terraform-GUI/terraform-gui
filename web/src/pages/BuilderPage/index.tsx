@@ -7,6 +7,8 @@ import {useNodesState} from "react-flow-renderer";
 import ResourceSidebar from "../../components/ResourceSidebar";
 import {Project} from "../../interfaces/Project";
 import {ProjectProvider} from "../../contexts/ProjectContext";
+import CodeEditor from "../../components/CodeEditor";
+import "./index.css"
 
 function BuilderPage() {
 
@@ -88,7 +90,7 @@ function BuilderPage() {
         ]);
     }, []);
 
-    return (
+  return (
         <ProjectProvider value={{
             isProjectSaved: isProjectSaved,
             setIsProjectSaved: setIsProjectSaved,
@@ -97,27 +99,34 @@ function BuilderPage() {
             projectList: projectList,
             setProjectList: setProjectList
         }} >
-            <div className="wrapper">
-                <div className="ressourceSideBar">
-                    <ResourceSidebar nodes={nodes} setNodes={setNodes} />
-                </div>
-                <div className="header">
-                    <Toolbar setNodes={setNodes} nodes={nodes} />
-                </div>
-                <div className="schemaUI">
-                    <SchemaUI
-                        nodes={nodes}
-                        setNodes={setNodes}
-                        onNodesChange={onNodesChange}
-                    />
-                </div>
-                <div className="renderCode">Render Code</div>
-                <div className="descriptions">
-                    <Description/>
-                </div>
-            </div>
+        <div className="wrapper">
+          <div className="ressourceSideBar">
+            <ResourceSidebar nodes={nodes} setNodes={setNodes} />
+          </div>
+          <div className="header">
+            <Toolbar setNodes={setNodes} nodes={nodes}  />
+          </div>
+          <div className="schemaUI">
+            <SchemaUI
+         
+                       
+          nodes={nodes}
+                       
+          setNodes={setNodes}
+                       
+          onNodesChange={onNodesChange}
+                    
+        />
+          </div>
+          <div className="codeEditor">
+        <CodeEditor nodes={nodes} setNodes={setNodes}/>
+      </div>
+          <div className="descriptions">
+            <Description />
+          </div>
+        </div>
         </ProjectProvider>
-    );
+  );
 }
 
 export default BuilderPage;

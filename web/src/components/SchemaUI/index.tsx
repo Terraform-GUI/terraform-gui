@@ -48,10 +48,10 @@ function SchemaUI(props: SchemaUIProps) {
                 reactFlowWrapper.current.getBoundingClientRect();
             const type = event.dataTransfer.getData("application/reactflow");
 
-            // check if the dropped element is valid
-            if (typeof type === "undefined" || !type) {
-                return;
-            }
+      // check if the dropped element is valid
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
 
             const position: any = reactFlowInstance.project({
                 x: event.clientX - reactFlowBounds.left,
