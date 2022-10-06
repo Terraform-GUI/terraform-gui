@@ -16,12 +16,15 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api', name: 'api_user_')]
+#[Route('/api/users', name: 'api_user_')]
 class UserController extends AbstractController
 {
-    #[Route('/users/{user_id}/email', name: 'request_update_email', methods: ['PATCH'])]
+    #[Route('/email', name: 'request_update_email', methods: ['PATCH'])]
     public function requestEmailUpdate(Request $request, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         $data = json_decode($request->getContent(), true);
 
         $form = $this->createForm(UserUpdateEmailType::class);
@@ -31,28 +34,25 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
-            $user = $dm->getRepository(User::class)->findOneBy(['email' => $formData['email']]);
+            $userWithNewEmail = $dm->getRepository(User::class)->findOneBy(['email' => $formData['email']]);
 
-            if (null === $user) {
-                return $this->json(['errors' => ['email' => 'User not found']], Response::HTTP_UNPROCESSABLE_ENTITY);
+            if ($userWithNewEmail) {
+                return $this->json(['errors' => ['Email already in use']], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $emailUpdateRequest = $dm
                 ->getRepository(EmailUpdateRequest::class)
-                ->findOneBy(
-                    ['email' => $formData['email'], 'used' => false],
-                    ['createdAt' => 'desc']
-                )
+                ->findOneBy(['email' => $formData['email'], 'used' => false])
             ;
 
             if (null === $emailUpdateRequest) {
                 $emailUpdateRequest = new EmailUpdateRequest();
-                $emailUpdateRequest->setEmail($formData['email']);
-                $emailUpdateRequest->setNewEmail($formData['new_email']);
+                $emailUpdateRequest->setEmail($user->getEmail());
+                $emailUpdateRequest->setNewEmail($formData['email']);
                 $emailUpdateRequest->setToken(bin2hex(random_bytes(32)));
                 $dm->persist($emailUpdateRequest);
             } else {
-                $emailUpdateRequest->setNewEmail($formData['new_email']);
+                $emailUpdateRequest->setNewEmail($formData['email']);
                 $emailUpdateRequest->setToken(bin2hex(random_bytes(32)));
                 $emailUpdateRequest->setCreatedAt(new \DateTimeImmutable());
             }
@@ -60,6 +60,7 @@ class UserController extends AbstractController
             $dm->flush();
 
             $route = $_ENV['FRONT_URL'].'?confirm-token='.$emailUpdateRequest->getToken();
+
             $email = (new Email())
                 ->from($_ENV['MAILER_FROM_EMAIL'])
                 ->to($emailUpdateRequest->getNewEmail())
@@ -75,14 +76,14 @@ class UserController extends AbstractController
         return $this->json(['errors' => $validator->getErrors($form)], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    #[Route('/users/{user_id}', name: 'delete_user', methods: ['DELETE'])]
-    public function delete(DocumentManager $dm, $user_id): JsonResponse
+    #[Route('/delete', name: 'delete_user', methods: ['DELETE'])]
+    public function delete(DocumentManager $dm): JsonResponse
     {
-        $user = $dm->getRepository(User::class)->find($user_id);
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+
         $qb = $dm->createQueryBuilder(PasswordRecoveryRequest::class);
+
         $qb->remove()
             ->field('email')->equals($user->getEmail())
             ->getQuery()
