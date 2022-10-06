@@ -5,7 +5,8 @@
 export interface ResourceNodeData {
     type: string
     label: string
-    arguments: Argument[]
+    arguments: Argument[],
+    onArgumentUpdate?: (nodeId: string, argumentName: string, argumentValue: any) => void
 }
 
 export interface Argument {
