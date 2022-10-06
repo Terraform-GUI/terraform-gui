@@ -1,0 +1,16 @@
+terraform {
+  required_providers {
+    {% if "aws" in variables.providers %}aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  {% endif %}}
+}
+
+{% if "aws" in variables.providers %}
+# Configure the AWS Provider
+provider "aws" {
+  region  = lookup(var.global, "region")
+  profile = "default"
+}
+{% endif %}

@@ -64,4 +64,11 @@ class NodeDataResource
     {
         $this->arguments->removeElement($argument);
     }
+
+    public function getProvider(): string
+    {
+        $typeInfo = explode('_', $this->type);
+
+        return $typeInfo[0];
+    }
 }

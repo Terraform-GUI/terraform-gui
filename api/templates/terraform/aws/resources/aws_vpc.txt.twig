@@ -1,0 +1,83 @@
+resource "aws_vpc" "{{ variables.unique_label }}" {
+    cidr_block       = lookup(var.vpc_{{ variables.unique_label }}, "cidr")
+    instance_tenancy = lookup(var.vpc_{{ variables.unique_label }}, "tenancy")
+    tags = {
+        Name = lookup(var.global, "name")
+    }
+}
+
+# - GATEWAY ------------------------------------------------------------ #
+
+resource "aws_internet_gateway" "{{ variables.unique_label }}" {
+    vpc_id = aws_vpc.{{ variables.unique_label }}.id
+    tags = {
+        Name = lookup(var.global, "name")
+    }
+}
+
+resource "aws_eip" "{{ variables.unique_label }}" {
+    vpc = lookup(var.vpc_{{ variables.unique_label }}, "eip_vpc")
+    tags = {
+        Name = lookup(var.global, "name")
+    }
+}
+
+resource "aws_nat_gateway" "{{ variables.unique_label }}" {
+    allocation_id = aws_eip.{{ variables.unique_label }}.id
+    subnet_id     = aws_subnet.{{ variables.unique_label }}_pub.id
+    tags = {
+        Name = lookup(var.global, "name")
+    }
+}
+
+# - SUBNETS ------------------------------------------------------------ #
+
+resource "aws_subnet" "{{ variables.unique_label }}_pub" {
+    vpc_id     = aws_vpc.{{ variables.unique_label }}.id
+    cidr_block = lookup(var.vpc_{{ variables.unique_label }}, "pub_subnet")
+    tags = {
+        Name = "${lookup(var.global, "name")}-vpc-pub"
+    }
+}
+
+resource "aws_subnet" "{{ variables.unique_label }}_prv" {
+    vpc_id     = aws_vpc.{{ variables.unique_label }}.id
+    cidr_block = lookup(var.vpc_{{ variables.unique_label }}, "prv_subnet")
+    tags = {
+        Name = "${lookup(var.global, "name")}-vpc-prv"
+    }
+}
+
+# - ROUTE TABLE -------------------------------------------------------- #
+
+resource "aws_route_table" "{{ variables.unique_label }}_pub" {
+    vpc_id = aws_vpc.{{ variables.unique_label }}.id
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.{{ variables.unique_label }}.id
+    }
+    tags = {
+        Name = "${lookup(var.global, "name")}-vpc-pub"
+    }
+}
+
+resource "aws_route_table" "{{ variables.unique_label }}_prv" {
+    vpc_id = aws_vpc.{{ variables.unique_label }}.id
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.{{ variables.unique_label }}.id
+    }
+    tags = {
+        Name = "${lookup(var.global, "name")}-vpc-prv"
+    }
+}
+
+resource "aws_route_table_association" "{{ variables.unique_label }}_pub" {
+    subnet_id      = aws_subnet.{{ variables.unique_label }}_pub.id
+    route_table_id = aws_route_table.{{ variables.unique_label }}_pub.id
+}
+
+resource "aws_route_table_association" "{{ variables.unique_label }}_prv" {
+    subnet_id      = aws_subnet.{{ variables.unique_label }}_prv.id
+    route_table_id = aws_route_table.{{ variables.unique_label }}_prv.id
+}

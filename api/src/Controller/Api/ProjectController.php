@@ -6,6 +6,7 @@ use App\Document\Project;
 use App\Document\User;
 use App\Form\ProjectEditionType;
 use App\Security\ProjectVoter;
+use App\Service\TerraformService;
 use App\Utils\Validator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
@@ -153,5 +154,60 @@ class ProjectController extends AbstractController
         } catch (Exception $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    #[Route('/projects/{id}/terraform', name: 'get_template_terraform', methods: 'GET')]
+    public function generateContent(string $id, DocumentManager $dm, TerraformService $terraformService): JsonResponse|Response
+    {
+        try {
+            $project = $dm->getRepository(Project::class)->find($id);
+
+            if (!$project) {
+                throw $this->createNotFoundException('This project does not exist!');
+            }
+
+            $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+        } catch (NotFoundHttpException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
+        } catch (AccessDeniedException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_UNAUTHORIZED);
+        } catch (Exception $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
+
+        $terraformService->loadProject($project);
+
+        return new Response($terraformService->renderTerraform(), headers: ['content-type' => 'text/plain']);
+    }
+
+    #[Route('/projects/{id}/terraform-archive', name: 'get_archive_terraform', methods: 'GET')]
+    public function generateArchive(string $id, DocumentManager $dm, TerraformService $terraformService): JsonResponse|Response
+    {
+        try {
+            $project = $dm->getRepository(Project::class)->find($id);
+
+            if (!$project) {
+                throw $this->createNotFoundException('This project does not exist!');
+            }
+
+            $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+        } catch (NotFoundHttpException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
+        } catch (AccessDeniedException $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_UNAUTHORIZED);
+        } catch (Exception $e) {
+            return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
+
+        $terraformService->loadProject($project);
+
+        $zipName = $project->getName().'.zip';
+        $terraformService->createTerraformArchive($zipName);
+
+        return new Response(file_get_contents($zipName), headers: [
+            'content-type'        => 'application/zip',
+            'content-disposition' => 'attachment;filename="'.$zipName.'"',
+            'content-length'      => filesize($zipName),
+        ]);
     }
 }

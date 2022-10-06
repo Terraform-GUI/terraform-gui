@@ -2,6 +2,7 @@
 
 namespace App\Document;
 
+use App\Document\Embed\Edge;
 use App\Document\Embed\Node;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,9 +30,13 @@ class Project
     #[MongoDB\EmbedMany(targetDocument: Node::class)]
     private Collection $nodes;
 
+    #[MongoDB\EmbedMany(targetDocument: Edge::class)]
+    private Collection $edges;
+
     public function __construct()
     {
         $this->nodes = new ArrayCollection();
+        $this->edges = new ArrayCollection();
     }
 
     public function getId(): string
@@ -77,5 +82,25 @@ class Project
     public function removeNode(Node $node): void
     {
         $this->nodes->removeElement($node);
+    }
+
+    /**
+     * @return Collection<string, Edge>
+     */
+    public function getEdges(): Collection
+    {
+        return $this->edges;
+    }
+
+    public function addEdge(Edge $edge): void
+    {
+        if (!$this->edges->contains($edge)) {
+            $this->edges[] = $edge;
+        }
+    }
+
+    public function removeEdge(Edge $edge): void
+    {
+        $this->edges->removeElement($edge);
     }
 }

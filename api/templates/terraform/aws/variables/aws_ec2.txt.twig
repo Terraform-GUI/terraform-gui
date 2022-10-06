@@ -1,0 +1,8 @@
+variable "ec2_{{ variables.unique_label }}" {
+  type = map(string)
+  default = {
+    ami       = "{{ variables.ami|escape }}"
+    type      = "{{ variables.type|default("t2.micro")|escape }}"
+    public_ip = {{ variables.public_ip|default("true") }}
+  }
+}
