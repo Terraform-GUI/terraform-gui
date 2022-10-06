@@ -14,8 +14,8 @@ FROM base as development
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ## Install symfony cli
-RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 
-RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+RUN apt install symfony-cli
 
 CMD composer install; apache2-foreground
