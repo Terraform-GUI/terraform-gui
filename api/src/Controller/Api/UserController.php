@@ -19,6 +19,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/users', name: 'api_user_')]
 class UserController extends AbstractController
 {
+    #[Route('/me', name: 'me', methods: ['GET'])]
+    public function meAction(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->json($user->toArray(), Response::HTTP_OK);
+    }
+
     #[Route('/email', name: 'request_update_email', methods: ['PATCH'])]
     public function requestEmailUpdate(Request $request, DocumentManager $dm, Validator $validator, MailerInterface $mailer): JsonResponse
     {

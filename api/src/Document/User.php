@@ -117,4 +117,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->token = $token;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'email' => $this->email,
+        ];
+    }
 }
