@@ -84,9 +84,9 @@ jobs:
           context: .
           file: build/package/web/Dockerfile.prod
           tags: |
-            ghcr.io/blyndusk/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
-            ghcr.io/blyndusk/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}
-            ghcr.io/blyndusk/tf-gui_web:latest
+            ghcr.io/terraform-gui/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
+            ghcr.io/terraform-gui/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}
+            ghcr.io/terraform-gui/tf-gui_web:latest
 
         # output the logs
       - name: 5 - IMAGE DIGEST
