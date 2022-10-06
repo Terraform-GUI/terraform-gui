@@ -75,7 +75,7 @@ function Index(props: ResourceSideBarProps) {
                         <AccordionDetails>
                             {node.data.arguments.map((argument: Argument, index: number) => (
                                 <div key={index}>
-                                    <b>{argument.name}</b>: {argument.value} <br/>
+                                    <b>{argument.name}</b>: {argument.value != undefined ? argument.value.toString() : ''} <br/>
                                 </div>
                             ))}
                         </AccordionDetails>
