@@ -7,9 +7,9 @@ on:
       - 'ops'
       - 'main'
     paths:
-      - "build/package/web/Dockerfile"
-      - "web/"
-      - ".github/"
+      - 'build/package/web/**'
+      - 'web/**'
+      - '.github/**'
 
 
 jobs:
