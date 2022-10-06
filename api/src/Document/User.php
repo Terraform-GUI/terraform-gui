@@ -29,6 +29,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[MongoDB\Field(type: 'boolean')]
     protected $viaGithub = false;
 
+    #[MongoDB\Field(type: 'string')]
+    protected ?string $token = null;
+
+    public function __construct()
+    {
+        $this->token = bin2hex(random_bytes(32));
+    }
+
     public function getId(): string
     {
         return $this->id;
@@ -98,5 +106,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setViaGithub(bool $viaGithub): void
     {
         $this->viaGithub = $viaGithub;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): void
+    {
+        $this->token = $token;
     }
 }
