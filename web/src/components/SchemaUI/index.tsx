@@ -7,7 +7,7 @@ import ResourceNode from "../ResourceNode";
 let id = 0;
 const getId = () => `ressource_${id++}`;
 
-const nodeTypes = { ResourceNode: ResourceNode };
+const nodeTypes = { resourceNode: ResourceNode };
 
 interface SchemaUIProps {
     nodes: Node<ResourceNodeData>[],
