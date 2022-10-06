@@ -14,7 +14,7 @@ export const Login: FunctionComponent = () => {
 	}
 
 	return (
-		<div className="Login">
+		<div className="login">
 			<form>
 				<TextField
 					required

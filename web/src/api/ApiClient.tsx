@@ -15,10 +15,12 @@ export default class ApiClient implements IApiClient {
 
   protected createAxiosClient(accessToken?: string): AxiosInstance {
     return Axios.create({
-      baseURL: 'localhost:8080',
+      baseURL: 'http://localhost:8080',
       responseType: 'json' as const,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         ...(accessToken && {
           Authorization: `Token ${accessToken}`,
         }),

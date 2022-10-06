@@ -7,8 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Redirect from 'react-router-dom';
 import Home from './pages/HomePage';
-import Login from './security/Login';
-import SignUp from './security/SignUp';
+import Login from './pages/LoginPage';
+import Register from './pages/RegisterPage';
 
 import isLoggedIn from './services/isLoggedIn';
 
@@ -24,7 +24,7 @@ root.render(
 					element={<App />}
 				/>
 				<Route path="/login" element={<Login />} />
-				<Route path="/sign-up" element={<SignUp />} />
+				<Route path="/register" element={<Register />} />
 				<Route path="/home" element={<Home />} />
 			</Routes>
 		</BrowserRouter>

@@ -1,8 +1,9 @@
 import { IApiClient } from '../api/ApiClient';
+import { IRegisterResponse, ILoginResponse } from './ResponseTypes'
 
 export interface IUserApiClient {
-  register: (email: string, password: string, confirm: string) => Promise<object>;
-  login: (email: string, password: string) => Promise<object>;
+  register: (email: string, password: string, confirm: string) => Promise<IRegisterResponse | undefined>;
+  login: (email: string, password: string) => Promise<ILoginResponse | undefined>;
 }
 
 export class UserApiClient implements IUserApiClient {
@@ -12,9 +13,9 @@ export class UserApiClient implements IUserApiClient {
     this.userApiClient = userApiClient;
   }
 
-  async register(email: string, password: string, confirm: string): Promise<object> {
+  async register(email: string, password: string, confirm: string): Promise<IRegisterResponse | undefined> {
     try {
-      const response:object = await this.userApiClient.post('/register', {
+      const response:IRegisterResponse = await this.userApiClient.post('/register', {
         "email" : email,
         "password" : {
             "password" : password,
@@ -24,20 +25,18 @@ export class UserApiClient implements IUserApiClient {
       return response;
     } catch (error) {
       console.log(error);
-      return {error};
     }
   };
   
-  async login(email: string, password: string): Promise<object> {
+  async login(email: string, password: string): Promise<ILoginResponse | undefined> {
     try {
-      const response:object = await this.userApiClient.post('/api/login', {
+      const response:ILoginResponse = await this.userApiClient.post('/api/login', {
         "email" : email,
         "password" : password
       });
       return response;
     } catch (error) {
       console.log(error);
-      return {error};
     }
   }
 };
@@ -49,11 +48,11 @@ export default class UserService {
     this.userApiClient = userApiClient;
   }
 
-  async register(email: string, password: string, confirm: string): Promise<object> {
+  async register(email: string, password: string, confirm: string): Promise<IRegisterResponse | undefined> {
     return this.userApiClient.register(email, password, confirm);
   }
 
-  async login(email: string, password: string): Promise<object> {
+  async login(email: string, password: string): Promise<ILoginResponse | undefined> {
     return this.userApiClient.login(email, password);
   }
 }
