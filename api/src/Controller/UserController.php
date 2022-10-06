@@ -51,11 +51,12 @@ class UserController extends AbstractController
             $dm->flush();
 
             $email = (new Email())
-            ->from($_ENV['MAILER_FROM_EMAIL'])
-            ->to($user->getEmail())
-            ->subject('Welcome to Terraform GUI')
-            ->text('Welcome to Terraform GUI!')
-            ->html('<p>Welcome to Terraform GUI!</p>');
+                ->from($_ENV['MAILER_FROM_EMAIL'])
+                ->to($user->getEmail())
+                ->subject('Confirm your Terraform GUI account')
+                ->text('Confirm your Terraform GUI account')
+                ->html('<p>Confirm your Terraform GUI account</p> <p>Please click on the following link to confirm your account: <a href="'.$_ENV['FRONT_URL'].'/user/confirm?token='.$user->getToken().'">Confirm my account</a></p>')
+            ;
 
             $mailer->send($email);
 
@@ -65,6 +66,25 @@ class UserController extends AbstractController
         $errors = $validator->getErrors($form, false);
 
         return $this->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    #[Route('/user/confirm', name: 'confirm', methods: ['GET'])]
+    public function confirm(Request $request, DocumentManager $dm): JsonResponse
+    {
+        $token = $request->query->get('token');
+
+        $user = $dm->getRepository(User::class)->findOneBy(['token' => $token]);
+
+        if (!$user) {
+            return $this->json(['errors' => ['Invalid token']], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user->setToken(null);
+
+        $dm->persist($user);
+        $dm->flush();
+
+        return $this->json(['success' => true], Response::HTTP_OK);
     }
 
     #[Route('/login/github', name: 'login_github', methods: ['GET'])]
