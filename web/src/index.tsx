@@ -1,17 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Redirect from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './components/App';
+import reportWebVitals from './reportWebVitals';
 
-import App from "./App";
-import Home from "./Home";
-import Login from "./security/Login";
-import SignUp from "./security/SignUp";
-import Container from "@mui/material/Container";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Redirect from 'react-router-dom';
+import Home from './Home';
+import Login from './security/Login';
+import SignUp from './security/SignUp';
+import Container from '@mui/material/Container';
 
-import isLoggedIn from "./services/isLoggedIn";
+import isLoggedIn from './services/isLoggedIn';
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
