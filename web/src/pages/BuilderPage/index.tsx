@@ -90,7 +90,7 @@ function BuilderPage() {
         ]);
     }, []);
 
-  return (
+    return (
         <ProjectProvider value={{
             isProjectSaved: isProjectSaved,
             setIsProjectSaved: setIsProjectSaved,
@@ -99,34 +99,29 @@ function BuilderPage() {
             projectList: projectList,
             setProjectList: setProjectList
         }} >
-        <div className="wrapper">
-          <div className="ressourceSideBar">
-            <ResourceSidebar nodes={nodes} setNodes={setNodes} />
-          </div>
-          <div className="header">
-            <Toolbar setNodes={setNodes} nodes={nodes}  />
-          </div>
-          <div className="schemaUI">
-            <SchemaUI
-         
-                       
-          nodes={nodes}
-                       
-          setNodes={setNodes}
-                       
-          onNodesChange={onNodesChange}
-                    
-        />
-          </div>
-          <div className="codeEditor">
-        <CodeEditor nodes={nodes} setNodes={setNodes}/>
-      </div>
-          <div className="descriptions">
-            <Description />
-          </div>
-        </div>
+            <div className="wrapper">
+                <div className="ressourceSideBar">
+                    <ResourceSidebar nodes={nodes} setNodes={setNodes} />
+                </div>
+                <div className="header">
+                    <Toolbar setNodes={setNodes} nodes={nodes}  />
+                </div>
+                <div className="schemaUI">
+                    <SchemaUI
+                        nodes={nodes}
+                        setNodes={setNodes}
+                        onNodesChange={onNodesChange}
+                    />
+                </div>
+                <div className="codeEditor">
+                    <CodeEditor nodes={nodes} setNodes={setNodes}/>
+                </div>
+                <div className="descriptions">
+                    <Description />
+                </div>
+            </div>
         </ProjectProvider>
-  );
+    );
 }
 
 export default BuilderPage;
