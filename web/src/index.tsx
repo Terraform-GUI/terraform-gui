@@ -6,10 +6,9 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Redirect from 'react-router-dom';
-import Home from './Home';
+import Home from './pages/HomePage';
 import Login from './security/Login';
 import SignUp from './security/SignUp';
-import Container from '@mui/material/Container';
 
 import isLoggedIn from './services/isLoggedIn';
 
@@ -18,18 +17,17 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 	<React.StrictMode>
-		<Container style={{ padding: "4rem" }}>
-			<BrowserRouter>
-				<Routes>
-					<Route
-						path="/"
-						element={<Home />}
-					/>
-					<Route path="/login" element={<Login />} />
-					<Route path="/sign-up" element={<SignUp />} />
-				</Routes>
-			</BrowserRouter>
-		</Container>
+		<BrowserRouter>
+			<Routes>
+				<Route
+					path="/"
+					element={<App />}
+				/>
+				<Route path="/login" element={<Login />} />
+				<Route path="/sign-up" element={<SignUp />} />
+				<Route path="/home" element={<Home />} />
+			</Routes>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 
