@@ -9,7 +9,7 @@ import {
     Select,
     TextField
 } from "@mui/material";
-import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
+import {IArgumentNodeData} from "../../../interfaces/IArgumentNodeData";
 
 interface ArgumentProps {
     argument: IArgumentNodeData

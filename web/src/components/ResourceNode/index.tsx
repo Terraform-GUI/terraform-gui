@@ -1,7 +1,7 @@
 import { useState, MouseEvent, useEffect} from 'react';
 import { Handle, Position } from 'react-flow-renderer';
 import {IResource} from "../../interfaces/IResource";
-import {Argument} from "../Argument";
+import {Argument} from "./Argument";
 import {
     Button,
     Dialog,
