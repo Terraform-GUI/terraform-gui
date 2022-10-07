@@ -11,7 +11,7 @@ export interface IApiClient {
 }
 
 export default class ApiClient implements IApiClient {
-  private client: AxiosInstance;
+  public client: AxiosInstance;
 
   protected createAxiosClient(accessToken?: string): AxiosInstance {
     return Axios.create({

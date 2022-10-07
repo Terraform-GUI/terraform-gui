@@ -1,13 +1,12 @@
 import React, { FunctionComponent, useState } from "react";
-import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-
 import {userService} from '../../api'
 
 export const Register: FunctionComponent = () => {
   const [error, setError] = useState("");
+  const [mailSent, setMailSent] = useState(false);
 
 	async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,10 +27,9 @@ export const Register: FunctionComponent = () => {
     if (error != "") {
       return;
     }
-
 		const register = await userService.register(email, password, confirm);
-    console.log(register);
 		if(register?.success){
+			setMailSent(true);
 		}
   }
 
@@ -49,38 +47,42 @@ export const Register: FunctionComponent = () => {
 
 	return (
 		<Grid className="register" container spacing={2}>
-			
-			<Grid item xs={4}>
-				<form onSubmit={handleSubmit}>
-					<TextField
-						required
-						id="emailInput"
-						label="Email"
-						placeholder="jhon.doe@gmail.com"
-					/>
-					<TextField
-						required
-						id="passwordInput"
-						label="Password"
-						type="password"
-						variant="standard"
-					/>
-					<TextField
-						required
-						id="confirmInput"
-						label="Password confirmation"
-						type="password"
-						variant="standard"
-					/>
-					<input type="submit" value="Submit"/>
-				</form>
-        <div>{error}</div>
-			</Grid>
+			{!mailSent ? (
+				<div style={{margin: '40px'}}>
+					<Grid item xs={4}>
+						<form onSubmit={handleSubmit}>
+							<TextField
+								required
+								id="emailInput"
+								label="Email"
+								placeholder="john.doe@gmail.com"
+							/>
+							<TextField
+								required
+								id="passwordInput"
+								label="Password"
+								type="password"
+								variant="standard"
+							/>
+							<TextField
+								required
+								id="confirmInput"
+								label="Password confirmation"
+								type="password"
+								variant="standard"
+							/>
+							<input type="submit" value="Submit"/>
+						</form>
+						<div>{error}</div>
+					</Grid>
 
-			<Grid item xs={12}>
-				<Button variant="outlined">Connexion GitHub</Button>
-			</Grid>
-
+					<Grid item xs={12}>
+						<Button variant="outlined">Connexion GitHub</Button>
+					</Grid>
+				</div>
+			) : (
+				<div style={{margin: '40px'}}>A mail has been sent to your email address. Please click on the link to validate your account.</div>
+			)}
 		</Grid>
 	);
 };

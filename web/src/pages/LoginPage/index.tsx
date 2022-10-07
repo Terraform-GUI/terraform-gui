@@ -1,30 +1,56 @@
-import React, { FunctionComponent } from "react";
-import { Link } from "react-router-dom";
+import React, { FunctionComponent, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-export const Login: FunctionComponent = () => {
+import {userService} from '../../api'
+import UserContext from '../../contexts/UserContext';
+import { useNavigate } from "react-router-dom";
 
-	function handleChange(event: any) {
-		
+export const Login: FunctionComponent = () => {
+	const {email, setEmail, accessToken, setAccessToken, refreshToken, setRefreshToken} = useContext(UserContext);
+  const [error, setError] = useState("");
+	const navigate = useNavigate();
+
+	async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const form = event.currentTarget
+    const formElements = form.elements as typeof form.elements & {
+      emailInput: {value: string},
+      passwordInput: {value: string},
+    }
+    const email = formElements.emailInput.value;
+    const password = formElements.passwordInput.value;
+
+		setError("");
+		!emailIsValid(email) && setError("Email is not valid");
+		if (error != "") {
+			return;
+		}
+
+		const login = await userService.login(email, password);
+		if(login?.token){
+			setEmail(email);
+			setAccessToken(login.token);
+			setRefreshToken(login.refresh_token);
+			navigate('/');
+		}
 	}
 	
-	function handleSubmit(event: any) {
-
-		event.preventDefault();
+	function emailIsValid (email: string) {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 	}
 
 	return (
 		<div className="login">
-			<form>
+			<form onSubmit={handleSubmit}>
 				<TextField
 					required
-					id="outlined-required"
+					id="emailInput"
 					label="Email"
-					placeholder="jhon.doe@gmail.com"
+					placeholder="john.doe@gmail.com"
 				/>
 				<TextField
 					required
-					id="standard-password-input"
+					id="passwordInput"
 					label="Password"
 					type="password"
 					autoComplete="current-password"

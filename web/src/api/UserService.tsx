@@ -1,9 +1,14 @@
 import { IApiClient } from '../api/ApiClient';
-import { IRegisterResponse, ILoginResponse } from './ResponseTypes'
+import { 
+  IRegisterResponse, 
+  ILoginResponse,
+  IConfirmUserMailResponse,
+} from './ResponseTypes'
 
 export interface IUserApiClient {
   register: (email: string, password: string, confirm: string) => Promise<IRegisterResponse | undefined>;
   login: (email: string, password: string) => Promise<ILoginResponse | undefined>;
+  confirmUserMail: (token: string) => Promise<IConfirmUserMailResponse | undefined>;
 }
 
 export class UserApiClient implements IUserApiClient {
@@ -38,6 +43,17 @@ export class UserApiClient implements IUserApiClient {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  async confirmUserMail(token: string): Promise<IConfirmUserMailResponse | undefined> {
+    try {
+      const response:IConfirmUserMailResponse = await this.userApiClient.post('/users/confirm', {
+        "token" : token,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -54,5 +70,9 @@ export default class UserService {
 
   async login(email: string, password: string): Promise<ILoginResponse | undefined> {
     return this.userApiClient.login(email, password);
+  }
+
+  async confirmUserMail(token: string): Promise<IConfirmUserMailResponse | undefined> {
+    return this.userApiClient.confirmUserMail(token);
   }
 }
