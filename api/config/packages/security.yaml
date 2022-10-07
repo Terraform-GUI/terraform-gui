@@ -13,6 +13,7 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     api:
+      user_checker: App\Security\UserChecker
       pattern: ^/api
       stateless: true
       entry_point: jwt

@@ -33,8 +33,7 @@ services:
     container_name: tf-gui_web
     build:
       context: .
-      dockerfile: build/package/web/Dockerfile
-      target: development
+      dockerfile: build/package/web/Dockerfile.dev
     ports:
       - 3000:3000
     volumes:
