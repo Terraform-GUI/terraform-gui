@@ -10,6 +10,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
+import './index.css'
 
 function ResourceNode(data:any) {
     const resource: Resource = data.data;
@@ -39,7 +40,7 @@ function ResourceNode(data:any) {
 
     return (
         <>
-            <div className={`react-flow__node react-flow__node-input nopan selectable ${data.selected ? 'selected': ''}`} style={{visibility: 'visible'}} onClick={handleClickOnNode}>
+            <div className={`react-flow__node-input ${data.selected ? 'selected': ''}`} style={{visibility: 'visible'}} onClick={handleClickOnNode}>
                 <Handle type="target" position={Position.Top} />
                 {resource.type}
                 <Handle type="source" position={Position.Bottom} id="a" />
