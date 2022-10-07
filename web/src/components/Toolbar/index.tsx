@@ -18,7 +18,7 @@ interface ToolbarProps {
 const Toolbar = (props: ToolbarProps) => {
     return (
         <div>
-            <AppBar style={{ backgroundColor: "brown" }} position="static">
+            <AppBar style={{ backgroundColor: "white" }} position="static">
                 <Container maxWidth="xl">
                     <MuiToolbar disableGutters>
                         <ProjectTools setNodes={props.setNodes} nodes={props.nodes}/>

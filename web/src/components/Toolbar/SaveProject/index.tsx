@@ -35,7 +35,7 @@ function SaveProject(props: SaveProjectProps) {
 
     return (
         <>
-            <Button variant="contained" onClick={() => {
+            <Button style={{ position: "absolute", right: "20px" }} variant="contained" onClick={() => {
                 handleSave();
                 if (props.secondaryAction) props.secondaryAction();
             }}>SAVE</Button>

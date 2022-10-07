@@ -4,6 +4,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import {Resource} from "../../../interfaces/Resource";
 import ResourceNode from "../../ResourceNode";
+import Button from '@mui/material/Button';
 
 // TODO get nodes from api
 const resources: Resource[] = [
@@ -248,7 +249,7 @@ const ResourceList = () => {
       <Stack direction="row" spacing={1}>
         {resources.map((resource: Resource, index: number) => (
             <div onDragStart={(event) => onDragStart(event, "ResourceNode", resource)} key={index} draggable>
-              <Chip label={resource.type} variant="outlined" />
+              <Button style={{color: "orange"}} variant="text">{resource.type}</Button>
             </div>
         ))}
       </Stack>
