@@ -5,6 +5,7 @@ import ProjectContext from "../../../contexts/ProjectContext";
 import {Project} from "../../../interfaces/Project";
 import {Node} from "react-flow-renderer";
 import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import {setUpNodesForSave} from "../../../services/ReactFlowTransformer";
 
 interface SaveProjectProps {
     secondaryAction?: Function,
@@ -17,6 +18,9 @@ function SaveProject(props: SaveProjectProps) {
     const handleSave = () => {
         setIsProjectSaved(true);
         currentProject.nodes = props.nodes;
+
+        // TODO nodes to include in the POST request
+        const nodes = setUpNodesForSave(props.nodes);
 
         // TODO save currentProject through api
         if (currentProject.id === null) {
