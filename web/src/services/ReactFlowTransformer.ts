@@ -1,7 +1,13 @@
 // Transform data related to ReactFlow
 
 import {Node} from "react-flow-renderer";
-import {Resource} from "../interfaces/Resource";
+import {IResource} from "../interfaces/IResource";
+import {
+    IResourceNodeData
+} from "../interfaces/IResourceNodeData";
+import {ISavedArgumentNodeData} from "../interfaces/ISavedArgumentNodeData";
+import {ISavedResourceNodeData} from "../interfaces/ISavedResourceNodeData";
+import {IArgumentNodeData} from "../interfaces/IArgumentNodeData";
 
 /**
  *
@@ -9,12 +15,12 @@ import {Resource} from "../interfaces/Resource";
  *
  * @param nodes
  */
-export function setUpNodesForSave(nodes: Node[]): Node[]
+export function setUpNodesForSave(nodes: Node<IResourceNodeData>[]): Node<ISavedResourceNodeData>[]
 {
     // lose reference of nodes variable
-    const updatedNodes = JSON.parse(JSON.stringify(nodes));
+    const updatedNodes: Node<IResourceNodeData>[] = JSON.parse(JSON.stringify(nodes));
 
-    updatedNodes.forEach((node: Node) => {
+    updatedNodes.forEach((node: Node<IResourceNodeData>) => {
         node.data.arguments.forEach((argument: any) => {
             argument.defaultValue = undefined;
             argument.values = undefined;
@@ -28,34 +34,42 @@ export function setUpNodesForSave(nodes: Node[]): Node[]
 }
 
 /**
- * Merge react flow nodes with data in provider resources, mostly arguments
+ * Merge react flow nodes with data in provider resources
  *
  * @param nodes
  * @param resources
  */
 export function mergeNodesWithResource(
-    nodes: Node[],
-    resources: Resource[],
-    onArgumentUpdate: (nodeId: string, argumentName: string, argumentValue: any) => void): Node[]
+    nodes: Node<ISavedResourceNodeData>[],
+    resources: IResource[],
+    onArgumentUpdate: (nodeId: string, argumentName: string, argumentValue: any) => void): Node<IResourceNodeData>[]
 {
-    nodes.forEach((node: Node) => {
+    const mergedNodes: Node<IResourceNodeData>[] = [];
+
+    nodes.forEach((node: Node<ISavedResourceNodeData>) => {
         resources.map((resource: any) => {
             if (resource.type === node.data.type) {
-                node.data.onArgumentUpdate = onArgumentUpdate;
-                node.data.arguments.forEach((argumentToUpdate: any) => {
-                    resource.arguments.forEach((argument: any) => {
+                const mergedNode: Node<IResourceNodeData> = {
+                    ...node,
+                    data: {
+                        label: resource.type,
+                        type: resource.type,
+                        description: resource.description,
+                        onArgumentUpdate: onArgumentUpdate,
+                        arguments: []
+                    }
+                };
+                node.data.arguments.forEach((argumentToUpdate: ISavedArgumentNodeData) => {
+                    resource.arguments.forEach((argument: IArgumentNodeData) => {
                         if (argument.name === argumentToUpdate.name) {
-                            argumentToUpdate.type = argument.type;
-                            argumentToUpdate.defaultValue = argument.defaultValue;
-                            argumentToUpdate.values = argument.values;
-                            argumentToUpdate.min = argument.min;
-                            argumentToUpdate.max = argument.max;
+                            mergedNode.data.arguments.push(argument);
                         }
                     });
                 });
+                mergedNodes.push(mergedNode);
             }
         })
     });
 
-    return nodes;
+    return mergedNodes;
 }

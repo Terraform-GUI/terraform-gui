@@ -1,8 +1,8 @@
 import {createContext} from "react";
-import {Resource} from "../interfaces/Resource";
+import {IResource} from "../interfaces/IResource";
 
 interface ResourcesContextInterface {
-    resources: Resource[]
+    resources: IResource[]
 }
 
 const ResourcesContext = createContext<ResourcesContextInterface>(undefined!);

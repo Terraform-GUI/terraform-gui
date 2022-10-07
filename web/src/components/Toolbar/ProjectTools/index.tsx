@@ -1,14 +1,14 @@
 import ChangeProject from "./ChangeProject";
 import {Dispatch, SetStateAction} from "react";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
 import CurrentProject from "./CurrentProject";
 import CreateProject from "./CreateProject";
 import DeleteProject from "./DeleteProject";
 
 interface ProjectToolsProps {
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    nodes: Node<ResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    nodes: Node<IResourceNodeData>[],
 }
 
 function ProjectTools(props: ProjectToolsProps) {

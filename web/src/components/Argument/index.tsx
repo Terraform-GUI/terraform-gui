@@ -1,4 +1,3 @@
-import {ResourceArgument} from "../../interfaces/Resource";
 import {useCallback, useState} from "react";
 import {
     Checkbox,
@@ -10,9 +9,10 @@ import {
     Select,
     TextField
 } from "@mui/material";
+import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
 
 interface ArgumentProps {
-    argument: ResourceArgument
+    argument: IArgumentNodeData
     onArgumentUpdate: (argumentName: string, argumentValue: any) => void
 }
 

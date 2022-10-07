@@ -7,12 +7,12 @@ import ProjectTools from "./ProjectTools";
 import {Divider} from "@mui/material";
 import {Dispatch, SetStateAction} from "react";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 import SaveProject from "./SaveProject";
 
 interface ToolbarProps {
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    nodes: Node<ResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    nodes: Node<IResourceNodeData>[],
 }
 
 const Toolbar = (props: ToolbarProps) => {

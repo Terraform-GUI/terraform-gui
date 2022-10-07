@@ -1,19 +1,19 @@
 import { useState, MouseEvent, useEffect} from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-import {ResourceArgument, Resource} from "../../interfaces/Resource";
+import {IResource} from "../../interfaces/IResource";
 import {Argument} from "../Argument";
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import './index.css'
+import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
+import './index.css';
 
 function ResourceNode(data:any) {
-    const resource: Resource = data.data;
+    const resource: IResource = data.data;
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const open = Boolean(anchorEl);
 
@@ -31,7 +31,7 @@ function ResourceNode(data:any) {
 
     useEffect(() => {
         // update argument value to match default value when node is created
-        resource.arguments.forEach((argument: ResourceArgument) => {
+        resource.arguments.forEach((argument: IArgumentNodeData) => {
             if (argument.defaultValue != null) {
                 onArgumentUpdate(argument.name, argument.defaultValue);
             }
@@ -49,14 +49,9 @@ function ResourceNode(data:any) {
             <Dialog open={open} onClose={handleCloseForm}>
                 <DialogTitle>{resource.type}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {resource.description}
-                    </DialogContentText>
-
-                    {resource.arguments.map((argument: ResourceArgument, index: number) => (
+                    {resource.arguments.map((argument: IArgumentNodeData, index: number) => (
                         <Argument argument={argument} key={index} onArgumentUpdate={onArgumentUpdate} />
                     ))}
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseForm}>Close</Button>

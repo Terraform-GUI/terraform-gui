@@ -5,33 +5,34 @@ import Toolbar from '../../components/Toolbar';
 import Description from '../../components/Description';
 import {Node, useNodesState} from "react-flow-renderer";
 import ResourceSidebar from "../../components/ResourceSidebar";
-import {Project} from "../../interfaces/Project";
+import {IProject} from "../../interfaces/IProject";
 import {ProjectProvider} from "../../contexts/ProjectContext";
 import {ResourcesProvider} from "../../contexts/ResourcesContext";
 import CodeEditor from "../../components/CodeEditor";
 import "./index.css"
-import {Resource} from "../../interfaces/Resource";
+import {IResource} from "../../interfaces/IResource";
 import {mergeNodesWithResource} from "../../services/ReactFlowTransformer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
+import {ISavedProject} from "../../interfaces/ISavedProject";
 
 function BuilderPage() {
 
     const [isProjectSaved, setIsProjectSaved] = useState<boolean>(true);
-    const [projectList, setProjectList] = useState<Project[]>([]);
-    const [resources, setResources] = useState<Resource[]>([]);
+    const [projectList, setProjectList] = useState<IProject[]>([]);
+    const [resources, setResources] = useState<IResource[]>([]);
 
-    const [project, setProject] = useState<Project>({
+    const [project, setProject] = useState<IProject>({
         id: null,
         name: 'Unnamed project',
         nodes: []
-    } as Project);
+    } as IProject);
 
     const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
 
     useEffect(() => {
 
         // TODO get nodes from api
-        const distantResources: Resource[] = [
+        const distantResources: IResource[] = [
             {
                 "provider": "aws",
                 "type": "VPC",
@@ -260,7 +261,7 @@ function BuilderPage() {
         setResources(distantResources);
 
         // TODO fetch users project from api
-        let projectList = [{
+        let savedProjectList: ISavedProject[] = [{
             id: '1',
             name: 'My first project',
             nodes: [{
@@ -268,9 +269,7 @@ function BuilderPage() {
                 type: 'ResourceNode',
                 data: {
                     type: 'RDS',
-                    label: (
-                        'RDS'
-                    ),
+                    description: 'RDS description',
                     arguments: [{
                         name: 'ami',
                         value: 'ami-052efd3df9dad4666'
@@ -283,9 +282,7 @@ function BuilderPage() {
                     type: 'ResourceNode',
                     data: {
                         type: 'EC2',
-                        label: (
-                            'EC2'
-                        ),
+                        description: 'EC2 description',
                         arguments: [{
                             name: 'public_ip',
                             value: true
@@ -306,9 +303,7 @@ function BuilderPage() {
                     type: 'input',
                     data: {
                         type: 'RDS',
-                        label: (
-                            'RDS'
-                        ),
+                        description: 'RDS description',
                         arguments: [{
                             name: 'IP',
                             value: '127.0.0.1'
@@ -325,8 +320,8 @@ function BuilderPage() {
         ];
 
         const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
-            setNodes((nodes: Node<ResourceNodeData>[]) =>
-                nodes.map((node: Node<ResourceNodeData>) => {
+            setNodes((nodes: Node<IResourceNodeData>[]) =>
+                nodes.map((node: Node<IResourceNodeData>) => {
                     if (node.id === nodeId) {
                         node.data.arguments.map((argument: any) => {
                             if (argument.name == argumentName) {
@@ -339,8 +334,14 @@ function BuilderPage() {
             );
         }
 
-        projectList.map((project: Project) => {
-            project.nodes = mergeNodesWithResource(project.nodes, distantResources, onArgumentUpdate);
+        const projectList: IProject[] = [];
+
+        // convert SavedProject[] to Project[]
+        savedProjectList.map((savedProject: ISavedProject) => {
+            projectList.push({
+                ...savedProject,
+                nodes: mergeNodesWithResource(savedProject.nodes, distantResources, onArgumentUpdate)
+            });
             return project;
         })
 

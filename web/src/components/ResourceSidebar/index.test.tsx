@@ -2,14 +2,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ResourceSideBar from "./index";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 
 test('provider and resources are found and displayed in the sidebar', () => {
-    const nodes: Node<ResourceNodeData>[] = [
+    const nodes: Node<IResourceNodeData>[] = [
         {
             id: '1',
             data: {
                 type: 'RDS',
+                description: 'RDS description',
                 label: (
                     "<>Welcome to <strong>React Flow!</strong></>"
                 ),
@@ -21,6 +22,7 @@ test('provider and resources are found and displayed in the sidebar', () => {
             id: '1',
             data: {
                 type: 'EC2',
+                description: 'EC2 description',
                 label: (
                     "<>Welcome to <strong>React Flow!</strong></>"
                 ),
