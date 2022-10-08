@@ -36,7 +36,7 @@ export class UserApiClient implements IUserApiClient {
   async login(email: string, password: string): Promise<ILoginResponse | undefined> {
     try {
       const response:ILoginResponse = await this.userApiClient.post('/api/login', {
-        "email" : email,
+        "username" : email,
         "password" : password
       });
       return response;
