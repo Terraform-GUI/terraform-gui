@@ -22,7 +22,7 @@ export default class ApiClient implements IApiClient {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         ...(accessToken && {
-          Authorization: `Token ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         }),
       },
       timeout: 10 * 1000,
