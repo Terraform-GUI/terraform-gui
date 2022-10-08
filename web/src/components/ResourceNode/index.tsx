@@ -1,17 +1,16 @@
-import { useState, MouseEvent, useEffect} from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-import {ResourceArgument, Resource} from "../../interfaces/Resource";
-import {Argument} from "../Argument";
+import { ResourceArgument, Resource } from "../../interfaces/Resource";
+import { Argument } from "../Argument";
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
 } from '@mui/material';
 
-function ResourceNode(data:any) {
+function ResourceNode(data: any) {
     const resource: Resource = data.data;
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const open = Boolean(anchorEl);
@@ -35,11 +34,12 @@ function ResourceNode(data:any) {
                 onArgumentUpdate(argument.name, argument.defaultValue);
             }
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <>
-            <div className={`react-flow__node react-flow__node-input nopan selectable ${data.selected ? 'selected': ''}`} style={{visibility: 'visible'}} onClick={handleClickOnNode}>
+            <div className={`react-flow__node react-flow__node-input nopan selectable ${data.selected ? 'selected' : ''}`} style={{ visibility: 'visible' }} onClick={handleClickOnNode}>
                 <Handle type="target" position={Position.Top} />
                 {resource.type}
                 <Handle type="source" position={Position.Bottom} id="a" />
@@ -48,10 +48,6 @@ function ResourceNode(data:any) {
             <Dialog open={open} onClose={handleCloseForm}>
                 <DialogTitle>{resource.type}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {resource.description}
-                    </DialogContentText>
-
                     {resource.arguments.map((argument: ResourceArgument, index: number) => (
                         <Argument argument={argument} key={index} onArgumentUpdate={onArgumentUpdate} />
                     ))}

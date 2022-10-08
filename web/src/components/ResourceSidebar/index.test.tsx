@@ -13,6 +13,7 @@ test('provider and resources are found and displayed in the sidebar', () => {
                 label: (
                     "<>Welcome to <strong>React Flow!</strong></>"
                 ),
+                description: 'description',
                 arguments: []
             },
             position: { x: 250, y: 0 },
@@ -24,6 +25,7 @@ test('provider and resources are found and displayed in the sidebar', () => {
                 label: (
                     "<>Welcome to <strong>React Flow!</strong></>"
                 ),
+                description: 'description',
                 arguments: []
             },
             position: { x: 250, y: 0 },

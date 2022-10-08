@@ -36,6 +36,7 @@ function BuilderPage() {
                     label: (
                         'RDS'
                     ),
+                    description: 'Description',
                     arguments: [{
                         name: 'IP',
                         value: '127.0.0.1'
@@ -51,6 +52,7 @@ function BuilderPage() {
                         label: (
                             'EC2'
                         ),
+                        description: 'Description',
                         arguments: [{
                             name: 'IP',
                             value: '127.0.0.1'
@@ -74,6 +76,7 @@ function BuilderPage() {
                         label: (
                             'RDS'
                         ),
+                        description: 'Description',
                         arguments: [{
                             name: 'IP',
                             value: '127.0.0.1'
@@ -117,7 +120,7 @@ function BuilderPage() {
                     <CodeEditor nodes={nodes} setNodes={setNodes}/>
                 </div>
                 <div className="descriptions">
-                    <Description />
+                    <Description nodes={nodes} />
                 </div>
             </div>
         </ProjectProvider>

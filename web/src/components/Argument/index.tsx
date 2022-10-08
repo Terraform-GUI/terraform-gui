@@ -27,6 +27,7 @@ export function Argument(props: ArgumentProps) {
         if (isValueValid(value)) {
             onArgumentUpdate(name, value);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const isValueValid = (value: any): boolean => {
@@ -36,14 +37,14 @@ export function Argument(props: ArgumentProps) {
                     setErrorMessage('Value is over max length');
                     return false;
                 }
-                if (min != null && value.length > parseInt(min)) {
+                if (min != null && value.length < parseInt(min)) {
                     setErrorMessage('Value is below min length');
                     return false;
                 }
                 break;
             case 'number':
                 const isNumber = new RegExp(/^-?\d*\.?\d+$/);
-                if (!isNumber.test(value) && value != '') {
+                if (!isNumber.test(value) && value !== '') {
                     setErrorMessage('Value must be a number');
                     return false;
                 }
@@ -63,7 +64,7 @@ export function Argument(props: ArgumentProps) {
         return true;
     }
 
-    if (type == 'string') {
+    if (type === 'string') {
         return (
             <>
                 <TextField
@@ -84,7 +85,7 @@ export function Argument(props: ArgumentProps) {
         )
     }
 
-    if (type == 'select') {
+    if (type === 'select') {
         return (
             <>
                 <FormControl fullWidth style={{margin: '10px 0'}}>
@@ -97,7 +98,7 @@ export function Argument(props: ArgumentProps) {
                         onChange={(evt) => onChange(evt.target.value)}
                     >
                         {values.map((value: string, index: number) => (
-                            <MenuItem value={value} key={index} selected={value == defaultValue}>{value}</MenuItem>
+                            <MenuItem value={value} key={index} selected={value === defaultValue}>{value}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -105,7 +106,7 @@ export function Argument(props: ArgumentProps) {
         )
     }
 
-    if (type == 'bool') {
+    if (type === 'bool') {
         return (
             <>
                 <FormGroup style={{margin: '10px 0'}}>
@@ -115,7 +116,7 @@ export function Argument(props: ArgumentProps) {
         )
     }
 
-    if (type == 'number') {
+    if (['number', 'string'].includes(type)) {
         return (
             <>
                 <TextField
@@ -123,7 +124,7 @@ export function Argument(props: ArgumentProps) {
                     margin="dense"
                     id={name}
                     label={name}
-                    type="number"
+                    type={type}
                     fullWidth
                     variant="standard"
                     style={{color: errorMessage ? '#ff0000' : 'inherit', margin: '10px 0'}}
