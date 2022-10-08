@@ -43,6 +43,10 @@ class ProjectController extends AbstractController
             }
 
             $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+
+            return $this->json([
+                'project' => $project,
+            ]);
         } catch (NotFoundHttpException $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
@@ -50,10 +54,6 @@ class ProjectController extends AbstractController
         } catch (Exception $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->json([
-            'project' => $project,
-        ]);
     }
 
     #[Route('/projects', name: 'create_project', methods: 'POST')]
@@ -78,11 +78,11 @@ class ProjectController extends AbstractController
             try {
                 $dm->persist($project);
                 $dm->flush();
+
+                return $this->json(['project' => $project], Response::HTTP_CREATED);
             } catch (Exception $e) {
                 return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
             }
-
-            return $this->json(['project' => $project], Response::HTTP_CREATED);
         }
 
         $errors = $validator->getErrors($form, false);
@@ -167,6 +167,9 @@ class ProjectController extends AbstractController
             }
 
             $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+            $terraformService->loadProject($project);
+
+            return new Response($terraformService->renderTerraform(), headers: ['content-type' => 'text/plain']);
         } catch (NotFoundHttpException $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
@@ -174,10 +177,6 @@ class ProjectController extends AbstractController
         } catch (Exception $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
-
-        $terraformService->loadProject($project);
-
-        return new Response($terraformService->renderTerraform(), headers: ['content-type' => 'text/plain']);
     }
 
     #[Route('/projects/{id}/terraform-archive', name: 'get_archive_terraform', methods: 'GET')]
@@ -191,6 +190,16 @@ class ProjectController extends AbstractController
             }
 
             $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+            $terraformService->loadProject($project);
+
+            $zipName = $project->getName().'.zip';
+            $terraformService->createTerraformArchive($zipName);
+
+            return new Response(file_get_contents($zipName), headers: [
+                'content-type'        => 'application/zip',
+                'content-disposition' => 'attachment;filename="'.$zipName.'"',
+                'content-length'      => filesize($zipName),
+            ]);
         } catch (NotFoundHttpException $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_NOT_FOUND);
         } catch (AccessDeniedException $e) {
@@ -198,16 +207,5 @@ class ProjectController extends AbstractController
         } catch (Exception $e) {
             return $this->json(['errors' => [$e->getMessage()]], Response::HTTP_BAD_REQUEST);
         }
-
-        $terraformService->loadProject($project);
-
-        $zipName = $project->getName().'.zip';
-        $terraformService->createTerraformArchive($zipName);
-
-        return new Response(file_get_contents($zipName), headers: [
-            'content-type'        => 'application/zip',
-            'content-disposition' => 'attachment;filename="'.$zipName.'"',
-            'content-length'      => filesize($zipName),
-        ]);
     }
 }
