@@ -7,8 +7,9 @@ on:
       - 'ops'
       - 'main'
     paths:
-      - "build/package/web/Dockerfile"
-      - "web/"
+      - 'build/package/web/**'
+      - 'web/**'
+      - '.github/**'
 
 
 jobs:
@@ -23,10 +24,10 @@ jobs:
       uses: actions/checkout@v2
 
       # Install Golang with specific version
-    - name: 2 - SETUP GO@1.15
-      uses:  actions/setup-go@v1
+    - name: 2 - SETUP NODE@18
+      uses:  actions/setup-node@v3
       with:
-          go-version: 1.15
+          node-version: 18
 
       # Cache Go modules to make the build faster
     - name: 3 - CACHE NODE MODULES
@@ -65,7 +66,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GPAT }}
 
       # Setup custom tag name
       - name: 3 - SETUP ENV VARS
@@ -81,12 +82,11 @@ jobs:
         with:
           push: true
           context: .
-          file: build/package/web/Dockerfile
-          target: production 
+          file: build/package/web/Dockerfile.prod
           tags: |
-            ghcr.io/blyndusk/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
-            ghcr.io/blyndusk/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}
-            ghcr.io/blyndusk/tf-gui_web:latest
+            ghcr.io/terraform-gui/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
+            ghcr.io/terraform-gui/tf-gui_web:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}
+            ghcr.io/terraform-gui/tf-gui_web:latest
 
         # output the logs
       - name: 5 - IMAGE DIGEST

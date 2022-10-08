@@ -117,14 +117,14 @@ class ResourceArgument
      */
     public function setMin(?string $min): self
     {
-        $authorizedTypeWhenSettingMin = [self::TYPE_NUMBER, self::TYPE_FLOAT, self::TYPE_INT];
+        $authorizedTypeWhenSettingMin = [self::TYPE_NUMBER, self::TYPE_FLOAT, self::TYPE_INT, self::TYPE_STRING];
         if (in_array($this->type, $authorizedTypeWhenSettingMin)) {
             $this->min = $min;
 
             return $this;
         }
 
-        throw new Exception("Can't set App\Document\Embed\ResourceArgument::\$min when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT or App\Document\Embed\ResourceArgument::TYPE_INT");
+        throw new Exception("Can't set App\Document\Embed\ResourceArgument::\$min when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT, App\Document\Embed\ResourceArgument::TYPE_STRING or App\Document\Embed\ResourceArgument::TYPE_INT");
     }
 
     public function getMax(): ?string
@@ -137,13 +137,13 @@ class ResourceArgument
      */
     public function setMax(?string $max): self
     {
-        $authorizedTypeWhenSettingMax = [self::TYPE_NUMBER, self::TYPE_FLOAT, self::TYPE_INT];
+        $authorizedTypeWhenSettingMax = [self::TYPE_NUMBER, self::TYPE_FLOAT, self::TYPE_INT, self::TYPE_STRING];
         if (in_array($this->type, $authorizedTypeWhenSettingMax)) {
             $this->max = $max;
 
             return $this;
         }
 
-        throw new Exception("Can't set App\Document\Embed\ResourceArgument::\$max when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT or App\Document\Embed\ResourceArgument::TYPE_INT");
+        throw new Exception("Can't set App\Document\Embed\ResourceArgument::\$max when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT, App\Document\Embed\ResourceArgument::TYPE_STRING or App\Document\Embed\ResourceArgument::TYPE_INT");
     }
 }
