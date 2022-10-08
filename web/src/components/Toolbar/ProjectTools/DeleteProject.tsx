@@ -3,12 +3,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
-import {Project} from "../../../interfaces/Project";
+import {IProject} from "../../../interfaces/IProject";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
 
 interface DeleteProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
 }
 
 function DeleteProject(props: DeleteProjectProps) {
@@ -23,11 +23,11 @@ function DeleteProject(props: DeleteProjectProps) {
                 id: null,
                 name: 'Unnamed project',
                 nodes: []
-            } as Project);
+            } as IProject);
             setNodes([]);
         }
 
-        const changeCurrentProject = (updatedProjectList: Project[]) => {
+        const changeCurrentProject = (updatedProjectList: IProject[]) => {
             if (updatedProjectList.length === 0 ) {
                 createProject();
                 return;
@@ -39,8 +39,8 @@ function DeleteProject(props: DeleteProjectProps) {
 
         const updateInterface = () => {
             setIsDialogOpen(false);
-            setProjectList((projectList: Project[]) => {
-                const updatedProjectList =  projectList.filter((project: Project) => project.id !== currentProject.id);
+            setProjectList((projectList: IProject[]) => {
+                const updatedProjectList =  projectList.filter((project: IProject) => project.id !== currentProject.id);
                 changeCurrentProject(updatedProjectList);
 
                 return updatedProjectList;

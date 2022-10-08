@@ -1,14 +1,17 @@
 import React, {useState, useRef, useCallback, Dispatch, SetStateAction, useContext} from "react";
 import ReactFlow, {addEdge, Controls, Background, useEdgesState, ReactFlowProvider, OnNodesChange, Node,} from "react-flow-renderer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 import ProjectContext from "../../contexts/ProjectContext";
+import ResourceNode from "../ResourceNode";
 
 let id = 0;
 const getId = () => `ressource_${id++}`;
 
+const nodeTypes = { ResourceNode: ResourceNode };
+
 interface SchemaUIProps {
-    nodes: Node<ResourceNodeData>[],
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
+    nodes: Node<IResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>
     onNodesChange: OnNodesChange,
 }
 
@@ -18,8 +21,8 @@ function SchemaUI(props: SchemaUIProps) {
     const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
     const {currentProject, setIsProjectSaved} = useContext(ProjectContext);
 
-    const deleteNodesFromProject = (elementsToRemove: Node<ResourceNodeData>[]) => {
-        currentProject.nodes = currentProject.nodes.filter((node: Node<ResourceNodeData>) => {
+    const deleteNodesFromProject = (elementsToRemove: Node<IResourceNodeData>[]) => {
+        currentProject.nodes = currentProject.nodes.filter((node: Node<IResourceNodeData>) => {
             for (const nodeToRemove of elementsToRemove) {
                 if (nodeToRemove.id == node.id) {
                     return false;
@@ -31,7 +34,7 @@ function SchemaUI(props: SchemaUIProps) {
     };
 
     const onConnect = useCallback(
-        (params: any) => setEdges((eds) => addEdge(params, eds)),
+        (params: any) => {setEdges((eds) => addEdge(params, eds))},
         []
     );
 
@@ -46,25 +49,43 @@ function SchemaUI(props: SchemaUIProps) {
 
             const reactFlowBounds: any =
                 reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData("application/reactflow");
+            const {type, resource} = JSON.parse(event.dataTransfer.getData("application/reactflow"));
 
-      // check if the dropped element is valid
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
+            // check if the dropped element is valid
+            if (typeof type === "undefined" || !type) {
+                return;
+            }
 
             const position: any = reactFlowInstance.project({
                 x: event.clientX - reactFlowBounds.left,
                 y: event.clientY - reactFlowBounds.top,
             });
-            const newNode: Node<ResourceNodeData> = {
+
+            const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
+                    props.setNodes((nodes: Node<IResourceNodeData>[]) =>
+                        nodes.map((node: Node<IResourceNodeData>) => {
+                        if (node.id === nodeId) {
+                            node.data.arguments.map((argument: any) => {
+                                if (argument.name == argumentName) {
+                                    argument.value = argumentValue;
+                                }
+                            })
+                        }
+                        return node;
+                    })
+                );
+            }
+
+            const newNode: Node<IResourceNodeData> = {
                 id: getId(),
                 type,
                 position,
                 data: {
-                    label: type,
-                    type: type,
-                    arguments: [] // TODO fill arguments from the resource
+                    label: resource.type,
+                    type: resource.type,
+                    arguments: resource.arguments,
+                    description: resource.description,
+                    onArgumentUpdate: onArgumentUpdate
                 },
             };
 
@@ -90,6 +111,7 @@ function SchemaUI(props: SchemaUIProps) {
                     onInit={setReactFlowInstance}
                     onDrop={onDrop}
                     onDragOver={onDragOver}
+                    nodeTypes={nodeTypes}
                     fitView
                 >
                     <Controls />

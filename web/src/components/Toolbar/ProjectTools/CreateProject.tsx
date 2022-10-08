@@ -1,16 +1,16 @@
 import {Button, IconButton, Tooltip} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
-import {Project} from "../../../interfaces/Project";
+import {IProject} from "../../../interfaces/IProject";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 
 interface CreateProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    nodes: Node<ResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    nodes: Node<IResourceNodeData>[],
 }
 
 function CreateProject(props: CreateProjectProps) {
@@ -24,7 +24,7 @@ function CreateProject(props: CreateProjectProps) {
             id: null,
             name: 'Unnamed project',
             nodes: []
-        } as Project);
+        } as IProject);
         props.setNodes([]);
     }
     return (
