@@ -64,27 +64,6 @@ export function Argument(props: ArgumentProps) {
         return true;
     }
 
-    if (type === 'string') {
-        return (
-            <>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id={name}
-                    label={name}
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    style={{color: errorMessage ? '#ff0000' : 'inherit', margin: '10px 0'}}
-                    onChange={(evt) => onChange(evt.target.value)}
-                    value={inputValue}
-                    error={errorMessage != null}
-                    helperText={errorMessage}
-                />
-            </>
-        )
-    }
-
     if (type === 'select') {
         return (
             <>
