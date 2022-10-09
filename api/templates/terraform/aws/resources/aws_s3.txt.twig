@@ -1,0 +1,14 @@
+# - BUCKET ------------------------------------------------------------- #
+
+resource "aws_s3_bucket" "{{ variables.unique_label }}" {
+  bucket = lookup(var.global, "name")
+
+  tags = {
+    Name = lookup(var.global, "name")
+  }
+}
+
+resource "aws_s3_bucket_acl" "{{ variables.unique_label }}" {
+  bucket = aws_s3_bucket.{{ variables.unique_label }}.id
+  acl    = lookup(var.s3_{{ variables.unique_label }}, "acl")
+}

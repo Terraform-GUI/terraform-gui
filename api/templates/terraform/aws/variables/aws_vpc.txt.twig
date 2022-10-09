@@ -1,0 +1,10 @@
+variable "vpc_{{ variables.unique_label }}" {
+    type = map(string)
+    default = {
+        tenancy    = "{{ variables.tenancy|default("default")|escape }}"
+        cidr       = "{{ variables.cidr|default("10.0.0.0/24")|escape }}"
+        pub_subnet = "{{ variables.pub_subnet|default("10.0.0.128/26")|escape }}"
+        prv_subnet = "{{ variables.prv_subnet|default("10.0.0.192/26")|escape }}"
+        eip_vpc    = {{ variables.eip_vpc|default("true") }}
+    }
+}

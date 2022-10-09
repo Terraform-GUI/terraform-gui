@@ -1,0 +1,18 @@
+# - RDS ---------------------------------------------------------------- #
+
+output "rds_{{ variables.unique_label }}_hostname" {
+  description = "RDS instance hostname"
+  value       = aws_db_instance.{{ variables.unique_label }}.address
+  sensitive   = true
+}
+output "rds_{{ variables.unique_label }}_port" {
+  description = "RDS instance port"
+  value       = aws_db_instance.{{ variables.unique_label }}.port
+  sensitive   = true
+}
+
+output "rds_{{ variables.unique_label }}_username" {
+  description = "RDS instance root username"
+  value       = aws_db_instance.{{ variables.unique_label }}.username
+  sensitive   = true
+}

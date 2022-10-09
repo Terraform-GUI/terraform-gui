@@ -1,0 +1,9 @@
+variable "sqs_{{ variables.unique_label }}" {
+  type = map(string)
+  default = {
+    delay_seconds             = {{ variables.delay_seconds|default(90) }}
+    max_message_size          = {{ variables.max_message_size|default(2048) }}
+    message_retention_seconds = {{ variables.message_retention_seconds|default(86400) }}
+    receive_wait_time_seconds = {{ variables.receive_wait_time_seconds|default(10) }}
+  }
+}

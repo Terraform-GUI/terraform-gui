@@ -1,0 +1,7 @@
+variable "global" {
+  type = map(string)
+  default = {
+    name   = "{{ variables.project_name|default("My Project") }}"
+    region = "us-east-1"
+  }
+}
