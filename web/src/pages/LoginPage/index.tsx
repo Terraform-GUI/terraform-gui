@@ -31,6 +31,8 @@ export const Login: FunctionComponent = () => {
 			setEmail(email);
 			setAccessToken(login.token);
 			setRefreshToken(login.refresh_token);
+			localStorage.setItem('access_token', login.token);
+			localStorage.setItem('refresh_token', login.refresh_token);
 			navigate('/');
 		}
 	}

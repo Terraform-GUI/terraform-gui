@@ -17,3 +17,11 @@ export interface IUpdateMailResponse {
 export interface IDeleteAccountResponse {
   success: boolean;
 }
+
+export interface IForgotPasswordResponse {
+  success: boolean;
+}
+
+export interface IResetPasswordResponse {
+  success: boolean;
+}

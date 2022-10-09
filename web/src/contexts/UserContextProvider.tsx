@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState, useEffect} from "react";
+import React, {FunctionComponent, useState} from "react";
 
 import UserContext from "./UserContext";
 
@@ -13,12 +13,6 @@ const UserContextProvider: FunctionComponent<IUserContextProvider> = ({children}
 
     localStorage.getItem('access_token') && setAccessToken(localStorage.getItem('access_token')!);
     localStorage.getItem('refresh_token') && setRefreshToken(localStorage.getItem('refresh_token')!);
-    useEffect(() => {
-        localStorage.setItem('is-access_token', accessToken);
-    }, [accessToken]);
-    useEffect(() => {
-        localStorage.setItem('is-refresh_token', refreshToken);
-    }, [refreshToken]);
 
     return (
         <UserContext.Provider

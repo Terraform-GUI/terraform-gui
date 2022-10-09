@@ -9,6 +9,8 @@ import Redirect from 'react-router-dom';
 import Home from './pages/HomePage';
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
+import ForgotPassword from './pages/ForgotPasswordPage';
+import ResetPassword from './pages/ResetPasswordPage';
 import ConfirmUserMail from './pages/ConfirmUserMailPage';
 
 import UserContextProvider from "./contexts/UserContextProvider";
@@ -27,6 +29,8 @@ root.render(
 					/>
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/forgot-password" element={<ForgotPassword />} />
+					<Route path="/reset-password" element={<ResetPassword />} />
 					<Route path="/user/confirm" element={<ConfirmUserMail />} />
 					<Route path="/home" element={<Home />} />
 				</Routes>
