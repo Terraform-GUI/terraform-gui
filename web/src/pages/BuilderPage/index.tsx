@@ -378,7 +378,7 @@ function BuilderPage() {
                         <CodeEditor nodes={nodes} setNodes={setNodes}/>
                     </div>
                     <div className="descriptions">
-                        <Description />
+                        <Description nodes={nodes} />
                     </div>
                 </div>
             </ProjectProvider>

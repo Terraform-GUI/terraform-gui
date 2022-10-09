@@ -1,7 +1,7 @@
-import { useState, MouseEvent, useEffect} from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-import {IResource} from "../../interfaces/IResource";
-import {Argument} from "./Argument";
+import { IResource } from "../../interfaces/IResource";
+import { Argument } from "./Argument";
 import {
     Button,
     Dialog,
@@ -12,7 +12,7 @@ import {
 import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
 import './index.css';
 
-function ResourceNode(data:any) {
+function ResourceNode(data: any) {
     const resource: IResource = data.data;
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const open = Boolean(anchorEl);
@@ -36,6 +36,7 @@ function ResourceNode(data:any) {
                 onArgumentUpdate(argument.name, argument.defaultValue);
             }
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

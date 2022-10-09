@@ -82,9 +82,9 @@ function SchemaUI(props: SchemaUIProps) {
                 position,
                 data: {
                     label: resource.type,
+                    description: resource.description,
                     type: resource.type,
                     arguments: resource.arguments,
-                    description: resource.description,
                     onArgumentUpdate: onArgumentUpdate
                 },
             };
