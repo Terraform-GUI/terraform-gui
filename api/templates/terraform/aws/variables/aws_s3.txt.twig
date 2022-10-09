@@ -1,0 +1,6 @@
+variable "s3_{{ variables.unique_label }}" {
+  type = map(string)
+  default = {
+    acl = {{ variables.acl|default("private") }}
+  }
+}
