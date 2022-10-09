@@ -6,6 +6,7 @@ import ProjectContext from "../../../contexts/ProjectContext";
 import {IProject} from "../../../interfaces/IProject";
 import {Node} from "react-flow-renderer";
 import {INodeData} from "../../../interfaces/INodeData";
+import {projectService} from "../../../api";
 
 interface DeleteProjectProps {
     setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
@@ -49,7 +50,13 @@ function DeleteProject(props: DeleteProjectProps) {
 
         updateInterface();
 
-        // TODO call api to delete project
+        const deleteProject = async () => {
+            if (currentProject.id) {
+                return await projectService.deleteProject(currentProject.id);
+            }
+        }
+
+        deleteProject();
     }
 
     return (

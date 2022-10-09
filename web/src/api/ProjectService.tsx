@@ -1,5 +1,5 @@
 import {IApiClient} from './ApiClient';
-import {IGetProjectsResponse} from "./ResponseTypes";
+import {IDeleteProjectResponse, IGetProjectsResponse} from "./ResponseTypes";
 import {Edge, Node} from "react-flow-renderer";
 import {ISavedNodeData} from "../interfaces/ISavedNodeData";
 import {ISavedProject} from "../interfaces/ISavedProject";
@@ -8,6 +8,7 @@ export interface IProjectApiClient {
   getProjects: () => Promise<IGetProjectsResponse | undefined>
   createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   updateProject: (id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
+  deleteProject: (id: string) => Promise<IDeleteProjectResponse | undefined>
 }
 
 export class ProjectApiClient implements IProjectApiClient {
@@ -48,6 +49,15 @@ export class ProjectApiClient implements IProjectApiClient {
       console.log(error);
     }
   };
+
+
+  async deleteProject(id: string): Promise<IDeleteProjectResponse | undefined> {
+    try {
+      return await this.apiClient.delete(`/api/projects/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 export default class ProjectService {
@@ -67,5 +77,9 @@ export default class ProjectService {
 
   async updateProject(id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ISavedProject | undefined> {
     return this.projectApiClient.updateProject(id, name, nodes, edges);
+  }
+
+  async deleteProject(id: string): Promise<IDeleteProjectResponse | undefined> {
+    return this.projectApiClient.deleteProject(id);
   }
 }
