@@ -2,26 +2,53 @@ import ApiClient from './ApiClient';
 import UserService, {
   UserApiClient,
 } from './UserService';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Axios, { AxiosInstance } from 'axios';
 
 function buildServices() {
+  
   const accessToken = localStorage.getItem('access_token');
   const apiClient = new ApiClient(accessToken || '');
   const loggedApiClient = new ApiClient(accessToken || '');
+
   loggedApiClient.client.interceptors.response.use( 
     response => {
       return response
     },
     function (error) {
-      const navigate = useNavigate();
-      if (error.response.status === 401) {
-        navigate('/login')
-        return Promise.reject(error)
+      let originalRequest = error.config
+      
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true
+        const refreshToken = localStorage.getItem('refresh_token')
+        console.log('refreshToken', refreshToken)
+
+        axios.post('http://localhost:8080/api/token/refresh', {
+          refresh_token: refreshToken,
+        }).then(function (response){
+          if (response.status === 200) {
+            console.log('hey');
+            console.log(response);
+            localStorage.setItem('access_token', response.data.token)
+            localStorage.setItem('refresh_token', response.data.refresh_token)
+            originalRequest.headers = {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+              Authorization: `Bearer ${response.data.token}`,
+            };
+            return axios(originalRequest)
+          }
+        }).catch(function (error) {
+          console.log(error);
+          window.location = '/home' as any;
+        });
       }
+      window.location = '/home' as any;
   });
 
   return {
-    userService: new UserService(new UserApiClient(apiClient)),
+    userService: new UserService(new UserApiClient(loggedApiClient)),
     //add here other services ...Service: new ...Service(new ...ApiClient(apiClient/loggedApiClient)),
   };
 }
