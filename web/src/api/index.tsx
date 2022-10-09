@@ -3,6 +3,7 @@ import UserService, {
   UserApiClient,
 } from './UserService';
 import { useNavigate } from 'react-router-dom';
+import ResourceService, {ResourceApiClient} from "./ResourceService";
 
 function buildServices() {
   const accessToken = localStorage.getItem('access_token');
@@ -22,8 +23,9 @@ function buildServices() {
 
   return {
     userService: new UserService(new UserApiClient(apiClient)),
+    resourceService: new ResourceService(new ResourceApiClient(apiClient)),
     //add here other services ...Service: new ...Service(new ...ApiClient(apiClient/loggedApiClient)),
   };
 }
 
-export const {userService} = buildServices();
+export const {userService, resourceService} = buildServices();
