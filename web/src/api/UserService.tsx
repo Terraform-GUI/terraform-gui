@@ -4,6 +4,7 @@ import {
   ILoginResponse,
   IConfirmUserMailResponse,
   IUpdateMailResponse,
+  IDeleteAccountResponse,
 } from './ResponseTypes'
 
 export interface IUserApiClient {
@@ -11,6 +12,7 @@ export interface IUserApiClient {
   login: (email: string, password: string) => Promise<ILoginResponse | undefined>;
   confirmUserMail: (token: string) => Promise<IConfirmUserMailResponse | undefined>;
   updateMail: (email: string) => Promise<IUpdateMailResponse | undefined>;
+  deleteAccount: () => Promise<IDeleteAccountResponse | undefined>;
 }
 
 export class UserApiClient implements IUserApiClient {
@@ -68,6 +70,15 @@ export class UserApiClient implements IUserApiClient {
       console.log(error);
     }
   }
+
+  async deleteAccount(): Promise<IDeleteAccountResponse | undefined> {
+    try {
+      const response:IDeleteAccountResponse = await this.userApiClient.delete('/api/users/delete');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default class UserService {
@@ -91,5 +102,9 @@ export default class UserService {
 
   async updateMail(email: string): Promise<IUpdateMailResponse | undefined> {
     return this.userApiClient.updateMail(email);
+  }
+
+  async deleteAccount(): Promise<IDeleteAccountResponse | undefined> {
+    return this.userApiClient.deleteAccount();
   }
 }

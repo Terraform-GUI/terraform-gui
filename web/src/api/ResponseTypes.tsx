@@ -14,3 +14,6 @@ export interface IConfirmUserMailResponse {
 export interface IUpdateMailResponse {
   success: boolean;
 }
+export interface IDeleteAccountResponse {
+  success: boolean;
+}

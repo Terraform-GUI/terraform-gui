@@ -19,12 +19,22 @@ export const Profile: FunctionComponent = () => {
 		navigate('/home');
 	}
 
+	async function deleteAccount () {
+		const deleteAccount = await userService.deleteAccount();
+		if(deleteAccount?.success){
+			setEmail('');
+			setAccessToken('');
+			setRefreshToken('');
+			localStorage.clear();
+		}
+	}
+
 	return (
 		<div className="profile">
 			<Email/>
 			{/* reset password */}
 			<Button onClick={() => logout()}>Log out</Button>
-			{/* delete account */}
+			<Button onClick={() => deleteAccount()}>Delete account</Button>
 		</div>
 	);
 };
