@@ -1,36 +1,31 @@
-import React from "react";
-
-import Chip from "@mui/material/Chip";
+import React, {useContext} from "react";
 import Stack from "@mui/material/Stack";
+import {IResource} from "../../../interfaces/IResource";
+import ResourceNode from "../../ResourceNode";
+import ResourcesContext from "../../../contexts/ResourcesContext";
+import Button from "@mui/material/Button";
 
 const ResourceList = () => {
-  const onDragStart = (event: any, nodeType: any) => {
-    event.dataTransfer.setData("application/reactflow", nodeType);
+
+  const {resources} = useContext(ResourcesContext);
+
+  const onDragStart = (event: any, nodeType: any, resource: IResource) => {
+
+    event.dataTransfer.setData("application/reactflow", JSON.stringify({
+      type: nodeType,
+      resource: resource
+    }));
     event.dataTransfer.effectAllowed = "move";
   };
-
 
   return (
     <aside>
       <Stack direction="row" spacing={1}>
-        <div onDragStart={(event) => onDragStart(event, "RDS")} draggable>
-          <Chip label="RDS" variant="outlined" />
-        </div>
-        <div onDragStart={(event) => onDragStart(event, "EC2")} draggable>
-          <Chip label="EC2" variant="outlined" />
-        </div>
-        <div onDragStart={(event) => onDragStart(event, "SQS")} draggable>
-          <Chip label="SQS" variant="outlined" />
-        </div>
-        <div onDragStart={(event) => onDragStart(event, "Lambda")} draggable>
-          <Chip label="Lambda" variant="outlined" />
-        </div>
-        <div onDragStart={(event) => onDragStart(event, "VPC")} draggable>
-          <Chip label="VPC" variant="outlined" />
-        </div>
-        <div onDragStart={(event) => onDragStart(event, "secretManager")} draggable>
-          <Chip label="secretManager" variant="outlined" />
-        </div>
+        {resources.map((resource: IResource, index: number) => (
+            <div onDragStart={(event) => onDragStart(event, "ResourceNode", resource)} key={index} draggable>
+              <Button style={{color: "orange"}} variant="text">{resource.type}</Button>
+            </div>
+        ))}
       </Stack>
     </aside>
   );

@@ -1,13 +1,13 @@
 import {createContext, Dispatch, SetStateAction} from "react";
-import {Project} from "../interfaces/Project";
+import {IProject} from "../interfaces/IProject";
 
 interface ProjectContextInterface {
     isProjectSaved: boolean,
     setIsProjectSaved: Dispatch<SetStateAction<boolean>>,
-    currentProject: Project;
-    setCurrentProject: Dispatch<SetStateAction<Project>>
-    projectList: Project[]
-    setProjectList: Dispatch<SetStateAction<Project[]>>
+    currentProject: IProject;
+    setCurrentProject: Dispatch<SetStateAction<IProject>>
+    projectList: IProject[]
+    setProjectList: Dispatch<SetStateAction<IProject[]>>
 }
 
 const ProjectContext = createContext<ProjectContextInterface>(undefined!);
