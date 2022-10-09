@@ -1,6 +1,5 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-import { IResource } from "../../interfaces/IResource";
 import { Argument } from "./Argument";
 import {
     Button,
@@ -11,9 +10,10 @@ import {
 } from '@mui/material';
 import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
 import './index.css';
+import {INodeData} from "../../interfaces/INodeData";
 
 function ResourceNode(data: any) {
-    const resource: IResource = data.data;
+    const nodeData: INodeData = data.data;
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const open = Boolean(anchorEl);
 
@@ -26,12 +26,14 @@ function ResourceNode(data: any) {
     };
 
     const onArgumentUpdate = (argumentName: string, argumentValue: any) => {
-        data.data.onArgumentUpdate(data.id, argumentName, argumentValue);
+        if (nodeData.onArgumentUpdate) {
+            nodeData.onArgumentUpdate(data.id, argumentName, argumentValue);
+        }
     }
 
     useEffect(() => {
         // update argument value to match default value when node is created
-        resource.arguments.forEach((argument: IArgumentNodeData) => {
+        nodeData.resource.arguments.forEach((argument: IArgumentNodeData) => {
             if (argument.defaultValue != null) {
                 onArgumentUpdate(argument.name, argument.defaultValue);
             }
@@ -43,14 +45,14 @@ function ResourceNode(data: any) {
         <>
             <div className={`react-flow__node-input ${data.selected ? 'selected': ''}`} style={{visibility: 'visible'}} onClick={handleClickOnNode}>
                 <Handle type="target" position={Position.Top} />
-                {resource.type}
+                {nodeData.resource.type}
                 <Handle type="source" position={Position.Bottom} id="a" />
             </div>
 
             <Dialog open={open} onClose={handleCloseForm}>
-                <DialogTitle>{resource.type}</DialogTitle>
+                <DialogTitle>{nodeData.resource.type}</DialogTitle>
                 <DialogContent>
-                    {resource.arguments.map((argument: IArgumentNodeData, index: number) => (
+                    {nodeData.resource.arguments.map((argument: IArgumentNodeData, index: number) => (
                         <Argument argument={argument} key={index} onArgumentUpdate={onArgumentUpdate} />
                     ))}
                 </DialogContent>

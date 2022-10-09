@@ -1,11 +1,11 @@
 import {Dispatch, SetStateAction } from "react";
 import Editor from "@monaco-editor/react";
-import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 import {Node} from "react-flow-renderer";
+import {INodeData} from "../../interfaces/INodeData";
 
 interface ResourceSideBarProps {
-  nodes: Node<IResourceNodeData>[],
-  setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+  nodes: Node<INodeData>[],
+  setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
 }
 
 const CodeEditor = (props: ResourceSideBarProps) => {

@@ -28,6 +28,7 @@ export const Login: FunctionComponent = () => {
 
 		const login = await userService.login(email, password);
 		if(login?.token){
+			localStorage.setItem('access_token', login.token);
 			setEmail(email);
 			setAccessToken(login.token);
 			setRefreshToken(login.refresh_token);

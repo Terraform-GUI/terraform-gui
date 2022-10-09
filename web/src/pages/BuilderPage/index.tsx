@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import SchemaUI from '../../components/SchemaUI';
 import Toolbar from '../../components/Toolbar';
 import Description from '../../components/Description';
-import {Node, useNodesState} from "react-flow-renderer";
+import {Node, useEdgesState, useNodesState} from "react-flow-renderer";
 import ResourceSidebar from "../../components/ResourceSidebar";
 import {IProject} from "../../interfaces/IProject";
 import {ProjectProvider} from "../../contexts/ProjectContext";
@@ -12,9 +12,9 @@ import CodeEditor from "../../components/CodeEditor";
 import "./index.css"
 import {IResource} from "../../interfaces/IResource";
 import {mergeNodesWithResource} from "../../services/ReactFlowTransformer";
-import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
+import {INodeData} from "../../interfaces/INodeData";
 import {ISavedProject} from "../../interfaces/ISavedProject";
-import {resourceService} from '../../api'
+import {projectService, resourceService} from '../../api'
 
 function BuilderPage() {
 
@@ -29,6 +29,7 @@ function BuilderPage() {
     } as IProject);
 
     const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
     useEffect(() => {
         const loadResources = async () => {
@@ -40,93 +41,44 @@ function BuilderPage() {
             return distantResources;
         }
 
+        const loadProjects = async () => {
+            const projects =  await projectService.getProjects();
+            return projects ? projects.projects : undefined;
+        }
+
         loadResources().then((distantResources: IResource[] | undefined) => {
-            // TODO fetch users project from api
-            let savedProjectList: ISavedProject[] = [{
-                id: '1',
-                name: 'My first project',
-                nodes: [{
-                    id: '1',
-                    type: 'ResourceNode',
-                    data: {
-                        type: 'RDS',
-                        description: 'RDS description',
-                        arguments: [{
-                            name: 'ami',
-                            value: 'ami-052efd3df9dad4666'
-                        }]
-                    },
-                    position: { x: 250, y: 0 },
-                },
-                    {
-                        id: '2',
-                        type: 'ResourceNode',
-                        data: {
-                            type: 'EC2',
-                            description: 'EC2 description',
-                            arguments: [{
-                                name: 'public_ip',
-                                value: true
-                            }, {
-                                name: 'type',
-                                value: 't2.large'
-                            }]
-                        },
-                        position: { x: 100, y: 100 },
-                    },
-                ]
-            },
-                {
-                    id: '2',
-                    name: 'My second project',
-                    nodes: [{
-                        id: '1',
-                        type: 'input',
-                        data: {
-                            type: 'RDS',
-                            description: 'RDS description',
-                            arguments: [{
-                                name: 'IP',
-                                value: '127.0.0.1'
-                            }]
-                        },
-                        position: { x: 250, y: 0 },
-                    }]
-                },
-                {
-                    id: '3',
-                    name: 'My third project',
-                    nodes: []
-                }
-            ];
-
-            const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
-                setNodes((nodes: Node<IResourceNodeData>[]) =>
-                    nodes.map((node: Node<IResourceNodeData>) => {
-                        if (node.id === nodeId) {
-                            node.data.arguments.map((argument: any) => {
-                                if (argument.name === argumentName) {
-                                    argument.value = argumentValue;
+            loadProjects().then((savedProjectList: ISavedProject[] | undefined) => {
+                if (savedProjectList !== undefined) {
+                    const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
+                        setNodes((nodes: Node<INodeData>[]) =>
+                            nodes.map((node: Node<INodeData>) => {
+                                if (node.id === nodeId) {
+                                    node.data.resource.arguments.map((argument: any) => {
+                                        if (argument.name === argumentName) {
+                                            argument.value = argumentValue;
+                                        }
+                                    })
                                 }
+                                return node;
                             })
-                        }
-                        return node;
+                        );
+                    }
+
+                    const projectList: IProject[] = [];
+                    console.log(savedProjectList);
+
+                    // convert SavedProject[] to Project[]
+                    savedProjectList.map((savedProject: ISavedProject) => {
+                        projectList.push({
+                            ...savedProject,
+                            nodes: mergeNodesWithResource(savedProject.nodes, distantResources ?? [], onArgumentUpdate)
+                        });
+                        return project;
                     })
-                );
-            }
 
-            const projectList: IProject[] = [];
-
-            // convert SavedProject[] to Project[]
-            savedProjectList.map((savedProject: ISavedProject) => {
-                projectList.push({
-                    ...savedProject,
-                    nodes: mergeNodesWithResource(savedProject.nodes, distantResources ?? [], onArgumentUpdate)
-                });
-                return project;
-            })
-
-            setProjectList(projectList);
+                    setProjectList(projectList);
+                }
+            });
         });
     }, []);
 
@@ -147,13 +99,20 @@ function BuilderPage() {
                         <ResourceSidebar nodes={nodes} setNodes={setNodes} />
                     </div>
                     <div className="header">
-                        <Toolbar setNodes={setNodes} nodes={nodes}  />
+                        <Toolbar
+                            setNodes={setNodes}
+                            nodes={nodes}
+                            edges={edges}
+                        />
                     </div>
                     <div className="schemaUI">
                         <SchemaUI
                             nodes={nodes}
                             setNodes={setNodes}
                             onNodesChange={onNodesChange}
+                            edges={edges}
+                            setEdges={setEdges}
+                            onEdgesChange={onEdgesChange}
                         />
                     </div>
                     <div className="codeEditor">

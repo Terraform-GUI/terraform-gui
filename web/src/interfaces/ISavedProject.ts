@@ -1,5 +1,5 @@
 import {Node} from "react-flow-renderer";
-import {ISavedResourceNodeData} from "./ISavedResourceNodeData";
+import {ISavedNodeData} from "./ISavedNodeData";
 
 /**
  * A Project that comes from API with missing data
@@ -7,5 +7,5 @@ import {ISavedResourceNodeData} from "./ISavedResourceNodeData";
 export interface ISavedProject {
     id: string | null,
     name: string
-    nodes: Node<ISavedResourceNodeData>[]
+    nodes: Node<ISavedNodeData>[]
 }

@@ -1,3 +1,5 @@
+import {ISavedProject} from "../interfaces/ISavedProject";
+
 export interface IRegisterResponse {
   success: boolean;
 }
@@ -26,4 +28,8 @@ export interface IResetPasswordResponse {
 }
 export interface IRefreshTokenResponse {
   success: boolean;
+}
+
+export interface IGetProjectsResponse {
+  projects: ISavedProject[]
 }
