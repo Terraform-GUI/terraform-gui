@@ -1,18 +1,18 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect } from 'react';
 import './index.css';
-import { ResourceNodeData } from "../../interfaces/ResourceNodeData";
 import { Node } from "react-flow-renderer";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 
 interface ResourceSideBarProps {
-  nodes: Node<ResourceNodeData>[],
+  nodes: Node<IResourceNodeData>[],
 }
 
 const Description = (props: ResourceSideBarProps) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   useEffect(() => {
-    props.nodes.forEach((node: Node<ResourceNodeData>) => {
+    props.nodes.forEach((node: Node<IResourceNodeData>) => {
       if (node.selected) {
         setExpanded(node.id);
       }
@@ -22,7 +22,7 @@ const Description = (props: ResourceSideBarProps) => {
   return (
     <div className="description">
       {
-        props.nodes.map((node: Node<ResourceNodeData>, index: number) => {
+        props.nodes.map((node: Node<IResourceNodeData>, index: number) => {
           if (node.id === expanded) {
             return (
               <div key={index}>

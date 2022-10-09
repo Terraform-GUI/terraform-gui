@@ -1,16 +1,16 @@
 import {Button, IconButton, List, ListItem, ListItemButton, ListItemText, ListSubheader, Popover, Tooltip} from "@mui/material";
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import {Project} from "../../../interfaces/Project";
+import {IProject} from "../../../interfaces/IProject";
 import {Node} from "react-flow-renderer";
-import {ResourceNodeData} from "../../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 
 interface ChangeProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>,
-    nodes: Node<ResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    nodes: Node<IResourceNodeData>[],
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -19,10 +19,10 @@ function ChangeProject(props: ChangeProjectProps) {
 
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
-    const [projectToSwitch, setProjectToSwitch] = useState<Project|null>(null);
+    const [projectToSwitch, setProjectToSwitch] = useState<IProject|null>(null);
     const {isProjectSaved, setIsProjectSaved, currentProject, setCurrentProject} = useContext(ProjectContext);
 
-    const selectProject = (project: Project) => {
+    const selectProject = (project: IProject) => {
         if (isProjectSaved) {
             switchProject(project);
             return;
@@ -33,7 +33,7 @@ function ChangeProject(props: ChangeProjectProps) {
         setIsPopoverOpen(false);
     };
 
-    const switchProject = (project: Project) => {
+    const switchProject = (project: IProject) => {
         setIsProjectSaved(true);
         setIsDialogOpen(false);
         setIsPopoverOpen(false);
@@ -68,7 +68,7 @@ function ChangeProject(props: ChangeProjectProps) {
                         </ListSubheader>
                     }
                 >
-                    {projectList.map((project: Project, index: number) => (
+                    {projectList.map((project: IProject, index: number) => (
                         <>
                             {currentProject.id !== project.id && (
                                 <ListItem

@@ -10,20 +10,20 @@ class ResourceArgumentTest extends TestCase
 {
     public function testCantSetMinIfWrongType(): void
     {
-        $this->expectExceptionMessage("Can't set App\Document\Embed\ResourceArgument::\$min when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT or App\Document\Embed\ResourceArgument::TYPE_INT");
+        $this->expectExceptionMessage("Can't set App\Document\Embed\ResourceArgument::\$min when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT, App\Document\Embed\ResourceArgument::TYPE_STRING or App\Document\Embed\ResourceArgument::TYPE_INT");
 
         (new ResourceArgumentAlias())
-            ->setType(ResourceArgumentAlias::TYPE_STRING)
+            ->setType(ResourceArgumentAlias::TYPE_SELECT)
             ->setMin('1')
         ;
     }
 
     public function testCantSetMaxIfWrongType(): void
     {
-        $this->expectExceptionMessage("Can't set App\Document\Embed\ResourceArgument::\$max when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT or App\Document\Embed\ResourceArgument::TYPE_INT");
+        $this->expectExceptionMessage("Can't set App\Document\Embed\ResourceArgument::\$max when App\Document\Embed\ResourceArgument::\$type is not App\Document\Embed\ResourceArgument::TYPE_NUMBER, App\Document\Embed\ResourceArgument::TYPE_FLOAT, App\Document\Embed\ResourceArgument::TYPE_STRING or App\Document\Embed\ResourceArgument::TYPE_INT");
 
         (new ResourceArgumentAlias())
-            ->setType(ResourceArgumentAlias::TYPE_STRING)
+            ->setType(ResourceArgumentAlias::TYPE_SELECT)
             ->setMax('1')
         ;
     }
@@ -46,6 +46,11 @@ class ResourceArgumentTest extends TestCase
 
         (new ResourceArgumentAlias())
             ->setType(ResourceArgumentAlias::TYPE_NUMBER)
+            ->setMax('1')
+        ;
+
+        (new ResourceArgumentAlias())
+            ->setType(ResourceArgumentAlias::TYPE_STRING)
             ->setMax('1')
         ;
 

@@ -1,0 +1,25 @@
+FROM node:alpine as development
+
+# ----- SETUP -----
+
+# Set the current working with go absolute path
+WORKDIR /app
+
+# ----- DOWNLOAD PACKAGES -----
+
+# Copy package.json + package-lock.json for install before full copy
+COPY web/package*.json ./
+
+# Install all dependencies
+RUN npm install
+
+# ----- COPY SOURCE & RUN -----
+
+# Copy the source from the current directory to the container
+COPY web/ .
+
+# Expose default Vue port
+EXPOSE 3000
+
+# Start the web server
+ENTRYPOINT ["npm", "run", "start"]

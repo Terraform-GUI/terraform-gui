@@ -1,6 +1,6 @@
 import React, {useState, useRef, useCallback, Dispatch, SetStateAction, useContext} from "react";
 import ReactFlow, {addEdge, Controls, Background, useEdgesState, ReactFlowProvider, OnNodesChange, Node,} from "react-flow-renderer";
-import {ResourceNodeData} from "../../interfaces/ResourceNodeData";
+import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
 import ProjectContext from "../../contexts/ProjectContext";
 import ResourceNode from "../ResourceNode";
 
@@ -10,8 +10,8 @@ const getId = () => `ressource_${id++}`;
 const nodeTypes = { ResourceNode: ResourceNode };
 
 interface SchemaUIProps {
-    nodes: Node<ResourceNodeData>[],
-    setNodes: Dispatch<SetStateAction<Node<ResourceNodeData>[]>>
+    nodes: Node<IResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>
     onNodesChange: OnNodesChange,
 }
 
@@ -21,8 +21,8 @@ function SchemaUI(props: SchemaUIProps) {
     const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
     const {currentProject, setIsProjectSaved} = useContext(ProjectContext);
 
-    const deleteNodesFromProject = (elementsToRemove: Node<ResourceNodeData>[]) => {
-        currentProject.nodes = currentProject.nodes.filter((node: Node<ResourceNodeData>) => {
+    const deleteNodesFromProject = (elementsToRemove: Node<IResourceNodeData>[]) => {
+        currentProject.nodes = currentProject.nodes.filter((node: Node<IResourceNodeData>) => {
             for (const nodeToRemove of elementsToRemove) {
                 if (nodeToRemove.id == node.id) {
                     return false;
@@ -62,8 +62,8 @@ function SchemaUI(props: SchemaUIProps) {
             });
 
             const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
-                    props.setNodes((nodes: Node<ResourceNodeData>[]) =>
-                        nodes.map((node: Node<ResourceNodeData>) => {
+                    props.setNodes((nodes: Node<IResourceNodeData>[]) =>
+                        nodes.map((node: Node<IResourceNodeData>) => {
                         if (node.id === nodeId) {
                             node.data.arguments.map((argument: any) => {
                                 if (argument.name == argumentName) {
@@ -76,7 +76,7 @@ function SchemaUI(props: SchemaUIProps) {
                 );
             }
 
-            const newNode: Node<ResourceNodeData> = {
+            const newNode: Node<IResourceNodeData> = {
                 id: getId(),
                 type,
                 position,

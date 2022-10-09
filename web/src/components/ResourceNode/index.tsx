@@ -1,7 +1,7 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-import { ResourceArgument, Resource } from "../../interfaces/Resource";
-import { Argument } from "../Argument";
+import { IResource } from "../../interfaces/IResource";
+import { Argument } from "./Argument";
 import {
     Button,
     Dialog,
@@ -9,9 +9,11 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
+import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
+import './index.css';
 
 function ResourceNode(data: any) {
-    const resource: Resource = data.data;
+    const resource: IResource = data.data;
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const open = Boolean(anchorEl);
 
@@ -29,7 +31,7 @@ function ResourceNode(data: any) {
 
     useEffect(() => {
         // update argument value to match default value when node is created
-        resource.arguments.forEach((argument: ResourceArgument) => {
+        resource.arguments.forEach((argument: IArgumentNodeData) => {
             if (argument.defaultValue != null) {
                 onArgumentUpdate(argument.name, argument.defaultValue);
             }
@@ -39,7 +41,7 @@ function ResourceNode(data: any) {
 
     return (
         <>
-            <div className={`react-flow__node react-flow__node-input nopan selectable ${data.selected ? 'selected' : ''}`} style={{ visibility: 'visible' }} onClick={handleClickOnNode}>
+            <div className={`react-flow__node-input ${data.selected ? 'selected': ''}`} style={{visibility: 'visible'}} onClick={handleClickOnNode}>
                 <Handle type="target" position={Position.Top} />
                 {resource.type}
                 <Handle type="source" position={Position.Bottom} id="a" />
@@ -48,10 +50,9 @@ function ResourceNode(data: any) {
             <Dialog open={open} onClose={handleCloseForm}>
                 <DialogTitle>{resource.type}</DialogTitle>
                 <DialogContent>
-                    {resource.arguments.map((argument: ResourceArgument, index: number) => (
+                    {resource.arguments.map((argument: IArgumentNodeData, index: number) => (
                         <Argument argument={argument} key={index} onArgumentUpdate={onArgumentUpdate} />
                     ))}
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseForm}>Close</Button>
