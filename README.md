@@ -5,7 +5,7 @@
 [![ WEB [CD]](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.cd.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/web.cd.yml)
 [![API [CD]](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.cd.yml/badge.svg)](https://github.com/Terraform-GUI/terraform-gui/actions/workflows/api.cd.yml)
 
-[![](https://img.shields.io/github/release-date/Terraform-GUI/terraform-gui)](https://github.com/Terraform-GUI/terraform-gui/commits/main)
+[![](https://img.shields.io/github/v/release/Terraform-GUI/terraform-gui?display_name=tag)](https://github.com/Terraform-GUI/terraform-gui/releases)
 [![](https://img.shields.io/github/issues/Terraform-GUI/terraform-gui)](https://github.com/Terraform-GUI/terraform-gui/issues)
 [![](https://img.shields.io/github/issues-pr/Terraform-GUI/terraform-gui)](https://github.com/Terraform-GUI/terraform-gui/pulls)
 [![](https://img.shields.io/github/license/Terraform-GUI/terraform-gui)](https://github.com/Terraform-GUI/terraform-gui/blob/main/LICENSE)

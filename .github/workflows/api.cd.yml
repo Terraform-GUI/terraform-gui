@@ -7,9 +7,9 @@ on:
       - 'ops'
       - 'main'
     paths:
-      - "build/package/api/Dockerfile"
-      - "api/"
-
+      - 'build/package/api/**'
+      - 'api/**'
+      - '.github/**'
 
 jobs:
   RELEASE:
@@ -26,7 +26,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GPAT }}
 
       # Setup custom tag name
       - name: 3 - SETUP ENV VARS
@@ -42,8 +42,7 @@ jobs:
         with:
           push: true
           context: .
-          file: build/package/api/Dockerfile
-          target: production 
+          file: build/package/api/Dockerfile.prod
           tags: |
             ghcr.io/blyndusk/tf-gui_api:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
             ghcr.io/blyndusk/tf-gui_api:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}

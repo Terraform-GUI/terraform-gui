@@ -63,7 +63,7 @@ class SecurityController extends AbstractController
                 ->to($user->getEmail())
                 ->subject('Reset your password')
                 ->text('Reset your password')
-                ->html('<p>Reset your password</p> <a href="'.$_ENV['FRONT_URL'].'password/reset?token='.$passwordRecoveryRequest->getToken().'">Reset your password</a>');
+                ->html('<p>Reset your password</p> <a href="'.$_ENV['FRONT_URL'].'/password/reset?token='.$passwordRecoveryRequest->getToken().'">Reset your password</a>');
 
             $mailer->send($email);
 
