@@ -1,0 +1,30 @@
+FROM php:8.1-apache as base
+
+# enable Apache mod_rewrite + mod_header
+RUN a2enmod rewrite \
+  && a2enmod headers
+
+# update
+RUN apt-get update \
+  # install base packages
+  && apt-get install -y git unzip libzip-dev libcurl4-openssl-dev pkg-config libssl-dev apt-transport-https gnupg apt-utils --no-install-recommends \
+  # install mongodb packages
+  && pecl install mongodb \
+  && docker-php-ext-enable mongodb \
+  # install mysql packages
+  && docker-php-ext-install mysqli pdo pdo_mysql zip \
+  # clean
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+FROM base as development
+
+# install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install symfony cli
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
+
+RUN apt install symfony-cli
+
+CMD composer install; apache2-foreground
