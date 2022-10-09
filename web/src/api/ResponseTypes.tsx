@@ -10,3 +10,7 @@ export interface ILoginResponse {
 export interface IConfirmUserMailResponse {
   success: boolean;
 }
+
+export interface IUpdateMailResponse {
+  success: boolean;
+}

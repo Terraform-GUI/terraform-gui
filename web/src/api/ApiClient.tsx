@@ -8,6 +8,7 @@ export interface IApiClient {
   put<TRequest, TResponse>(path: string, object: TRequest): Promise<TResponse>;
   get<TResponse>(path: string): Promise<TResponse>;
   delete<TResponse>(path: string): Promise<TResponse>;
+  patch<TRequest, TResponse>(path: string, object: TRequest): Promise<TResponse>;
 }
 
 export default class ApiClient implements IApiClient {
@@ -72,6 +73,19 @@ export default class ApiClient implements IApiClient {
   async delete<TResponse>(path: string): Promise<TResponse> {
     try {
       const response = await this.client.delete<TResponse>(path);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+    return {} as TResponse;
+  }
+
+  async patch<TRequest, TResponse>(
+    path: string,
+    payload: TRequest
+  ): Promise<TResponse> {
+    try {
+      const response = await this.client.patch<TResponse>(path, payload);
       return response.data;
     } catch (error) {
       console.log(error);

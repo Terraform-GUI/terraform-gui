@@ -3,12 +3,14 @@ import {
   IRegisterResponse, 
   ILoginResponse,
   IConfirmUserMailResponse,
+  IUpdateMailResponse,
 } from './ResponseTypes'
 
 export interface IUserApiClient {
   register: (email: string, password: string, confirm: string) => Promise<IRegisterResponse | undefined>;
   login: (email: string, password: string) => Promise<ILoginResponse | undefined>;
   confirmUserMail: (token: string) => Promise<IConfirmUserMailResponse | undefined>;
+  updateMail: (email: string) => Promise<IUpdateMailResponse | undefined>;
 }
 
 export class UserApiClient implements IUserApiClient {
@@ -55,6 +57,17 @@ export class UserApiClient implements IUserApiClient {
       console.log(error);
     }
   }
+
+  async updateMail(email: string): Promise<IUpdateMailResponse | undefined> {
+    try {
+      const response:IUpdateMailResponse = await this.userApiClient.patch('/api/users/email', {
+        "email" : email,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default class UserService {
@@ -74,5 +87,9 @@ export default class UserService {
 
   async confirmUserMail(token: string): Promise<IConfirmUserMailResponse | undefined> {
     return this.userApiClient.confirmUserMail(token);
+  }
+
+  async updateMail(email: string): Promise<IUpdateMailResponse | undefined> {
+    return this.userApiClient.updateMail(email);
   }
 }
