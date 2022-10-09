@@ -43,7 +43,6 @@ jobs:
           push: true
           context: .
           file: build/package/api/Dockerfile.prod
-          target: production 
           tags: |
             ghcr.io/blyndusk/tf-gui_api:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}-${{ env.CURRENT_DATE }}
             ghcr.io/blyndusk/tf-gui_api:${{ env.BRANCH_NAME }}-${{ env.GITHUB_SHA_SHORT }}
