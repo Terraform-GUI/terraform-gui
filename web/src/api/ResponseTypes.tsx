@@ -21,7 +21,9 @@ export interface IDeleteAccountResponse {
 export interface IForgotPasswordResponse {
   success: boolean;
 }
-
 export interface IResetPasswordResponse {
+  success: boolean;
+}
+export interface IRefreshTokenResponse {
   success: boolean;
 }

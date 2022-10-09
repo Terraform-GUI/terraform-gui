@@ -7,6 +7,7 @@ import {
   IDeleteAccountResponse,
   IForgotPasswordResponse,
   IResetPasswordResponse,
+  IRefreshTokenResponse,
 } from './ResponseTypes'
 
 export interface IUserApiClient {
@@ -17,6 +18,7 @@ export interface IUserApiClient {
   deleteAccount: () => Promise<IDeleteAccountResponse | undefined>;
   forgotPassword: (email: string) => Promise<IForgotPasswordResponse | undefined>;
   resetPassword: (token: string, password: string, confirm: string) => Promise<IResetPasswordResponse | undefined>;
+  refreshToken: (token: string) => Promise<IRefreshTokenResponse | undefined>;
 }
 
 export class UserApiClient implements IUserApiClient {
@@ -86,7 +88,7 @@ export class UserApiClient implements IUserApiClient {
 
   async forgotPassword(email: string): Promise<IForgotPasswordResponse | undefined> {
     try {
-      const response:IForgotPasswordResponse = await this.apiClient.post('password/forget', {
+      const response:IForgotPasswordResponse = await this.apiClient.post('/password/forget', {
         "email" : email,
       });
       return response;
@@ -97,12 +99,23 @@ export class UserApiClient implements IUserApiClient {
 
   async resetPassword(token: string, password: string, confirm: string): Promise<IResetPasswordResponse | undefined> {
     try {
-      const response:IResetPasswordResponse = await this.apiClient.post('password/reset', {
+      const response:IResetPasswordResponse = await this.apiClient.post('/password/reset', {
         "token" : token,
         "password" : {
           "password" : password,
           "confirm" : confirm,
         },
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async refreshToken(token: string): Promise<IRefreshTokenResponse | undefined> {
+    try {
+      const response:IRefreshTokenResponse = await this.apiClient.post('/token/refresh', {
+        "token" : token,
       });
       return response;
     } catch (error) {
@@ -144,5 +157,9 @@ export default class UserService {
 
   async resetPassword(token: string, password: string, confirm: string): Promise<IResetPasswordResponse | undefined> {
     return this.userApiClient.resetPassword(token, password, confirm);
+  }
+  
+  async refreshToken(token: string): Promise<IRefreshTokenResponse | undefined> {
+    return this.userApiClient.refreshToken(token);
   }
 }

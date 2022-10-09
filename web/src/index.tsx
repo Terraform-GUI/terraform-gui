@@ -24,10 +24,7 @@ root.render(
 		<UserContextProvider>
 			<BrowserRouter>
 				<Routes>
-					<Route
-						path="/"
-						element={<App />}
-					/>
+					<Route path="/" element={<App />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/forgot-password" element={<ForgotPassword />} />
