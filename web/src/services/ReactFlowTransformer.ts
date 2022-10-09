@@ -60,7 +60,6 @@ export function mergeNodesWithResource(
 {
     const mergedNodes: Node<INodeData>[] = [];
 
-    console.log(nodes);
     nodes.forEach((node: Node<ISavedNodeData>) => {
         resources.map((resource: IResource) => {
             if (resource.type === node.data.resource.type) {

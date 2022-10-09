@@ -31,5 +31,9 @@ export interface IRefreshTokenResponse {
 }
 
 export interface IGetProjectsResponse {
-  projects: ISavedProject[]
+  projects: ISavedProject[];
+}
+
+export interface IDeleteProjectResponse {
+  success: boolean;
 }
