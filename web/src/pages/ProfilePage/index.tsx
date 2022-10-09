@@ -11,12 +11,19 @@ export const Profile: FunctionComponent = () => {
   const [error, setError] = useState("");
 	const navigate = useNavigate();
 
+	function logout () {
+		setEmail('');
+		setAccessToken('');
+		setRefreshToken('');
+		localStorage.clear();
+		navigate('/home');
+	}
+
 	return (
 		<div className="profile">
-			{/* update email */}	
 			<Email/>
 			{/* reset password */}
-			{/* log out */}
+			<Button onClick={() => logout()}>Log out</Button>
 			{/* delete account */}
 		</div>
 	);

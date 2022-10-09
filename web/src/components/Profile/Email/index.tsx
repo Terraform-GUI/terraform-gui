@@ -25,6 +25,7 @@ export const Email: FunctionComponent = () => {
 			setEmail('');
 			setAccessToken('');
 			setRefreshToken('');
+			localStorage.clear();
 		}
   }
 
