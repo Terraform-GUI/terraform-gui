@@ -12,6 +12,7 @@ import Register from './pages/RegisterPage';
 import ForgotPassword from './pages/ForgotPasswordPage';
 import ResetPassword from './pages/ResetPasswordPage';
 import ConfirmUserMail from './pages/ConfirmUserMailPage';
+import Profile from './pages/ProfilePage';
 
 import UserContextProvider from "./contexts/UserContextProvider";
 
@@ -32,6 +33,7 @@ root.render(
 					<Route path="/forgot-password" element={<ForgotPassword />} />
 					<Route path="/reset-password" element={<ResetPassword />} />
 					<Route path="/user/confirm" element={<ConfirmUserMail />} />
+					<Route path="/profile" element={<Profile />} />
 					<Route path="/home" element={<Home />} />
 				</Routes>
 			</BrowserRouter>

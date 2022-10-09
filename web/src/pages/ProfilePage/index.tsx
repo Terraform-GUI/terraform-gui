@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { userService } from '../../api'
 import UserContext from '../../contexts/UserContext';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Email from '../../components/Profile/Email'
 
 export const Profile: FunctionComponent = () => {
@@ -32,7 +32,11 @@ export const Profile: FunctionComponent = () => {
 	return (
 		<div className="profile">
 			<Email/>
-			{/* reset password */}
+			<Link to="/forgot-password" style={{textDecoration: 'none'}}>
+				<Button variant="contained" color="primary" >
+					Reset Password
+				</Button>
+			</Link>
 			<Button onClick={() => logout()}>Log out</Button>
 			<Button onClick={() => deleteAccount()}>Delete account</Button>
 		</div>
