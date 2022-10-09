@@ -9,22 +9,22 @@ import {
     Typography
 } from "@mui/material";
 import React, {useEffect} from 'react';
-import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
+import {INodeData} from "../../interfaces/INodeData";
 import {Node} from "react-flow-renderer";
 import {ExpandMore} from "@mui/icons-material";
 import {Dispatch, SetStateAction} from "react";
 import {IArgumentNodeData} from "../../interfaces/IArgumentNodeData";
 
 interface ResourceSideBarProps {
-    nodes: Node<IResourceNodeData>[],
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    nodes: Node<INodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
 }
 
 function Index(props: ResourceSideBarProps) {
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     useEffect(() => {
-        props.nodes.forEach((node: Node<IResourceNodeData>) => {
+        props.nodes.forEach((node: Node<INodeData>) => {
             // TODO: why are nodes rendered twice in a row each time there is a change ?
             if (node.selected === true) {
                 setExpanded(node.id);
@@ -37,8 +37,8 @@ function Index(props: ResourceSideBarProps) {
             setExpanded(isExpanded ? nodeId : false);
 
             // select node unless accordion is flattened
-            props.setNodes((nodes: Node<IResourceNodeData>[]) =>
-                nodes.map((node: Node<IResourceNodeData>) => {
+            props.setNodes((nodes: Node<INodeData>[]) =>
+                nodes.map((node: Node<INodeData>) => {
                     if (node.id === nodeId && isExpanded === true) {
                         node.selected = true;
                     } else {
@@ -62,7 +62,7 @@ function Index(props: ResourceSideBarProps) {
                     <ListItemText primary={"Resources"} />
                 </ListItem>
 
-                {props.nodes.map((node: Node<IResourceNodeData>, index: number) => (
+                {props.nodes.map((node: Node<INodeData>, index: number) => (
                     <Accordion
                         key={index}
                         expanded={expanded === node.id}
@@ -71,10 +71,10 @@ function Index(props: ResourceSideBarProps) {
                         <AccordionSummary
                             expandIcon={<ExpandMore />}
                         >
-                            <Typography>{node.data.type}</Typography>
+                            <Typography>{node.data.resource.type}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {node.data.arguments.map((argument: IArgumentNodeData, index: number) => (
+                            {node.data.resource.arguments.map((argument: IArgumentNodeData, index: number) => (
                                 <div key={index}>
                                     <b>{argument.name}</b>: {argument.value != undefined ? argument.value.toString() : ''} <br/>
                                 </div>

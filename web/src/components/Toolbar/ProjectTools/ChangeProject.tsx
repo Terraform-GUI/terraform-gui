@@ -2,15 +2,16 @@ import {Button, IconButton, List, ListItem, ListItemButton, ListItemText, ListSu
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {IProject} from "../../../interfaces/IProject";
-import {Node} from "react-flow-renderer";
-import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
+import {Edge, Node} from "react-flow-renderer";
+import {INodeData} from "../../../interfaces/INodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 
 interface ChangeProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
-    nodes: Node<IResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
+    nodes: Node<INodeData>[],
+    edges: Edge[]
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -106,6 +107,7 @@ function ChangeProject(props: ChangeProjectProps) {
                             if (projectToSwitch) switchProject(projectToSwitch)
                         }}
                         nodes={props.nodes}
+                        edges={props.edges}
                     />
                 ]}
             />

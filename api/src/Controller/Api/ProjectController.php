@@ -29,7 +29,7 @@ class ProjectController extends AbstractController
         $projects = $dm->getRepository(Project::class)
             ->findBy(['userId' => $user->getId()]);
 
-        return $this->json(['projects' => $projects], context: ['groups' => 'get_all_projects']);
+        return $this->json(['projects' => $projects]);
     }
 
     #[Route('/projects/{id}', name: 'get_project', methods: 'GET')]

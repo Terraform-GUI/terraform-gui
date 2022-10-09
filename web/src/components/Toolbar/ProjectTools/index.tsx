@@ -1,23 +1,24 @@
 import ChangeProject from "./ChangeProject";
 import {Dispatch, SetStateAction} from "react";
-import {Node} from "react-flow-renderer";
-import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
+import {Edge, Node} from "react-flow-renderer";
+import {INodeData} from "../../../interfaces/INodeData";
 import CurrentProject from "./CurrentProject";
 import CreateProject from "./CreateProject";
 import DeleteProject from "./DeleteProject";
 
 interface ProjectToolsProps {
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
-    nodes: Node<IResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
+    nodes: Node<INodeData>[],
+    edges: Edge[]
 }
 
 function ProjectTools(props: ProjectToolsProps) {
 
     return (
         <>
-            <ChangeProject setNodes={props.setNodes} nodes={props.nodes} />
+            <ChangeProject setNodes={props.setNodes} nodes={props.nodes} edges={props.edges} />
             <CurrentProject />
-            <CreateProject setNodes={props.setNodes} nodes={props.nodes} />
+            <CreateProject setNodes={props.setNodes} nodes={props.nodes} edges={props.edges} />
             <DeleteProject setNodes={props.setNodes} />
         </>
     )

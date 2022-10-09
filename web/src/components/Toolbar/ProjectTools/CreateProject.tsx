@@ -2,15 +2,16 @@ import {Button, IconButton, Tooltip} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import React, {Dispatch, SetStateAction, useContext, useState} from "react";
 import {IProject} from "../../../interfaces/IProject";
-import {Node} from "react-flow-renderer";
-import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
+import {Edge, Node} from "react-flow-renderer";
+import {INodeData} from "../../../interfaces/INodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 
 interface CreateProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
-    nodes: Node<IResourceNodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
+    nodes: Node<INodeData>[],
+    edges: Edge[]
 }
 
 function CreateProject(props: CreateProjectProps) {
@@ -52,6 +53,7 @@ function CreateProject(props: CreateProjectProps) {
                     <SaveProject
                         secondaryAction={createProject}
                         nodes={props.nodes}
+                        edges={props.edges}
                     />
                 ]}
             />

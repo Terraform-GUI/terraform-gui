@@ -1,6 +1,15 @@
 import React, {useState, useRef, useCallback, Dispatch, SetStateAction, useContext} from "react";
-import ReactFlow, {addEdge, Controls, Background, useEdgesState, ReactFlowProvider, OnNodesChange, Node,} from "react-flow-renderer";
-import {IResourceNodeData} from "../../interfaces/IResourceNodeData";
+import ReactFlow, {
+    addEdge,
+    Controls,
+    Background,
+    ReactFlowProvider,
+    OnNodesChange,
+    OnEdgesChange,
+    Node,
+    Edge,
+} from "react-flow-renderer";
+import {INodeData} from "../../interfaces/INodeData";
 import ProjectContext from "../../contexts/ProjectContext";
 import ResourceNode from "../ResourceNode";
 
@@ -10,19 +19,21 @@ const getId = () => `ressource_${id++}`;
 const nodeTypes = { ResourceNode: ResourceNode };
 
 interface SchemaUIProps {
-    nodes: Node<IResourceNodeData>[],
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>
+    nodes: Node<INodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>
+    edges: Edge[],
+    setEdges: Dispatch<SetStateAction<Edge[]>>
     onNodesChange: OnNodesChange,
+    onEdgesChange: OnEdgesChange
 }
 
 function SchemaUI(props: SchemaUIProps) {
     const reactFlowWrapper: any = useRef(null);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [reactFlowInstance, setReactFlowInstance]: any = useState(null);
     const {currentProject, setIsProjectSaved} = useContext(ProjectContext);
 
-    const deleteNodesFromProject = (elementsToRemove: Node<IResourceNodeData>[]) => {
-        currentProject.nodes = currentProject.nodes.filter((node: Node<IResourceNodeData>) => {
+    const deleteNodesFromProject = (elementsToRemove: Node<INodeData>[]) => {
+        currentProject.nodes = currentProject.nodes.filter((node: Node<INodeData>) => {
             for (const nodeToRemove of elementsToRemove) {
                 if (nodeToRemove.id == node.id) {
                     return false;
@@ -34,7 +45,7 @@ function SchemaUI(props: SchemaUIProps) {
     };
 
     const onConnect = useCallback(
-        (params: any) => {setEdges((eds) => addEdge(params, eds))},
+        (params: any) => {props.setEdges((eds) => addEdge(params, eds))},
         []
     );
 
@@ -62,10 +73,10 @@ function SchemaUI(props: SchemaUIProps) {
             });
 
             const onArgumentUpdate = (nodeId: string, argumentName: string, argumentValue: any) => {
-                    props.setNodes((nodes: Node<IResourceNodeData>[]) =>
-                        nodes.map((node: Node<IResourceNodeData>) => {
+                    props.setNodes((nodes: Node<INodeData>[]) =>
+                        nodes.map((node: Node<INodeData>) => {
                         if (node.id === nodeId) {
-                            node.data.arguments.map((argument: any) => {
+                            node.data.resource.arguments.map((argument: any) => {
                                 if (argument.name == argumentName) {
                                     argument.value = argumentValue;
                                 }
@@ -76,16 +87,18 @@ function SchemaUI(props: SchemaUIProps) {
                 );
             }
 
-            const newNode: Node<IResourceNodeData> = {
+            const newNode: Node<INodeData> = {
                 id: getId(),
                 type,
                 position,
                 data: {
                     label: resource.type,
-                    description: resource.description,
-                    type: resource.type,
-                    arguments: resource.arguments,
-                    onArgumentUpdate: onArgumentUpdate
+                    onArgumentUpdate: onArgumentUpdate,
+                    resource: {
+                        description: resource.description,
+                        type: resource.type,
+                        arguments: resource.arguments,
+                    }
                 },
             };
 
@@ -101,10 +114,10 @@ function SchemaUI(props: SchemaUIProps) {
             <div className="wrapper_reactflow" ref={reactFlowWrapper}>
                 <ReactFlow
                     nodes={props.nodes}
-                    edges={edges}
+                    edges={props.edges}
                     onNodesDelete={deleteNodesFromProject}
                     onNodesChange={props.onNodesChange}
-                    onEdgesChange={onEdgesChange}
+                    onEdgesChange={props.onEdgesChange}
                     onNodeDragStart={() => setIsProjectSaved(false)}
                     onEdgeClick={() => setIsProjectSaved(false)}
                     onConnect={onConnect}

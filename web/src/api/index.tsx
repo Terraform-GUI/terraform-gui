@@ -3,21 +3,21 @@ import UserService, {
   UserApiClient,
 } from './UserService';
 import axios from 'axios';
-import Axios, { AxiosInstance } from 'axios';
+import ResourceService, {ResourceApiClient} from "./ResourceService";
+import ProjectService, {ProjectApiClient} from "./ProjectService";
 
 function buildServices() {
-  
+
   const accessToken = localStorage.getItem('access_token');
-  const apiClient = new ApiClient(accessToken || '');
   const loggedApiClient = new ApiClient(accessToken || '');
 
-  loggedApiClient.client.interceptors.response.use( 
+  loggedApiClient.client.interceptors.response.use(
     response => {
       return response
     },
     function (error) {
       let originalRequest = error.config
-      
+
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true
         const refreshToken = localStorage.getItem('refresh_token')
@@ -49,8 +49,10 @@ function buildServices() {
 
   return {
     userService: new UserService(new UserApiClient(loggedApiClient)),
+    resourceService: new ResourceService(new ResourceApiClient(loggedApiClient)),
+    projectService: new ProjectService(new ProjectApiClient(loggedApiClient)),
     //add here other services ...Service: new ...Service(new ...ApiClient(apiClient/loggedApiClient)),
   };
 }
 
-export const {userService} = buildServices();
+export const {userService, resourceService, projectService} = buildServices();

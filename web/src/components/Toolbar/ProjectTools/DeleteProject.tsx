@@ -5,10 +5,10 @@ import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 import {IProject} from "../../../interfaces/IProject";
 import {Node} from "react-flow-renderer";
-import {IResourceNodeData} from "../../../interfaces/IResourceNodeData";
+import {INodeData} from "../../../interfaces/INodeData";
 
 interface DeleteProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<IResourceNodeData>[]>>,
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
 }
 
 function DeleteProject(props: DeleteProjectProps) {

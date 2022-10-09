@@ -1,7 +1,7 @@
 import {Node} from 'react-flow-renderer';
-import {IResourceNodeData} from "./IResourceNodeData";
+import {INodeData} from "./INodeData";
 import {ISavedProject} from "./ISavedProject";
 
 export interface IProject extends ISavedProject {
-    nodes: Node<IResourceNodeData>[]
+    nodes: Node<INodeData>[]
 }
