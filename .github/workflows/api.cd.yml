@@ -8,7 +8,7 @@ on:
       - 'main'
     paths:
       - "build/package/api/Dockerfile"
-      - "api/"
+      - "api/**"
 
 
 jobs:
