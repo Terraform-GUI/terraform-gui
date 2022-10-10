@@ -21,6 +21,7 @@ class UserFixtures
         $hashedPassword = $this->passwordHasher->hashPassword($user, 'toto');
         $user->setPassword($hashedPassword);
         $user->setEmail('john@doe.fr');
+        $user->setToken(null);
 
         $this->documentManager->persist($user);
         $this->documentManager->flush();
