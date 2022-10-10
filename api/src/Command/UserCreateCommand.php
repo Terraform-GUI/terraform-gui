@@ -52,6 +52,7 @@ class UserCreateCommand extends Command
         $user->setPassword($hashedPassword);
 
         $user->setEmail($email);
+        $user->setToken(null);
 
         $errors = $this->validator->getErrors($user);
 
