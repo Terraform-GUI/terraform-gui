@@ -17,8 +17,14 @@ class Edge
     private string $source; // Unique node identifier for react flow
 
     #[MongoDB\Field(type: 'string')]
+    private ?string $sourceHandle;
+
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     private string $target; // Unique node identifier for react flow
+
+    #[MongoDB\Field(type: 'string')]
+    private ?string $targetHandle;
 
     public function getId(): string
     {
@@ -40,6 +46,16 @@ class Edge
         $this->source = $source;
     }
 
+    public function getSourceHandle(): ?string
+    {
+        return $this->sourceHandle;
+    }
+
+    public function setSourceHandle(?string $sourceHandle): void
+    {
+        $this->sourceHandle = $sourceHandle;
+    }
+
     public function getTarget(): string
     {
         return $this->target;
@@ -48,5 +64,15 @@ class Edge
     public function setTarget(string $target): void
     {
         $this->target = $target;
+    }
+
+    public function getTargetHandle(): ?string
+    {
+        return $this->targetHandle;
+    }
+
+    public function setTargetHandle(?string $targetHandle): void
+    {
+        $this->targetHandle = $targetHandle;
     }
 }
