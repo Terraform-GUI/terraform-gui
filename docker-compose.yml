@@ -19,7 +19,7 @@ services:
     container_name: tf-gui_api
     build:
       context: .
-      dockerfile: build/package/api/Dockerfile
+      dockerfile: build/package/api/Dockerfile.dev
       target: development
     ports:
       - 8080:80
