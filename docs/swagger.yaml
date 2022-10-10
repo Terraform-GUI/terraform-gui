@@ -1,611 +1,474 @@
 openapi: 3.0.0
 info:
-  version: '0.1'
-  title: TerraformGUI
-  description: A convenient way to use and learn Terraform
+  title: TERRAFORM GUI
+  version: 1.0.0
+servers:
+  - url: https://github.com
+  - url: https://api.github.com
+  - url: http://{{host}}
+  - url: http://{{host}}password
+components:
+  securitySchemes:
+    apikeyAuth:
+      type: http
+      scheme: apikey
+    noauthAuth:
+      type: http
+      scheme: noauth
+tags:
+  - name: Github Flow
+  - name: /api
+  - name: /api > /users
+  - name: /api > /projects
+  - name: /login
+  - name: /users
+  - name: /users > /password
 paths:
+  /login/oauth/authorize:
+    get:
+      tags:
+        - Github Flow
+      summary: 1. Authorize Github app link
+      parameters:
+        - name: client_id
+          in: query
+          schema:
+            type: string
+          example: '{{GITHUB_APP_CLIENT_ID}}'
+        - name: redirect_uri
+          in: query
+          schema:
+            type: string
+          example: '{{GITHUB_POST_AUTH_LINK_CALLBACK}}'
+        - name: state
+          in: query
+          schema:
+            type: string
+          example: random
+        - name: scope
+          in: query
+          schema:
+            type: string
+          example: user:email
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /login/oauth/access_token:
+    get:
+      tags:
+        - Github Flow
+      summary: Request Refresh Token
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: refresh_token
+          in: query
+          schema:
+            type: string
+          example: '{{GITHUB_USER_REFRESH_TOKEN}}'
+        - name: grant_type
+          in: query
+          schema:
+            type: string
+          example: refresh_token
+        - name: client_id
+          in: query
+          schema:
+            type: string
+          example: '{{GITHUB_APP_CLIENT_ID}}'
+        - name: client_secret
+          in: query
+          schema:
+            type: string
+          example: '{{GITHUB_APP_CLIENT_SECRET}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user/emails:
+    get:
+      tags:
+        - Github Flow
+      summary: 4. Retrieve User Emails
+      security:
+        - apikeyAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/{GITHUB_APP_CLIENT_ID}/token:
+    get:
+      tags:
+        - Github Flow
+      summary: Check an Access Token
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: GITHUB_APP_CLIENT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/email:
+    patch:
+      tags:
+        - /api > /users
+      summary: request_update_email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: new-email@test.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/me:
+    get:
+      tags:
+        - /api > /users
+      summary: me
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/delete:
+    delete:
+      tags:
+        - /api > /users
+      summary: delete_user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects:
+    get:
+      tags:
+        - /api > /projects
+      summary: get_all_projects
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - /api > /projects
+      summary: create_project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: test
+                nodes:
+                  - id: test
+                    data:
+                      label: label
+                      resource:
+                        type: aws_vpc
+                        description: description vpc
+                        arguments:
+                          - name: tenancy
+                            value: default
+                    position:
+                      x: 1
+                      'y': 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/{PROJECT_ID}:
+    get:
+      tags:
+        - /api > /projects
+      summary: get_project
+      parameters:
+        - name: PROJECT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - /api > /projects
+      summary: update_project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: new name
+                nodes:
+                  - id: '1'
+                    data:
+                      label: new label
+                      resource:
+                        type: aws_vpc
+                        description: new description vpc
+                        arguments:
+                          - name: tenancy
+                            value: '1'
+                    position:
+                      x: 2
+                      'y': 1
+                  - id: '2'
+                    data:
+                      label: new label
+                      resource:
+                        type: aws_ec2
+                        description: new description ec2
+                        arguments:
+                          - name: ami
+                            value: test
+                    position:
+                      x: 2
+                      'y': 1
+                edges:
+                  - id: 2-1
+                    source: '2'
+                    target: '1'
+      parameters:
+        - name: PROJECT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - /api > /projects
+      summary: delete_project
+      parameters:
+        - name: PROJECT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/{PROJECT_ID}/terraform:
+    get:
+      tags:
+        - /api > /projects
+      summary: get_template_terraform
+      parameters:
+        - name: PROJECT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/{PROJECT_ID}/terraform-archive:
+    get:
+      tags:
+        - /api > /projects
+      summary: get_archive_terraform
+      parameters:
+        - name: PROJECT_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/test:
+    get:
+      tags:
+        - /api
+      summary: test
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/login:
+    post:
+      tags:
+        - /api
+      summary: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                username: '{{USERNAME}}'
+                password: '{{PASSWORD}}'
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/token/refresh:
+    post:
+      tags:
+        - /api
+      summary: token_refresh
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                refresh_token: '{{REFRESH_TOKEN}}'
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /login/github:
+    get:
+      tags:
+        - /login
+      summary: login_github
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /forget:
+    post:
+      tags:
+        - /users > /password
+      summary: /forget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: test@testdd.fr
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /password/reset:
+    post:
+      tags:
+        - /users > /password
+      summary: /reset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                token: >-
+                  51fc3e46ea1555acfc32c85ed4069be2ae3238bef976df543e8858a67d0fbb21
+                password:
+                  password: totoA123
+                  confirm: totoA123
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /register:
     post:
-      description: Creates an user
+      tags:
+        - default
+      summary: register
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object 
-              required:
-                - user_id
-                - data
-              properties:
-                user_id:
-                  type: integer
-                data:
-                  type: object
+              type: object
+              example:
+                email: '{{USERNAME}}'
+                password:
+                  password: '{{PASSWORD}}'
+                  confirm: '{{PASSWORD}}'
       responses:
         '200':
-          description: Successfully created a new user
+          description: Successful response
           content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - user_id
-                  - data
-                properties:
-                  user_id: 
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-  
-  /login:
+            application/json: {}
+  /users/confirm:
     post:
-      description: Returns a specific user
+      tags:
+        - default
+      summary: confirm
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object 
-              required:
-                - mail
-                - password
-              properties:
-                mail:
-                  type: string
-                password: 
-                  type: string
+              type: object
+              example:
+                token: >-
+                  b5d23a3195abad83f5a8e9fdc9601f9ee9b2abf30fadc32192794bd762b788e2
+      security:
+        - noauthAuth: []
       responses:
         '200':
-          description: Successfully logged in
+          description: Successful response
           content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - user_id
-                  - data
-                properties:
-                  user_id:
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-                    
-  /users/{user_id}:
-    put:
-      description: Updates an user
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the user to update
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object 
-              required:
-                - data
-              properties:
-                data:
-                  type: object
-      responses:
-        '200':
-          description: Successfully updated the required user
-          content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - user_id
-                  - data
-                properties:
-                  user_id: 
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-    delete:
-      description: Deletes a user
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the user to delete
-      responses:
-        '200':
-          description: Successfully deleted the required user
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-                    
-  /users/{user_id}/reset-password:
-    get:
-      description: Resets a user's password
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the required user
-      responses:
-        '200':
-          description: Successfully sent confirmation mail
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-  /nodes/aws:
-    get:
-      description: Returns a list of available aws services
-      responses:
-        '200':
-          description: Successfully returned the aws services
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - type
-                    - text
-                    - options
-                  properties:
-                    type:
-                      type: string
-                    text:
-                      type: string
-                    options:
-                      type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-                    
-  /projects:
-    get:
-      description: Returns a user's projects
-      parameters:
-        - name: user_id
-          in: query
-          description: The id of the current user
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Successfully returned the user's projects
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - user_id
-                    - project_id
-                    - data
-                  properties:
-                    user_id:
-                      type: integer
-                    project_id:
-                      type: integer
-                    data:
-                      type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
+            application/json: {}
+  /users/confirm/email:
     post:
-      description: Creates a project
+      tags:
+        - default
+      summary: confirm_email
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object 
-              required:
-                - user_id
-                - data
-              properties:
-                user_id:
-                  type: integer
-                data:
-                  type: object
+              type: object
+              example:
+                token: >-
+                  bdd93289576d9f62b4edfa410657a214b961f229af54bfa6249b8c8e6c5d24d3
+      security:
+        - noauthAuth: []
       responses:
         '200':
-          description: Successfully created a new project
+          description: Successful response
           content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - project_id
-                  - data
-                properties:
-                  project_id: 
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-  
-  /projects/{project_id}:
-    get:
-      description: Returns a specific project
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the required project
-      responses:
-        '200':
-          description: Successfully returned the required project
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - user_id
-                  - project_id
-                  - data
-                properties:
-                  user_id:
-                    type: integer
-                  project_id:
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-    put:
-      description: Updates a project
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the project to update
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object 
-              required:
-                - data
-              properties:
-                data:
-                  type: object
-      responses:
-        '200':
-          description: Successfully updated the required project
-          content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - project_id
-                  - data
-                properties:
-                  project_id: 
-                    type: integer
-                  data:
-                    type: object
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-    delete:
-      description: Deletes a project
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the project to delete
-      responses:
-        '200':
-          description: Successfully deleted the required project
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-  /projects/{project_id}/hcl-preview:
-    post:
-      description: Triggers the hcl preview generation for the required project
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the required project
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object 
-              properties:
-                project_id:
-                  type: integer
-                data:
-                  type: object
-      responses:
-        '200':
-          description: Successfully generated hcl preview
-          content:
-            application/json:
-              schema:
-                type: string 
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-                    
-  /projects/{project_id}/variables:
-    get:
-      description: Returns a project's variables
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the current project
-      responses:
-        '200':
-          description: Successfully returned the project's variables
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - project_id
-                    - variable_id
-                    - name
-                  properties:
-                    project_id:
-                      type: integer
-                    variable_id:
-                      type: integer
-                    name:
-                      type: string
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-    post:
-      description: Creates a variable
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the current project
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object 
-              required:
-                - name
-                - data
-              properties:
-                name:
-                  type: string
-                data: 
-                  type: object
-      responses:
-        '200':
-          description: Successfully created a new variable
-          content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - variable_id
-                  - project_id
-                  - name
-                properties:
-                  variable_id: 
-                    type: string
-                  project_id: 
-                    type: integer
-                  name:
-                    type: string
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-  /projects/{project_id}/variables/{variable_id}:
-    put:
-      description: Updates a variable
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the current project
-        - in: path
-          name: variable_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the variable to update
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object 
-              required:
-                - name
-                - data
-              properties:
-                name:
-                  type: string
-                data: 
-                  type: object
-      responses:
-        '200':
-          description: Successfully updated the required variable
-          content:
-            application/json:
-              schema:
-                type: object 
-                required:
-                  - variable_id
-                  - project_id
-                  - name
-                properties:
-                  variable_id:
-                    type: integer
-                  project_id: 
-                    type: integer
-                  name:
-                    type: string
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
+            application/json: {}
 
-    delete:
-      description: Deletes a variable
-      parameters:
-        - in: path
-          name: project_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the current project
-        - in: path
-          name: variable_id
-          schema:
-            type: integer
-          required: true
-          description: the id of the variable to delete
-      responses:
-        '200':
-          description: Successfully deleted the required variable
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:   
-                  message:
-                    type: string
-servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lucaslehot/TerraformGUI/0.1
-components:
-  schemas: {}
