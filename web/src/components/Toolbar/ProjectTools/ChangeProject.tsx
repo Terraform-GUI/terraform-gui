@@ -23,7 +23,7 @@ function ChangeProject(props: ChangeProjectProps) {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [projectToSwitch, setProjectToSwitch] = useState<IProject|null>(null);
-    const {isProjectSaved, setIsProjectSaved, currentProject, setCurrentProject} = useContext(ProjectContext);
+    const {isProjectSaved, setIsProjectSaved, setCurrentProject} = useContext(ProjectContext);
 
     const selectProject = (project: IProject) => {
         if (isProjectSaved) {
@@ -50,7 +50,7 @@ function ChangeProject(props: ChangeProjectProps) {
                     if (typeof hcl === 'string') {
                         project.hcl = hcl;
                         setCurrentProject({
-                            ...currentProject,
+                            ...project,
                             hcl: hcl
                         });
                     }
@@ -86,7 +86,6 @@ function ChangeProject(props: ChangeProjectProps) {
                 >
                     {projectList.map((project: IProject, index: number) => (
                         <>
-                            {currentProject.id !== project.id && (
                                 <ListItem
                                     disablePadding
                                     onClick={() => selectProject(project)}
@@ -98,12 +97,11 @@ function ChangeProject(props: ChangeProjectProps) {
                                         />
                                     </ListItemButton>
                                 </ListItem>
-                            )}
                         </>
                     ))}
 
                     {projectList.length === 0 && (
-                        <p style={{paddingLeft: '16px'}}>You don't have any project yet.</p>
+                        <p style={{paddingLeft: '16px'}}>You don't have any other project yet.</p>
                     )}
                 </List>
             </Popover>
