@@ -15,12 +15,14 @@ import {mergeNodesWithResource} from "../../services/ReactFlowTransformer";
 import {INodeData} from "../../interfaces/INodeData";
 import {ISavedProject} from "../../interfaces/ISavedProject";
 import {projectService, resourceService} from '../../api'
+import { CircularProgress } from '@mui/material';
 
 function BuilderPage() {
 
     const [isProjectSaved, setIsProjectSaved] = useState<boolean>(true);
     const [projectList, setProjectList] = useState<IProject[]>([]);
     const [resources, setResources] = useState<IResource[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [project, setProject] = useState<IProject>({
         id: null,
@@ -96,9 +98,16 @@ function BuilderPage() {
                         }
                     }
                 }
+                setIsLoading(false);
             });
         });
     }, []);
+
+    if (isLoading) {
+        return (
+            <CircularProgress />
+        )
+    }
 
     return (
         <ResourcesProvider value={{
