@@ -117,7 +117,7 @@ function BuilderPage() {
                         />
                     </div>
                     <div className="codeEditor">
-                        <CodeEditor nodes={nodes} setNodes={setNodes}/>
+                        <CodeEditor />
                     </div>
                     <div className="descriptions">
                         <Description nodes={nodes} />
