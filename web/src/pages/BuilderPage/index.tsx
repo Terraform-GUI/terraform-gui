@@ -77,6 +77,24 @@ function BuilderPage() {
                     })
 
                     setProjectList(projectList);
+                    if (projectList.length > 0) {
+                        setProject(projectList[0]);
+                        setNodes(projectList[0].nodes);
+                        setEdges(projectList[0].edges);
+
+                        if (projectList[0].id != null) {
+                            projectService.getHCL(projectList[0].id)
+                                .then((hcl: string | undefined) => {
+                                    if (typeof hcl === 'string') {
+                                        projectList[0].hcl = hcl;
+                                        setProject({
+                                            ...projectList[0],
+                                            hcl: hcl
+                                        });
+                                    }
+                                });
+                        }
+                    }
                 }
             });
         });
