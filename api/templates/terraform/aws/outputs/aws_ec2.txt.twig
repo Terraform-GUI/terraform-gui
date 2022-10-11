@@ -1,10 +1,11 @@
-# - EC2 ---------------------------------------------------------------- #
+# - EC2 OUTPUTS -------------------------------------------------------- #
 
-output "ec2_{{ variables.unique_label }}_id" {
+output "{{ variables.unique_label }}_id" {
   description = "ID of EC2 instance"
   value       = aws_instance.{{ variables.unique_label }}.id
 }
-output "ec2_{{ variables.unique_label }}_ip" {
+
+output "{{ variables.unique_label }}_ip" {
   description = "Public IP of the EC2 instance"
   value       = aws_instance.{{ variables.unique_label }}.public_ip
 }
