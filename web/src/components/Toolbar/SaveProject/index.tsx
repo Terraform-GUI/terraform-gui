@@ -7,7 +7,7 @@ import {Edge, Node} from "react-flow-renderer";
 import {INodeData} from "../../../interfaces/INodeData";
 import {setUpNodesForSave} from "../../../services/ReactFlowTransformer";
 import {projectService} from "../../../api";
-import {ISavedProject} from "../../../interfaces/ISavedProject";
+import {ICreateProjectResponse} from "../../../api/ResponseTypes";
 
 interface SaveProjectProps {
     secondaryAction?: Function,
@@ -24,11 +24,10 @@ function SaveProject(props: SaveProjectProps) {
 
         const nodes = setUpNodesForSave(props.nodes);
 
-        // TODO save currentProject through api
         if (currentProject.id === null) {
-            const savedProject: ISavedProject | undefined = await projectService.createProject(currentProject.name, nodes, props.edges);
+            const savedProject: ICreateProjectResponse | undefined = await projectService.createProject(currentProject.name, nodes, props.edges);
             if (savedProject) {
-                currentProject.id = savedProject.id;
+                currentProject.id = savedProject.project.id;
             }
         } else {
             await projectService.updateProject(currentProject.id, currentProject.name, nodes, props.edges);

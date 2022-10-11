@@ -1,12 +1,12 @@
 import {IApiClient} from './ApiClient';
-import {IDeleteProjectResponse, IGetProjectsResponse} from "./ResponseTypes";
+import {ICreateProjectResponse, IDeleteProjectResponse, IGetProjectsResponse} from "./ResponseTypes";
 import {Edge, Node} from "react-flow-renderer";
 import {ISavedNodeData} from "../interfaces/ISavedNodeData";
 import {ISavedProject} from "../interfaces/ISavedProject";
 
 export interface IProjectApiClient {
   getProjects: () => Promise<IGetProjectsResponse | undefined>
-  createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
+  createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ICreateProjectResponse | undefined>
   updateProject: (id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   deleteProject: (id: string) => Promise<IDeleteProjectResponse | undefined>
   getArchive: (id: string) => Promise<BlobPart | undefined>
@@ -27,7 +27,7 @@ export class ProjectApiClient implements IProjectApiClient {
     }
   };
 
-  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ISavedProject | undefined> {
+  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ICreateProjectResponse | undefined> {
     try {
       return await this.apiClient.post('/api/projects', {
         name: name,
@@ -62,8 +62,7 @@ export class ProjectApiClient implements IProjectApiClient {
 
   async getArchive(id: string): Promise<BlobPart | undefined> {
     try {
-      const response: BlobPart = await this.apiClient.getBlob(`/api/projects/${id}/terraform-archive`);
-      return response;
+      return await this.apiClient.getBlob(`/api/projects/${id}/terraform-archive`);
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +80,7 @@ export default class ProjectService {
     return this.projectApiClient.getProjects();
   }
 
-  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ISavedProject | undefined> {
+  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ICreateProjectResponse | undefined> {
     return this.projectApiClient.createProject(name, nodes, edges);
   }
 
