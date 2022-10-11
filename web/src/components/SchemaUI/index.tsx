@@ -12,9 +12,7 @@ import ReactFlow, {
 import {INodeData} from "../../interfaces/INodeData";
 import ProjectContext from "../../contexts/ProjectContext";
 import ResourceNode from "../ResourceNode";
-
-let id = 0;
-const getId = () => `ressource_${id++}`;
+import { v4 as uuidv4 } from 'uuid';
 
 const nodeTypes = { ResourceNode: ResourceNode };
 
@@ -88,7 +86,7 @@ function SchemaUI(props: SchemaUIProps) {
             }
 
             const newNode: Node<INodeData> = {
-                id: getId(),
+                id: uuidv4(),
                 type,
                 position,
                 data: {
@@ -103,6 +101,7 @@ function SchemaUI(props: SchemaUIProps) {
             };
 
             props.setNodes((nds) => nds.concat(newNode));
+            console.log(newNode)
             currentProject.nodes.push(newNode)
             setIsProjectSaved(false);
         },
