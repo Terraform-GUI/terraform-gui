@@ -7,6 +7,7 @@ import {INodeData} from "../../../interfaces/INodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
+import {projectService} from "../../../api";
 
 interface ChangeProjectProps {
     setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>
@@ -35,13 +36,26 @@ function ChangeProject(props: ChangeProjectProps) {
         setIsPopoverOpen(false);
     };
 
-    const switchProject = (project: IProject) => {
+    const switchProject = async (project: IProject) => {
         setIsProjectSaved(true);
         setIsDialogOpen(false);
         setIsPopoverOpen(false);
         setCurrentProject(project);
         props.setNodes(project.nodes);
         props.setEdges(project.edges);
+
+        if (project.id != null) {
+            projectService.getHCL(project.id)
+                .then((hcl: string | undefined) => {
+                    if (typeof hcl === 'string') {
+                        project.hcl = hcl;
+                        setCurrentProject({
+                            ...currentProject,
+                            hcl: hcl
+                        });
+                    }
+                });
+        }
     }
 
     return (

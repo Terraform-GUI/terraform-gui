@@ -10,6 +10,7 @@ export interface IProjectApiClient {
   updateProject: (id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   deleteProject: (id: string) => Promise<IDeleteProjectResponse | undefined>
   getArchive: (id: string) => Promise<BlobPart | undefined>
+  getHCL: (id: string) => Promise<string | undefined>
 }
 
 export class ProjectApiClient implements IProjectApiClient {
@@ -67,6 +68,14 @@ export class ProjectApiClient implements IProjectApiClient {
       console.log(error);
     }
   };
+
+  async getHCL(id: string): Promise<string | undefined> {
+    try {
+      return await this.apiClient.get(`/api/projects/${id}/terraform`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 export default class ProjectService {
@@ -94,5 +103,9 @@ export default class ProjectService {
 
   async getArchive(id: string): Promise<BlobPart | undefined> {
     return this.projectApiClient.getArchive(id);
+  }
+
+  async getHCL(id: string): Promise<string | undefined> {
+    return this.projectApiClient.getHCL(id);
   }
 }

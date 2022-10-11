@@ -3,5 +3,6 @@ import {INodeData} from "./INodeData";
 import {ISavedProject} from "./ISavedProject";
 
 export interface IProject extends ISavedProject {
-    nodes: Node<INodeData>[]
+    nodes: Node<INodeData>[],
+    hcl?: string
 }

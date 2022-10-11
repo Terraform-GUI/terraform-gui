@@ -1,25 +1,21 @@
-import {Dispatch, SetStateAction } from "react";
+import {useContext} from "react";
 import Editor from "@monaco-editor/react";
-import {Node} from "react-flow-renderer";
-import {INodeData} from "../../interfaces/INodeData";
+import ProjectContext from "../../contexts/ProjectContext";
 
-interface ResourceSideBarProps {
-  nodes: Node<INodeData>[],
-  setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
-}
+const CodeEditor = () => {
 
-const CodeEditor = (props: ResourceSideBarProps) => {
+    const {currentProject} = useContext(ProjectContext);
 
-  return (
-    <div style={{backgroundColor : "black"}}>
-      <Editor
-        height="95vh"
-        defaultLanguage="javascript"
-        value={JSON.stringify(props.nodes, undefined, 4)}
-        theme="vs-dark"
-      />
-    </div>
-  );
+        return (
+        <div style={{backgroundColor : "black"}}>
+            <Editor
+                height="95vh"
+                defaultLanguage="hcl"
+                value={currentProject.hcl}
+                theme="vs-dark"
+            />
+        </div>
+    );
 };
 
 export default CodeEditor;

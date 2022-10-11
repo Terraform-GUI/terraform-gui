@@ -16,7 +16,7 @@ interface SaveProjectProps {
 }
 
 function SaveProject(props: SaveProjectProps) {
-    const {setIsProjectSaved, setProjectList, currentProject} = useContext(ProjectContext);
+    const {setIsProjectSaved, setProjectList, currentProject, setCurrentProject} = useContext(ProjectContext);
 
     const handleSave = async () => {
         setIsProjectSaved(true);
@@ -31,6 +31,17 @@ function SaveProject(props: SaveProjectProps) {
             }
         } else {
             await projectService.updateProject(currentProject.id, currentProject.name, nodes, props.edges);
+        }
+
+        if (currentProject.id != null) {
+            const hcl = await projectService.getHCL(currentProject.id);
+            if (typeof hcl === 'string') {
+                currentProject.hcl = hcl;
+                setCurrentProject({
+                    ...currentProject,
+                    hcl: hcl
+                });
+            }
         }
 
         setProjectList((projectList: IProject[]) => {
