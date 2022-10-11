@@ -25,11 +25,12 @@ function BuilderPage() {
     const [project, setProject] = useState<IProject>({
         id: null,
         name: 'Unnamed project',
-        nodes: []
+        nodes: [],
+        edges: [],
     } as IProject);
 
     const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(project.edges);
 
     useEffect(() => {
         const loadResources = async () => {
@@ -65,7 +66,6 @@ function BuilderPage() {
                     }
 
                     const projectList: IProject[] = [];
-                    console.log(savedProjectList);
 
                     // convert SavedProject[] to Project[]
                     savedProjectList.map((savedProject: ISavedProject) => {
@@ -103,6 +103,7 @@ function BuilderPage() {
                             setNodes={setNodes}
                             nodes={nodes}
                             edges={edges}
+                            setEdges={setEdges}
                         />
                     </div>
                     <div className="schemaUI">

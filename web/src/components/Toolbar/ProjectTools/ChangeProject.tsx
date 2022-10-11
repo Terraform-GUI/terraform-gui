@@ -9,9 +9,10 @@ import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
 
 interface ChangeProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
-    nodes: Node<INodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>
+    nodes: Node<INodeData>[]
     edges: Edge[]
+    setEdges: Dispatch<SetStateAction<Edge[]>>
 }
 
 function ChangeProject(props: ChangeProjectProps) {
@@ -38,9 +39,9 @@ function ChangeProject(props: ChangeProjectProps) {
         setIsProjectSaved(true);
         setIsDialogOpen(false);
         setIsPopoverOpen(false);
-        // TODO load project details from api
         setCurrentProject(project);
         props.setNodes(project.nodes);
+        props.setEdges(project.edges);
     }
 
     return (

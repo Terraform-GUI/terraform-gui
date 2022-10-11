@@ -23,7 +23,8 @@ function DeleteProject(props: DeleteProjectProps) {
             setCurrentProject({
                 id: null,
                 name: 'Unnamed project',
-                nodes: []
+                nodes: [],
+                edges: []
             } as IProject);
             setNodes([]);
         }
