@@ -21,6 +21,7 @@ function SaveProject(props: SaveProjectProps) {
     const handleSave = async () => {
         setIsProjectSaved(true);
         currentProject.nodes = props.nodes;
+        currentProject.edges = props.edges;
 
         const nodes = setUpNodesForSave(props.nodes);
 
