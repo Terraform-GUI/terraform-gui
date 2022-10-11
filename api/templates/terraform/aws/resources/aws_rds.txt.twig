@@ -1,7 +1,7 @@
-# - SECURITY GROUPS ---------------------------------------------------- #
+# - RDS SECURITY GROUPS ------------------------------------------------ #
 
 resource "aws_security_group" "{{ variables.unique_label }}_rds" {
-  depends_on  = [aws_vpc.{{ variables.vpc_id }}]
+  depends_on  = [aws_vpc.{{ variables.vpc_unique_label }}]
   name        = "${lookup(var.global, "name")}-rds"
   description = "${lookup(var.global, "name")}-rds"
   vpc_id      = aws_vpc.{{ variables.vpc_unique_label }}.id
@@ -25,7 +25,7 @@ resource "aws_security_group" "{{ variables.unique_label }}_rds" {
   }
 }
 
-# - INSTANCE ----------------------------------------------------------- #
+# - RDS INSTANCE ------------------------------------------------------- #
 
 resource "aws_db_subnet_group" "{{ variables.unique_label }}" {
   name       = lookup(var.global, "name")
@@ -38,7 +38,7 @@ resource "aws_db_subnet_group" "{{ variables.unique_label }}" {
 
 resource "aws_db_parameter_group" "{{ variables.unique_label }}" {
   name   = lookup(var.global, "name")
-  family = lookup(var.rds_{{ variables.unique_label }}, "family")
+  family = lookup(var.{{ variables.unique_label }}, "family")
 
   parameter {
     name  = "log_connections"
@@ -52,13 +52,13 @@ resource "aws_db_parameter_group" "{{ variables.unique_label }}" {
 resource "aws_db_instance" "{{ variables.unique_label }}" {
   identifier             = lookup(var.global, "name")
   allocated_storage      = 5
-  instance_class         = lookup(var.rds_{{ variables.unique_label }}, "type")
-  engine                 = lookup(var.rds_{{ variables.unique_label }}, "engine")
-  engine_version         = lookup(var.rds_{{ variables.unique_label }}, "version")
-  username               = lookup(var.rds_{{ variables.unique_label }}, "username")
-  password               = lookup(var.rds_{{ variables.unique_label }}, "password")
-  publicly_accessible    = lookup(var.rds_{{ variables.unique_label }}, "publicly_accessible")
-  skip_final_snapshot    = lookup(var.rds_{{ variables.unique_label }}, "skip_final_snapshot")
+  instance_class         = lookup(var.{{ variables.unique_label }}, "type")
+  engine                 = lookup(var.{{ variables.unique_label }}, "engine")
+  engine_version         = lookup(var.{{ variables.unique_label }}, "version")
+  username               = lookup(var.{{ variables.unique_label }}, "username")
+  password               = lookup(var.{{ variables.unique_label }}, "password")
+  publicly_accessible    = lookup(var.{{ variables.unique_label }}, "publicly_accessible")
+  skip_final_snapshot    = lookup(var.{{ variables.unique_label }}, "skip_final_snapshot")
   db_subnet_group_name   = aws_db_subnet_group.{{ variables.unique_label }}.name
   parameter_group_name   = aws_db_parameter_group.{{ variables.unique_label }}.name
   vpc_security_group_ids = [aws_security_group.{{ variables.unique_label }}_rds.id]

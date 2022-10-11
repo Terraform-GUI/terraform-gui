@@ -1,4 +1,6 @@
-variable "vpc_{{ variables.unique_label }}" {
+# - VPC VARIABLES ------------------------------------------------------ #
+
+variable "{{ variables.unique_label }}" {
     type = map(string)
     default = {
         tenancy    = "{{ variables.tenancy|default("default")|escape }}"

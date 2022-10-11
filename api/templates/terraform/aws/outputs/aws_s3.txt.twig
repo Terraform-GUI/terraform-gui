@@ -1,6 +1,6 @@
-# - S3 ----------------------------------------------------------------- #
+# - S3 OUTPUTS --------------------------------------------------------- #
 
-output "s3_{{ variables.unique_label }}_id" {
+output "{{ variables.unique_label }}_id" {
   description = "ID of Bucket S3"
   value       = aws_s3_bucket.{{ variables.unique_label }}.id
 }

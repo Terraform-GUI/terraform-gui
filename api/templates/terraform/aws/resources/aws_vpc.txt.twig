@@ -1,12 +1,14 @@
+# - VPC ----------------------------------------------------------------- #
+
 resource "aws_vpc" "{{ variables.unique_label }}" {
-    cidr_block       = lookup(var.vpc_{{ variables.unique_label }}, "cidr")
-    instance_tenancy = lookup(var.vpc_{{ variables.unique_label }}, "tenancy")
+    cidr_block       = lookup(var.{{ variables.unique_label }}, "cidr")
+    instance_tenancy = lookup(var.{{ variables.unique_label }}, "tenancy")
     tags = {
         Name = lookup(var.global, "name")
     }
 }
 
-# - GATEWAY ------------------------------------------------------------ #
+# - VPC GATEWAY --------------------------------------------------------- #
 
 resource "aws_internet_gateway" "{{ variables.unique_label }}" {
     vpc_id = aws_vpc.{{ variables.unique_label }}.id
@@ -16,7 +18,7 @@ resource "aws_internet_gateway" "{{ variables.unique_label }}" {
 }
 
 resource "aws_eip" "{{ variables.unique_label }}" {
-    vpc = lookup(var.vpc_{{ variables.unique_label }}, "eip_vpc")
+    vpc = lookup(var.{{ variables.unique_label }}, "eip_vpc")
     tags = {
         Name = lookup(var.global, "name")
     }
@@ -30,11 +32,11 @@ resource "aws_nat_gateway" "{{ variables.unique_label }}" {
     }
 }
 
-# - SUBNETS ------------------------------------------------------------ #
+# - VPC SUBNETS -------------------------------------------------------- #
 
 resource "aws_subnet" "{{ variables.unique_label }}_pub" {
     vpc_id     = aws_vpc.{{ variables.unique_label }}.id
-    cidr_block = lookup(var.vpc_{{ variables.unique_label }}, "pub_subnet")
+    cidr_block = lookup(var.{{ variables.unique_label }}, "pub_subnet")
     tags = {
         Name = "${lookup(var.global, "name")}-vpc-pub"
     }
@@ -42,13 +44,13 @@ resource "aws_subnet" "{{ variables.unique_label }}_pub" {
 
 resource "aws_subnet" "{{ variables.unique_label }}_prv" {
     vpc_id     = aws_vpc.{{ variables.unique_label }}.id
-    cidr_block = lookup(var.vpc_{{ variables.unique_label }}, "prv_subnet")
+    cidr_block = lookup(var.{{ variables.unique_label }}, "prv_subnet")
     tags = {
         Name = "${lookup(var.global, "name")}-vpc-prv"
     }
 }
 
-# - ROUTE TABLE -------------------------------------------------------- #
+# - VPC ROUTE TABLE ---------------------------------------------------- #
 
 resource "aws_route_table" "{{ variables.unique_label }}_pub" {
     vpc_id = aws_vpc.{{ variables.unique_label }}.id

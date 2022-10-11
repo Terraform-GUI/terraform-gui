@@ -1,12 +1,14 @@
-variable "rds_{{ variables.unique_label }}" {
+# - RDS VARIABLES ------------------------------------------------------ #
+
+variable "{{ variables.unique_label }}" {
   type = map(string)
   default = {
-    type                = {{ variables.type|defaut("db.t3.micro")|escape }}
-    engine              = {{ variables.engine|escape }}                       #"postgres"
-    version             = {{ variables.version|escape }}                      #"13"
-    family              = {{ variables.family|escape }}                       #"postgres13"
-    username            = {{ variables.username|escape }}                     #"alpha"
-    password            = {{ variables.password|escape }}                     #"alphaalphaalpha"
+    type                = "{{ variables.type|default("db.t3.micro")|escape }}"
+    engine              = "{{ variables.engine|escape }}"
+    version             = "{{ variables.version|escape }}"
+    family              = "{{ variables.family|escape }}"
+    username            = "{{ variables.username|escape }}"
+    password            = "{{ variables.password|escape }}"
     publicly_accessible = {{ variables.publicly_accessible|default("false") }}
     skip_final_snapshot = {{ variables.skip_final_snapshot|default("true") }}
   }

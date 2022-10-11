@@ -1,6 +1,6 @@
-# - SQS ---------------------------------------------------------------- #
+# - SQS OUTPUTS -------------------------------------------------------- #
 
-output "sqs_{{ variables.unique_label }}_id" {
+output "{{ variables.unique_label }}_id" {
   description = "ID of SQS"
   value       = aws_sqs_queue.{{ variables.unique_label }}.id
 }
