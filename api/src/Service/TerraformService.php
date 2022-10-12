@@ -37,16 +37,15 @@ class TerraformService
                 $this->providers[] = $provider;
             }
 
-            $edgeNodes = $nodes->filter(function ($nodeElement) use ($edges) {
-                return $edges->exists(function ($key, $value) use ($nodeElement) {
-                    return $value->getTarget() == $nodeElement->getId();
-                });
+            $nodeEdges = $node->getEdges($edges);
+            $edgeNodes = $nodeEdges->map(function ($edge) use ($nodes) {
+                return $edge->getTargetNode($nodes);
             });
 
             $this->terraformBlocks->add($this->factory->createTerraformBlock($node, $edgeNodes));
         }
 
-        $terraformProviderBlock = new ProviderBase($this->providers, $project->getName());
+        $terraformProviderBlock = new ProviderBase($this->providers);
         $this->terraformBlocks->add($terraformProviderBlock);
         $this->sortTerraformBlockByPriority();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Document\Embed;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,5 +47,17 @@ class Node
     public function setPosition(NodePosition $position): void
     {
         $this->position = $position;
+    }
+
+    /**
+     * @param Collection<Edge> $edges
+     *
+     * @return Collection<Edge>
+     */
+    public function getEdges(Collection $edges): Collection
+    {
+        return $edges->filter(function ($edge) {
+            return $this->getId() == $edge->getSource();
+        });
     }
 }

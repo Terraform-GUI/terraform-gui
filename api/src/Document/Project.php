@@ -65,7 +65,7 @@ class Project
     }
 
     /**
-     * @return Collection<string, Node>
+     * @return Collection<Node>
      */
     public function getNodes(): Collection
     {
@@ -85,7 +85,7 @@ class Project
     }
 
     /**
-     * @return Collection<string, Edge>
+     * @return Collection<Edge>
      */
     public function getEdges(): Collection
     {

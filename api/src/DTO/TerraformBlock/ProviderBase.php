@@ -9,15 +9,11 @@ class ProviderBase implements TerraformBlockInterface
     private array $templates;
     private array $variables;
 
-    public function __construct(array $providers, string $projectName = null)
+    public function __construct(array $providers)
     {
         $this->variables = [
             'providers' => $providers,
         ];
-
-        if ($projectName) {
-            $this->variables['project_name'] = $projectName;
-        }
 
         $this->templates = [
             'provider'  => 'terraform/providers.txt.twig',

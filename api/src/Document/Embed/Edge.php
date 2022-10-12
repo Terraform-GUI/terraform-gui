@@ -2,6 +2,8 @@
 
 namespace App\Document\Embed;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,5 +50,17 @@ class Edge
     public function setTarget(string $target): void
     {
         $this->target = $target;
+    }
+
+    /**
+     * @param ArrayCollection<Node> $nodes
+     */
+    public function getTargetNode(Collection $nodes): ?Node
+    {
+        $targetNodes = $nodes->filter(function ($node) {
+            return $this->getTarget() == $node->getId();
+        });
+
+        return $targetNodes[0] ?? null;
     }
 }
