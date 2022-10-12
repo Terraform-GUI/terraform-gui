@@ -70,8 +70,7 @@ function SaveProject(props: SaveProjectProps) {
     };
 
     return (
-        <Box sx={{ position: 'absolute', right: '20px' }}>
-            <Box sx={{ m: 1, position: 'relative' }}>
+        <Box sx={{position: 'relative' }}>
             <Button
                 variant="contained"
                 disabled={isLoading}
@@ -94,7 +93,6 @@ function SaveProject(props: SaveProjectProps) {
                     }}
                 />
             )}
-            </Box>
         </Box>
     )
 }
