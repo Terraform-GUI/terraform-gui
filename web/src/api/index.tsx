@@ -41,7 +41,6 @@ function buildServices() {
           window.location = '/home' as any;
         });
       }
-      window.location = '/home' as any;
   });
 
   return {
