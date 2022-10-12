@@ -1,6 +1,7 @@
 # - SECURITY GROUPS ---------------------------------------------------- #
 
 resource "aws_security_group" "alpha_ec2" {
+  # WARNING: generation was aws_vpc.ec2 => need to be aws_vpc.vpc
   depends_on  = [aws_vpc.alpha]
   name        = "${lookup(var.global, "name")}-ec2"
   description = "${lookup(var.global, "name")}-ec2"

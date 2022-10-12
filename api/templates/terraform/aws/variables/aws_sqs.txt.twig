@@ -1,4 +1,6 @@
-variable "sqs_{{ variables.unique_label }}" {
+# - SQS VARIABLES ------------------------------------------------------ #
+
+variable "{{ variables.unique_label }}" {
   type = map(string)
   default = {
     delay_seconds             = {{ variables.delay_seconds|default(90) }}

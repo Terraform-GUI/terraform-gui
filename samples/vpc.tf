@@ -39,6 +39,8 @@ resource "aws_nat_gateway" "alpha" {
 resource "aws_subnet" "alpha_pub" {
   vpc_id     = aws_vpc.alpha.id
   cidr_block = lookup(var.vpc, "pub_subnet")
+  # new var added in vpc group
+  availability_zone = lookup(var.vpc, "pub_availability_zone")
   tags = {
     Name = "${lookup(var.global, "name")}-vpc-pub"
   }
@@ -47,6 +49,8 @@ resource "aws_subnet" "alpha_pub" {
 resource "aws_subnet" "alpha_prv" {
   vpc_id     = aws_vpc.alpha.id
   cidr_block = lookup(var.vpc, "prv_subnet")
+  # new var added in vpc group
+  availability_zone = lookup(var.vpc, "prv_availability_zone")
   tags = {
     Name = "${lookup(var.global, "name")}-vpc-prv"
   }

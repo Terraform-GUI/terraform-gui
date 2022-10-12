@@ -1,4 +1,6 @@
-variable "ec2_{{ variables.unique_label }}" {
+# - EC2 VARIABLES ------------------------------------------------------ #
+
+variable "{{ variables.unique_label }}" {
   type = map(string)
   default = {
     ami       = "{{ variables.ami|escape }}"
