@@ -36,8 +36,10 @@ class AwsResourceFixtures
 
         $argument = (new ResourceArgument())
             ->setName('tenancy')
-            ->setType(ResourceArgument::TYPE_STRING)
+            ->setType(ResourceArgument::TYPE_SELECT)
             ->setDefaultValue('default')
+            ->addValue('default')
+            ->addValue('dedicated')
         ;
         $resource->addArgument($argument);
 
@@ -45,7 +47,7 @@ class AwsResourceFixtures
             ->setName('cidr')
             ->setType(ResourceArgument::TYPE_STRING)
             ->setDefaultValue('10.0.0.0/24')
-            ->setMax('15')
+            ->setMax('18')
         ;
         $resource->addArgument($argument);
 
@@ -53,7 +55,7 @@ class AwsResourceFixtures
             ->setName('pub_subnet')
             ->setType(ResourceArgument::TYPE_STRING)
             ->setDefaultValue('10.0.0.128/26')
-            ->setMax('15')
+            ->setMax('18')
         ;
         $resource->addArgument($argument);
 
@@ -61,7 +63,30 @@ class AwsResourceFixtures
             ->setName('prv_subnet')
             ->setType(ResourceArgument::TYPE_STRING)
             ->setDefaultValue('10.0.0.192/26')
-            ->setMax('15')
+            ->setMax('18')
+        ;
+        $resource->addArgument($argument);
+
+
+        $argument = (new ResourceArgument())
+            ->setName('pub_availability_zone')
+            ->setType(ResourceArgument::TYPE_SELECT)
+            ->setDefaultValue('us-east-1a')
+            ->addValue('us-east-1b')
+            ->addValue('us-east-1c')
+            ->addValue('us-east-1d')
+            ->addValue('us-east-1e')
+        ;
+        $resource->addArgument($argument);
+
+        $argument = (new ResourceArgument())
+            ->setName('prv_availability_zone')
+            ->setType(ResourceArgument::TYPE_SELECT)
+            ->setDefaultValue('us-east-1a')
+            ->addValue('us-east-1b')
+            ->addValue('us-east-1c')
+            ->addValue('us-east-1d')
+            ->addValue('us-east-1e')
         ;
         $resource->addArgument($argument);
 
@@ -94,11 +119,13 @@ class AwsResourceFixtures
             ->setType('EC2')
         ;
 
-        // TODO on propose une liste d'AMI ou on laisse le champ en libre saisie ?
         $argument = (new ResourceArgument())
             ->setName('ami')
-            ->setType(ResourceArgument::TYPE_STRING)
-            ->setDefaultValue('ami-052efd3df9dad4825')
+            ->setType(ResourceArgument::TYPE_SELECT)
+            ->setDefaultValue('default')
+            ->addValue('ami-026b57f3c383c2eec') // Amazon Linux
+            ->addValue('ami-08c40ec9ead489470') // Ubuntu
+            ->addValue('ami-09a41e26df464c548') // Debian
         ;
         $resource->addArgument($argument);
 
