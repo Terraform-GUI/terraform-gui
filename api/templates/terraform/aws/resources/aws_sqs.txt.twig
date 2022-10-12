@@ -1,9 +1,11 @@
+# - SQS ---------------------------------------------------------------- #
+
 resource "aws_sqs_queue" "{{ variables.unique_label }}" {
   name                      = "${lookup(var.global, "name")}-sqs"
-  delay_seconds             = lookup(var.sqs_{{ variables.unique_label }}, "delay_seconds")
-  max_message_size          = lookup(var.sqs_{{ variables.unique_label }}, "max_message_size")
-  message_retention_seconds = lookup(var.sqs_{{ variables.unique_label }}, "message_retention_seconds")
-  receive_wait_time_seconds = lookup(var.sqs_{{ variables.unique_label }}, "receive_wait_time_seconds")
+  delay_seconds             = lookup(var.{{ variables.unique_label }}, "delay_seconds")
+  max_message_size          = lookup(var.{{ variables.unique_label }}, "max_message_size")
+  message_retention_seconds = lookup(var.{{ variables.unique_label }}, "message_retention_seconds")
+  receive_wait_time_seconds = lookup(var.{{ variables.unique_label }}, "receive_wait_time_seconds")
 
   tags = {
     Name = lookup(var.global, "name")

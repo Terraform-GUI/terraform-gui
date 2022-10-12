@@ -1,6 +1,6 @@
-# - VPC ---------------------------------------------------------------- #
+# - VPC OUTPUTS -------------------------------------------------------- #
 
-output "vpc_{{ variables.unique_label }}_id" {
+output "{{ variables.unique_label }}_id" {
   description = "ID of VPC"
   value       = aws_vpc.{{ variables.unique_label }}.id
 }

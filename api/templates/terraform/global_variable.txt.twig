@@ -1,7 +1,7 @@
 variable "global" {
   type = map(string)
   default = {
-    name   = "{{ variables.project_name|default("My Project") }}"
+    name   = "tfgui-{{ date().format("U") }}"
     region = "us-east-1"
   }
 }
