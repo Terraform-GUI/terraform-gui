@@ -22,6 +22,7 @@ function ChangeProject(props: ChangeProjectProps) {
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [projectToSwitch, setProjectToSwitch] = useState<IProject|null>(null);
     const {isProjectSaved, setIsProjectSaved, setCurrentProject, projectList} = useContext(ProjectContext);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
     const selectProject = (project: IProject) => {
         if (isProjectSaved) {
@@ -59,7 +60,10 @@ function ChangeProject(props: ChangeProjectProps) {
     return (
         <>
             <Tooltip title="Change project">
-                <IconButton aria-label="change project" onClick={() => setIsPopoverOpen(true)}>
+                <IconButton aria-label="change project" onClick={(event:any) => {
+                    setAnchorEl(event.currentTarget);
+                    setIsPopoverOpen(true)
+                }}>
                     <ArrowDropDownIcon />
                 </IconButton>
             </Tooltip>
@@ -68,10 +72,7 @@ function ChangeProject(props: ChangeProjectProps) {
                 id={"1"}
                 open={isPopoverOpen}
                 onClose={() => setIsPopoverOpen(false)}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
+                anchorEl={anchorEl}
             >
                 <List
                     sx={{width: "400px"}}
@@ -83,19 +84,15 @@ function ChangeProject(props: ChangeProjectProps) {
                     }
                 >
                     {projectList.map((project: IProject, index: number) => (
-                        <>
-                                <ListItem
-                                    disablePadding
-                                    onClick={() => selectProject(project)}
-                                    key={index}
-                                >
+                        <div key={index}>
+                                <ListItem disablePadding onClick={() => selectProject(project)} >
                                     <ListItemButton>
                                         <ListItemText
                                             primary={project.name}
                                         />
                                     </ListItemButton>
                                 </ListItem>
-                        </>
+                        </div>
                     ))}
 
                     {projectList.length === 0 && (

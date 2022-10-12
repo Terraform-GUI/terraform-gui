@@ -27,8 +27,8 @@ function ConfirmDialog(props: ConfirmDialogProps) {
             </DialogContent>
             <DialogActions>
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'end'}}>
-                    {props.dialogActions.map((button: ReactNode) => (
-                        <div style={{marginRight: '20px'}}>
+                    {props.dialogActions.map((button: ReactNode, index: number) => (
+                        <div key={index} style={{marginRight: '20px'}}>
                             {button}
                         </div>
                     ))}
