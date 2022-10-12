@@ -18,12 +18,10 @@ interface ChangeProjectProps {
 
 function ChangeProject(props: ChangeProjectProps) {
 
-    const {projectList} = useContext(ProjectContext);
-
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [projectToSwitch, setProjectToSwitch] = useState<IProject|null>(null);
-    const {isProjectSaved, setIsProjectSaved, setCurrentProject} = useContext(ProjectContext);
+    const {isProjectSaved, setIsProjectSaved, setCurrentProject, projectList} = useContext(ProjectContext);
 
     const selectProject = (project: IProject) => {
         if (isProjectSaved) {
