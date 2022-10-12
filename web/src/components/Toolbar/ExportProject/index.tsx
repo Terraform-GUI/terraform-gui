@@ -1,13 +1,16 @@
 import Button from "@mui/material/Button";
 import * as React from "react";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import ProjectContext from "../../../contexts/ProjectContext";
 import {projectService} from "../../../api";
+import {Box, CircularProgress} from "@mui/material";
 
 function ExportProject() {
     const {currentProject} = useContext(ProjectContext);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleExport = async () => {
+        setIsLoading(true);
         const download = (data: BlobPart) => {
             const downloadUrl = window.URL.createObjectURL(new Blob([data]));
             const link = document.createElement('a');
@@ -24,12 +27,33 @@ function ExportProject() {
                 download(data);
             }
         }
+        setIsLoading(false);
     };
 
     return (
-        <>
-            <Button style={{ position: "absolute", right: "100px" }} variant="contained" onClick={handleExport} disabled={!currentProject.id}>EXPORT</Button>
-        </>
+        <Box sx={{ position: 'absolute', right: '100px' }}>
+            <Box sx={{ m: 1, position: 'relative' }}>
+                <Button
+                    variant="contained"
+                    disabled={!currentProject.id || isLoading}
+                    onClick={handleExport}
+                >
+                    EXPORT
+                </Button>
+                {isLoading && (
+                    <CircularProgress
+                        size={24}
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: '-12px',
+                            marginLeft: '-12px',
+                        }}
+                    />
+                )}
+            </Box>
+        </Box>
     )
 }
 
