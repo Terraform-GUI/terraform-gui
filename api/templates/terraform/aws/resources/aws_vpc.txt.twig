@@ -37,6 +37,7 @@ resource "aws_nat_gateway" "{{ variables.unique_label }}" {
 resource "aws_subnet" "{{ variables.unique_label }}_pub" {
     vpc_id     = aws_vpc.{{ variables.unique_label }}.id
     cidr_block = lookup(var.{{ variables.unique_label }}, "pub_subnet")
+    availability_zone = lookup(var.{{ variables.unique_label }}, "pub_availability_zone")
     tags = {
         Name = "${lookup(var.global, "name")}-vpc-pub"
     }
@@ -45,6 +46,7 @@ resource "aws_subnet" "{{ variables.unique_label }}_pub" {
 resource "aws_subnet" "{{ variables.unique_label }}_prv" {
     vpc_id     = aws_vpc.{{ variables.unique_label }}.id
     cidr_block = lookup(var.{{ variables.unique_label }}, "prv_subnet")
+    availability_zone = lookup(var.{{ variables.unique_label }}, "prv_availability_zone")
     tags = {
         Name = "${lookup(var.global, "name")}-vpc-prv"
     }

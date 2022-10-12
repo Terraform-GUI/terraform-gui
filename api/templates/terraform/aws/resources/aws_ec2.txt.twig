@@ -1,10 +1,11 @@
 # - EC2 SECURITY GROUPS ------------------------------------------------ #
 
 resource "aws_security_group" "{{ variables.unique_label }}_ec2" {
-  depends_on  = [aws_vpc.{{ variables.unique_label }}]
-  name        = "${lookup(var.global, "name")}-ec2"
+  {% if variables.vpc_unique_label is defined %}depends_on  = [aws_vpc.{{ variables.vpc_unique_label }}]
+  {% endif %}name        = "${lookup(var.global, "name")}-ec2"
   description = "${lookup(var.global, "name")}-ec2"
-  vpc_id      = aws_vpc.{{ variables.vpc_unique_label }}.id
+  {% if variables.vpc_unique_label is defined %}vpc_id      = aws_vpc.{{ variables.vpc_unique_label }}.id
+  {% endif %}
 
   ingress {
     from_port   = 22
@@ -12,13 +13,6 @@ resource "aws_security_group" "{{ variables.unique_label }}_ec2" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  # ingress {
-  #   from_port   = 80
-  #   to_port     = 80
-  #   protocol    = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
 
   egress {
     from_port   = 0
@@ -42,12 +36,14 @@ resource "aws_instance" "{{ variables.unique_label }}" {
   ami                         = lookup(var.{{ variables.unique_label }}, "ami")
   instance_type               = lookup(var.{{ variables.unique_label }}, "type")
   associate_public_ip_address = lookup(var.{{ variables.unique_label }}, "public_ip")
-  subnet_id                   = aws_subnet.{{ variables.vpc_unique_label }}_pub.id
+  {% if variables.vpc_unique_label is defined %}subnet_id                   = aws_subnet.{{ variables.vpc_unique_label }}_pub.id
+  {% endif %}
 
   vpc_security_group_ids = [
     aws_security_group.{{ variables.unique_label }}_ec2.id
   ]
+
   tags = {
-    Name = lookup(var.global, "name")
+    Name = "${lookup(var.global, "name")}-{{ variables.unique_label|replace({'_': '-'}) }}"
   }
 }

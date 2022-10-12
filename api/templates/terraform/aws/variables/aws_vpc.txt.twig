@@ -7,6 +7,8 @@ variable "{{ variables.unique_label }}" {
         cidr       = "{{ variables.cidr|default("10.0.0.0/24")|escape }}"
         pub_subnet = "{{ variables.pub_subnet|default("10.0.0.128/26")|escape }}"
         prv_subnet = "{{ variables.prv_subnet|default("10.0.0.192/26")|escape }}"
+        pub_availability_zone = "{{ variables.pub_availability_zone|default("us-east-1a")|escape }}"
+        prv_availability_zone = "{{ variables.prv_availability_zone|default("us-east-1b")|escape }}"
         eip_vpc    = {{ variables.eip_vpc|default("true") }}
     }
 }
