@@ -49,9 +49,19 @@ function SaveProject(props: SaveProjectProps) {
         }
 
         setProjectList((projectList: IProject[]) => {
-            const currentProjectIsInProjectList = projectList.find((project: IProject) => project.id === currentProject.id);
+            let currentProjectIsInProjectList = false;
+            // update project from projectList if exist
+            const updatedProjectList = projectList.map((project: IProject) => {
+                if (project.id === currentProject.id) {
+                    currentProjectIsInProjectList = true;
+                    return currentProject;
+                }
+
+                return project;
+            });
+
             if (currentProjectIsInProjectList) {
-                return projectList;
+                return updatedProjectList;
             }
 
             return [...projectList, currentProject];
