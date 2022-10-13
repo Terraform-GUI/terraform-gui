@@ -21,13 +21,11 @@ function buildServices() {
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true
         const refreshToken = localStorage.getItem('refresh_token')
-        console.log('refreshToken', refreshToken)
 
         axios.post('http://localhost:8080/api/token/refresh', {
           refresh_token: refreshToken,
         }).then(function (response){
           if (response.status === 200) {
-            console.log('hey');
             console.log(response);
             localStorage.setItem('access_token', response.data.token)
             localStorage.setItem('refresh_token', response.data.refresh_token)
@@ -41,7 +39,6 @@ function buildServices() {
           }
         }).catch(function (error) {
           console.log(error);
-          window.location = '/home' as any;
         });
       }
   });

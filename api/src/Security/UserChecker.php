@@ -15,7 +15,7 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if (null !== $user->getToken()) {
+        if (null !== $user->getToken() && !$user->getViaGithub()) {
             throw new CustomUserMessageAccountStatusException('Please verify your email address');
         }
     }
