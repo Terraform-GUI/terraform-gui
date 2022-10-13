@@ -3,7 +3,7 @@ import * as React from "react";
 import {useContext, useState} from "react";
 import ProjectContext from "../../../contexts/ProjectContext";
 import {projectService} from "../../../api";
-import {Box, CircularProgress} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 
 function ExportProject() {
     const {currentProject} = useContext(ProjectContext);
@@ -31,29 +31,27 @@ function ExportProject() {
     };
 
     return (
-        <Box sx={{ position: 'absolute', right: '100px' }}>
-            <Box sx={{ m: 1, position: 'relative' }}>
-                <Button
-                    variant="contained"
-                    disabled={!currentProject.id || isLoading}
-                    onClick={handleExport}
-                >
-                    EXPORT
-                </Button>
-                {isLoading && (
-                    <CircularProgress
-                        size={24}
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            marginTop: '-12px',
-                            marginLeft: '-12px',
-                        }}
-                    />
-                )}
-            </Box>
-        </Box>
+        <div style={{position: "relative"}}>
+            <Button
+                variant="contained"
+                disabled={!currentProject.id || isLoading}
+                onClick={handleExport}
+            >
+                EXPORT
+            </Button>
+            {isLoading && (
+                <CircularProgress
+                    size={24}
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                    }}
+                />
+            )}
+        </div>
     )
 }
 
