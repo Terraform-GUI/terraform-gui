@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Redirect from 'react-router-dom';
 import Home from './pages/HomePage';
 import Login from './pages/LoginPage';
@@ -19,19 +19,24 @@ import UserContextProvider from "./contexts/UserContextProvider";
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
+
+function isLogged() {
+	return !!localStorage.getItem('access_token');
+}
+
 root.render(
 	<React.StrictMode>
 		<UserContextProvider>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<App />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
-					<Route path="/forgot-password" element={<ForgotPassword />} />
-					<Route path="/reset-password" element={<ResetPassword />} />
-					<Route path="/user/confirm" element={<ConfirmUserMail />} />
-					<Route path="/profile" element={<Profile />} />
-					<Route path="/home" element={<Home />} />
+					<Route path="/" element={isLogged() ? (<App />) : (<Navigate replace to={"/home"} />)} />
+					<Route path="/login" element={!isLogged() ? (<Login />) : (<Navigate replace to={"/"} />)}/>
+					<Route path="/register" element={!isLogged() ? (<Register />) : (<Navigate replace to={"/"} />)} />
+					<Route path="/forgot-password" element={!isLogged() ? (<ForgotPassword />) : (<Navigate replace to={"/"} />)} />
+					<Route path="/reset-password" element={!isLogged() ? (<ResetPassword />) : (<Navigate replace to={"/"} />)} />
+					<Route path="/user/confirm" element={!isLogged() ? (<ConfirmUserMail />) : (<Navigate replace to={"/"} />)}/>
+					<Route path="/profile" element={isLogged() ? (<Profile />) : (<Navigate replace to={"/home"} />)} />
+					<Route path="/home" element={!isLogged() ? (<Home />) : (<Navigate replace to={"/"} />)} />
 				</Routes>
 			</BrowserRouter>
 		</UserContextProvider>
