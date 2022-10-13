@@ -38,7 +38,6 @@ function buildServices() {
           }
         }).catch(function (error) {
           console.log(error);
-          window.location = '/home' as any;
         });
       }
   });

@@ -25,12 +25,12 @@ function isLogged() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const accessToken = urlParams.get('token');
 	const refreshToken = urlParams.get('refresh_token');
-	if(accessToken && refreshToken){
+	if(accessToken != null && refreshToken != null){
 		localStorage.setItem('access_token', accessToken);
 		localStorage.setItem('refresh_token', refreshToken);
 	}
 	
-	return !!localStorage.getItem('access_token');
+	return !!localStorage.getItem('access_token') && localStorage.getItem('access_token') != null;
 }
 
 root.render(
