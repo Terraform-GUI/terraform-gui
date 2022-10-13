@@ -1,15 +1,16 @@
 import {IApiClient} from './ApiClient';
-import {IDeleteProjectResponse, IGetProjectsResponse} from "./ResponseTypes";
+import {ICreateProjectResponse, IDeleteProjectResponse, IGetProjectsResponse} from "./ResponseTypes";
 import {Edge, Node} from "react-flow-renderer";
 import {ISavedNodeData} from "../interfaces/ISavedNodeData";
 import {ISavedProject} from "../interfaces/ISavedProject";
 
 export interface IProjectApiClient {
   getProjects: () => Promise<IGetProjectsResponse | undefined>
-  createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
+  createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ICreateProjectResponse | undefined>
   updateProject: (id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   deleteProject: (id: string) => Promise<IDeleteProjectResponse | undefined>
   getArchive: (id: string) => Promise<BlobPart | undefined>
+  getHCL: (id: string) => Promise<string | undefined>
 }
 
 export class ProjectApiClient implements IProjectApiClient {
@@ -27,7 +28,7 @@ export class ProjectApiClient implements IProjectApiClient {
     }
   };
 
-  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ISavedProject | undefined> {
+  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ICreateProjectResponse | undefined> {
     try {
       return await this.apiClient.post('/api/projects', {
         name: name,
@@ -61,8 +62,15 @@ export class ProjectApiClient implements IProjectApiClient {
 
   async getArchive(id: string): Promise<BlobPart | undefined> {
     try {
-      const response: BlobPart = await this.apiClient.getBlob(`/api/projects/${id}/terraform-archive`);
-      return response;
+      return await this.apiClient.getBlob(`/api/projects/${id}/terraform-archive`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async getHCL(id: string): Promise<string | undefined> {
+    try {
+      return await this.apiClient.get(`/api/projects/${id}/terraform`);
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +88,7 @@ export default class ProjectService {
     return this.projectApiClient.getProjects();
   }
 
-  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ISavedProject | undefined> {
+  async createProject(name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]): Promise<ICreateProjectResponse | undefined> {
     return this.projectApiClient.createProject(name, nodes, edges);
   }
 
@@ -94,5 +102,9 @@ export default class ProjectService {
 
   async getArchive(id: string): Promise<BlobPart | undefined> {
     return this.projectApiClient.getArchive(id);
+  }
+
+  async getHCL(id: string): Promise<string | undefined> {
+    return this.projectApiClient.getHCL(id);
   }
 }

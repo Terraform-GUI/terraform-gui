@@ -12,9 +12,8 @@ import ReactFlow, {
 import {INodeData} from "../../interfaces/INodeData";
 import ProjectContext from "../../contexts/ProjectContext";
 import ResourceNode from "../ResourceNode";
-
-let id = 0;
-const getId = () => `ressource_${id++}`;
+import { v4 as uuidv4 } from 'uuid';
+import {IProject} from "../../interfaces/IProject";
 
 const nodeTypes = { ResourceNode: ResourceNode };
 
@@ -55,7 +54,7 @@ function SchemaUI(props: SchemaUIProps) {
     }, []);
 
     const onDrop = useCallback(
-        (event: any) => {
+        (event: any, currentProject: IProject) => {
             event.preventDefault();
 
             const reactFlowBounds: any =
@@ -88,7 +87,7 @@ function SchemaUI(props: SchemaUIProps) {
             }
 
             const newNode: Node<INodeData> = {
-                id: getId(),
+                id: uuidv4(),
                 type,
                 position,
                 data: {
@@ -122,7 +121,7 @@ function SchemaUI(props: SchemaUIProps) {
                     onEdgeClick={() => setIsProjectSaved(false)}
                     onConnect={onConnect}
                     onInit={setReactFlowInstance}
-                    onDrop={onDrop}
+                    onDrop={(event:any) => onDrop(event, currentProject)}
                     onDragOver={onDragOver}
                     nodeTypes={nodeTypes}
                     fitView

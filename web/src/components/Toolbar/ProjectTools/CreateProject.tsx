@@ -24,7 +24,8 @@ function CreateProject(props: CreateProjectProps) {
         setCurrentProject({
             id: null,
             name: 'Unnamed project',
-            nodes: []
+            nodes: [],
+            edges: [],
         } as IProject);
         props.setNodes([]);
     }

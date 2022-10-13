@@ -7,21 +7,22 @@ import {INodeData} from "../../../interfaces/INodeData";
 import SaveProject from "../SaveProject";
 import ConfirmDialog from "../../ConfirmDialog";
 import ProjectContext from "../../../contexts/ProjectContext";
+import {projectService} from "../../../api";
 
 interface ChangeProjectProps {
-    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>,
-    nodes: Node<INodeData>[],
+    setNodes: Dispatch<SetStateAction<Node<INodeData>[]>>
+    nodes: Node<INodeData>[]
     edges: Edge[]
+    setEdges: Dispatch<SetStateAction<Edge[]>>
 }
 
 function ChangeProject(props: ChangeProjectProps) {
 
-    const {projectList} = useContext(ProjectContext);
-
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [projectToSwitch, setProjectToSwitch] = useState<IProject|null>(null);
-    const {isProjectSaved, setIsProjectSaved, currentProject, setCurrentProject} = useContext(ProjectContext);
+    const {isProjectSaved, setIsProjectSaved, setCurrentProject, projectList} = useContext(ProjectContext);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
     const selectProject = (project: IProject) => {
         if (isProjectSaved) {
@@ -34,19 +35,35 @@ function ChangeProject(props: ChangeProjectProps) {
         setIsPopoverOpen(false);
     };
 
-    const switchProject = (project: IProject) => {
+    const switchProject = async (project: IProject) => {
         setIsProjectSaved(true);
         setIsDialogOpen(false);
         setIsPopoverOpen(false);
-        // TODO load project details from api
         setCurrentProject(project);
         props.setNodes(project.nodes);
+        props.setEdges(project.edges);
+
+        if (project.id != null) {
+            projectService.getHCL(project.id)
+                .then((hcl: string | undefined) => {
+                    if (typeof hcl === 'string') {
+                        project.hcl = hcl;
+                        setCurrentProject({
+                            ...project,
+                            hcl: hcl
+                        });
+                    }
+                });
+        }
     }
 
     return (
         <>
             <Tooltip title="Change project">
-                <IconButton aria-label="change project" onClick={() => setIsPopoverOpen(true)}>
+                <IconButton aria-label="change project" onClick={(event:any) => {
+                    setAnchorEl(event.currentTarget);
+                    setIsPopoverOpen(true)
+                }}>
                     <ArrowDropDownIcon />
                 </IconButton>
             </Tooltip>
@@ -55,10 +72,7 @@ function ChangeProject(props: ChangeProjectProps) {
                 id={"1"}
                 open={isPopoverOpen}
                 onClose={() => setIsPopoverOpen(false)}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
+                anchorEl={anchorEl}
             >
                 <List
                     sx={{width: "400px"}}
@@ -70,25 +84,19 @@ function ChangeProject(props: ChangeProjectProps) {
                     }
                 >
                     {projectList.map((project: IProject, index: number) => (
-                        <>
-                            {currentProject.id !== project.id && (
-                                <ListItem
-                                    disablePadding
-                                    onClick={() => selectProject(project)}
-                                    key={index}
-                                >
+                        <div key={index}>
+                                <ListItem disablePadding onClick={() => selectProject(project)} >
                                     <ListItemButton>
                                         <ListItemText
                                             primary={project.name}
                                         />
                                     </ListItemButton>
                                 </ListItem>
-                            )}
-                        </>
+                        </div>
                     ))}
 
                     {projectList.length === 0 && (
-                        <p style={{paddingLeft: '16px'}}>You don't have any project yet.</p>
+                        <p style={{paddingLeft: '16px'}}>You don't have any other project yet.</p>
                     )}
                 </List>
             </Popover>

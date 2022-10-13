@@ -41,3 +41,7 @@ export interface IGetProjectsResponse {
 export interface IDeleteProjectResponse {
   success: boolean;
 }
+
+export interface ICreateProjectResponse {
+  project: ISavedProject
+}

@@ -2,7 +2,6 @@
 
 namespace App\Factory;
 
-use _PHPStan_9a6ded56a\Nette\Neon\Exception;
 use App\Document\Embed\Node;
 use App\DTO\Aws\Ec2Resource;
 use App\DTO\Aws\RdsResource;
@@ -11,6 +10,7 @@ use App\DTO\Aws\SqsResource;
 use App\DTO\Aws\VpcResource;
 use App\DTO\TerraformBlock\TerraformBlockInterface;
 use Doctrine\Common\Collections\Collection;
+use Exception;
 
 class TerraformBlockFactory
 {

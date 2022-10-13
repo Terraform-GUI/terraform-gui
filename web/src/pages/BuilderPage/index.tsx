@@ -15,21 +15,24 @@ import {mergeNodesWithResource} from "../../services/ReactFlowTransformer";
 import {INodeData} from "../../interfaces/INodeData";
 import {ISavedProject} from "../../interfaces/ISavedProject";
 import {projectService, resourceService} from '../../api'
+import { CircularProgress } from '@mui/material';
 
 function BuilderPage() {
 
     const [isProjectSaved, setIsProjectSaved] = useState<boolean>(true);
     const [projectList, setProjectList] = useState<IProject[]>([]);
     const [resources, setResources] = useState<IResource[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [project, setProject] = useState<IProject>({
         id: null,
         name: 'Unnamed project',
-        nodes: []
+        nodes: [],
+        edges: [],
     } as IProject);
 
     const [nodes, setNodes, onNodesChange] = useNodesState(project.nodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(project.edges);
 
     useEffect(() => {
         const loadResources = async () => {
@@ -65,7 +68,6 @@ function BuilderPage() {
                     }
 
                     const projectList: IProject[] = [];
-                    console.log(savedProjectList);
 
                     // convert SavedProject[] to Project[]
                     savedProjectList.map((savedProject: ISavedProject) => {
@@ -77,10 +79,35 @@ function BuilderPage() {
                     })
 
                     setProjectList(projectList);
+                    if (projectList.length > 0) {
+                        setProject(projectList[0]);
+                        setNodes(projectList[0].nodes);
+                        setEdges(projectList[0].edges);
+
+                        if (projectList[0].id != null) {
+                            projectService.getHCL(projectList[0].id)
+                                .then((hcl: string | undefined) => {
+                                    if (typeof hcl === 'string') {
+                                        projectList[0].hcl = hcl;
+                                        setProject({
+                                            ...projectList[0],
+                                            hcl: hcl
+                                        });
+                                    }
+                                });
+                        }
+                    }
                 }
+                setIsLoading(false);
             });
         });
     }, []);
+
+    if (isLoading) {
+        return (
+            <CircularProgress />
+        )
+    }
 
     return (
         <ResourcesProvider value={{
@@ -103,6 +130,7 @@ function BuilderPage() {
                             setNodes={setNodes}
                             nodes={nodes}
                             edges={edges}
+                            setEdges={setEdges}
                         />
                     </div>
                     <div className="schemaUI">
@@ -116,7 +144,7 @@ function BuilderPage() {
                         />
                     </div>
                     <div className="codeEditor">
-                        <CodeEditor nodes={nodes} setNodes={setNodes}/>
+                        <CodeEditor />
                     </div>
                     <div className="descriptions">
                         <Description nodes={nodes} />

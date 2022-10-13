@@ -15,7 +15,9 @@ class EdgeEditionType extends AbstractType
         $builder
             ->add('id', TextType::class)
             ->add('source', TextType::class)
+            ->add('sourceHandle', TextType::class)
             ->add('target', TextType::class)
+            ->add('targetHandle', TextType::class)
         ;
     }
 

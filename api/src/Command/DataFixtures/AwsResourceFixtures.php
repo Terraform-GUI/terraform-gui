@@ -31,7 +31,7 @@ class AwsResourceFixtures
         $resource = (new Resource())
             ->setProvider(Resource::PROVIDER_AWS)
             ->setDescription("Amazon Virtual Private Cloud (Amazon VPC) enables you to launch AWS resources into a virtual network that you've defined. This virtual network closely resembles a traditional network that you'd operate in your own data center, with the benefits of using the scalable infrastructure of AWS.")
-            ->setType('VPC')
+            ->setType('aws_vpc')
         ;
 
         $argument = (new ResourceArgument())
@@ -98,7 +98,7 @@ class AwsResourceFixtures
         $resource = (new Resource())
             ->setProvider(Resource::PROVIDER_AWS)
             ->setDescription('Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance. Customers of all sizes and industries can use Amazon S3 to store and protect any amount of data for a range of use cases, such as data lakes, websites, mobile applications, backup and restore, archive, enterprise applications, IoT devices, and big data analytics. Amazon S3 provides management features so that you can optimize, organize, and configure access to your data to meet your specific business, organizational, and compliance requirements.')
-            ->setType('S3')
+            ->setType('aws_s3')
         ;
 
         $argument = (new ResourceArgument())
@@ -116,20 +116,19 @@ class AwsResourceFixtures
         $resource = (new Resource())
             ->setProvider(Resource::PROVIDER_AWS)
             ->setDescription("Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable computing capacity—literally, servers in Amazon's data centers—that you use to build and host your software systems.")
-            ->setType('EC2')
+            ->setType('aws_ec2')
         ;
 
         $argument = (new ResourceArgument())
             ->setName('ami')
             ->setType(ResourceArgument::TYPE_SELECT)
-            ->setDefaultValue('default')
+            ->setDefaultValue('ami-026b57f3c383c2eec')
             ->addValue('ami-026b57f3c383c2eec') // Amazon Linux
             ->addValue('ami-08c40ec9ead489470') // Ubuntu
             ->addValue('ami-09a41e26df464c548') // Debian
         ;
         $resource->addArgument($argument);
 
-        // TODO on s'arrête aux instances T2 ou à tout les types d'instances ?
         $argument = (new ResourceArgument())
             ->setName('type')
             ->setType(ResourceArgument::TYPE_SELECT)
@@ -159,18 +158,9 @@ class AwsResourceFixtures
         $resource = (new Resource())
             ->setProvider(Resource::PROVIDER_AWS)
             ->setDescription('Amazon Relational Database Service (Amazon RDS) is a web service that makes it easier to set up, operate, and scale a relational database in the cloud. It provides cost-efficient, resizable capacity for an industry-standard relational database and manages common database administration tasks.')
-            ->setType('RDS')
+            ->setType('aws_rds')
         ;
 
-        // TODO on propose une liste d'AMI ou on laisse le champ en libre saisie ?
-        $argument = (new ResourceArgument())
-            ->setName('ami')
-            ->setType(ResourceArgument::TYPE_STRING)
-            ->setDefaultValue('ami-052efd3df9dad4825')
-        ;
-        $resource->addArgument($argument);
-
-        // TODO on s'arrête aux instances T2 ou à tout les types d'instances ?
         $argument = (new ResourceArgument())
             ->setName('type')
             ->setType(ResourceArgument::TYPE_SELECT)
@@ -242,7 +232,7 @@ class AwsResourceFixtures
         $resource = (new Resource())
             ->setProvider(Resource::PROVIDER_AWS)
             ->setDescription('Amazon Simple Queue Service (Amazon SQS) is a fully managed message queuing service that makes it easy to decouple and scale microservices, distributed systems, and serverless applications. Amazon SQS moves data between distributed application components and helps you decouple these components.')
-            ->setType('SQS')
+            ->setType('aws_sqs')
         ;
 
         $argument = (new ResourceArgument())
