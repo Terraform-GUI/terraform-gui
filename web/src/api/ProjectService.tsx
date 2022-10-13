@@ -9,6 +9,7 @@ export interface IProjectApiClient {
   createProject: (name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   updateProject: (id: string, name: string, nodes: Node<ISavedNodeData>[], edges: Edge[]) => Promise<ISavedProject | undefined>
   deleteProject: (id: string) => Promise<IDeleteProjectResponse | undefined>
+  getArchive: (id: string) => Promise<BlobPart | undefined>
 }
 
 export class ProjectApiClient implements IProjectApiClient {
@@ -50,10 +51,18 @@ export class ProjectApiClient implements IProjectApiClient {
     }
   };
 
-
   async deleteProject(id: string): Promise<IDeleteProjectResponse | undefined> {
     try {
       return await this.apiClient.delete(`/api/projects/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async getArchive(id: string): Promise<BlobPart | undefined> {
+    try {
+      const response: BlobPart = await this.apiClient.getBlob(`/api/projects/${id}/terraform-archive`);
+      return response;
     } catch (error) {
       console.log(error);
     }
@@ -81,5 +90,9 @@ export default class ProjectService {
 
   async deleteProject(id: string): Promise<IDeleteProjectResponse | undefined> {
     return this.projectApiClient.deleteProject(id);
+  }
+
+  async getArchive(id: string): Promise<BlobPart | undefined> {
+    return this.projectApiClient.getArchive(id);
   }
 }
