@@ -122,14 +122,13 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('ami')
             ->setType(ResourceArgument::TYPE_SELECT)
-            ->setDefaultValue('default')
+            ->setDefaultValue('ami-026b57f3c383c2eec')
             ->addValue('ami-026b57f3c383c2eec') // Amazon Linux
             ->addValue('ami-08c40ec9ead489470') // Ubuntu
             ->addValue('ami-09a41e26df464c548') // Debian
         ;
         $resource->addArgument($argument);
 
-        // TODO on s'arrête aux instances T2 ou à tout les types d'instances ?
         $argument = (new ResourceArgument())
             ->setName('type')
             ->setType(ResourceArgument::TYPE_SELECT)
@@ -162,15 +161,6 @@ class AwsResourceFixtures
             ->setType('aws_rds')
         ;
 
-        // TODO on propose une liste d'AMI ou on laisse le champ en libre saisie ?
-        $argument = (new ResourceArgument())
-            ->setName('ami')
-            ->setType(ResourceArgument::TYPE_STRING)
-            ->setDefaultValue('ami-052efd3df9dad4825')
-        ;
-        $resource->addArgument($argument);
-
-        // TODO on s'arrête aux instances T2 ou à tout les types d'instances ?
         $argument = (new ResourceArgument())
             ->setName('type')
             ->setType(ResourceArgument::TYPE_SELECT)
