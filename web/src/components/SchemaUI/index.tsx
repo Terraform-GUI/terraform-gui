@@ -87,7 +87,7 @@ function SchemaUI(props: SchemaUIProps) {
             }
 
             const newNode: Node<INodeData> = {
-                id: uuidv4(),
+                id: resource.type +  '_' + uuidv4(),
                 type,
                 position,
                 data: {
