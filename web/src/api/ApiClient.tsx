@@ -70,7 +70,6 @@ export default class ApiClient implements IApiClient {
     }
     return {} as TResponse;
   }
-   
 
   async getBlob<BlobPart>(path: string): Promise<BlobPart> {
     try {
@@ -82,7 +81,7 @@ export default class ApiClient implements IApiClient {
       console.log(error);
     }
     return {} as BlobPart;
-}
+  }
 
   async delete<TResponse>(path: string): Promise<TResponse> {
     try {

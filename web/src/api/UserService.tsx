@@ -2,6 +2,7 @@ import { IApiClient } from '../api/ApiClient';
 import { 
   IRegisterResponse, 
   ILoginResponse,
+  IGithubLoginResponse,
   IConfirmUserMailResponse,
   IUpdateMailResponse,
   IDeleteAccountResponse,
@@ -13,6 +14,7 @@ import {
 export interface IUserApiClient {
   register: (email: string, password: string, confirm: string) => Promise<IRegisterResponse | undefined>;
   login: (email: string, password: string) => Promise<ILoginResponse | undefined>;
+  githubLogin: () => Promise<IGithubLoginResponse | undefined>;
   confirmUserMail: (token: string) => Promise<IConfirmUserMailResponse | undefined>;
   updateMail: (email: string) => Promise<IUpdateMailResponse | undefined>;
   deleteAccount: () => Promise<IDeleteAccountResponse | undefined>;
@@ -49,6 +51,15 @@ export class UserApiClient implements IUserApiClient {
         "username" : email,
         "password" : password
       });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async githubLogin(): Promise<IGithubLoginResponse | undefined> {
+    try {
+      const response:IGithubLoginResponse = await this.apiClient.get('/login/github');
       return response;
     } catch (error) {
       console.log(error);
@@ -137,6 +148,10 @@ export default class UserService {
 
   async login(email: string, password: string): Promise<ILoginResponse | undefined> {
     return this.userApiClient.login(email, password);
+  }
+
+  async githubLogin(): Promise<IGithubLoginResponse | undefined> {
+    return this.userApiClient.githubLogin();
   }
 
   async confirmUserMail(token: string): Promise<IConfirmUserMailResponse | undefined> {

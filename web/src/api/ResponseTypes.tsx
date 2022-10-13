@@ -9,6 +9,10 @@ export interface ILoginResponse {
   refresh_token: string;
 }
 
+export interface IGithubLoginResponse {
+  url: string;
+}
+
 export interface IConfirmUserMailResponse {
   success: boolean;
 }

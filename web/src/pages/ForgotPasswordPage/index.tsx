@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { userService } from '../../api'
-
 export const ForgotPassword: FunctionComponent = () => {
   const [error, setError] = useState("");
   const [mailSent, setMailSent] = useState(false);

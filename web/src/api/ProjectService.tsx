@@ -51,7 +51,6 @@ export class ProjectApiClient implements IProjectApiClient {
     }
   };
 
-
   async deleteProject(id: string): Promise<IDeleteProjectResponse | undefined> {
     try {
       return await this.apiClient.delete(`/api/projects/${id}`);
