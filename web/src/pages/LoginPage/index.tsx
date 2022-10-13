@@ -42,6 +42,14 @@ export const Login: FunctionComponent = () => {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 	}
 
+	async function githubLogin() {
+		let login = await userService.githubLogin();
+		//replace 8000 with 3000
+		if(login != undefined){
+			window.location.href = login.url;
+		}
+	}
+
 	return (
 		<div className="login">
 			<form onSubmit={handleSubmit}>
@@ -61,7 +69,10 @@ export const Login: FunctionComponent = () => {
 				/>
 				<input type="submit" value="Submit" />
 			</form>
-			<Button variant="outlined">Connexion GitHub</Button>
+			<Button 
+				onClick={githubLogin}
+				variant="outlined">Connexion GitHub
+			</Button>
 		</div>
 	);
 };

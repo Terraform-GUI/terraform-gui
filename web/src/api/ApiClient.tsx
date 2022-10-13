@@ -7,7 +7,6 @@ export interface IApiClient {
   ): Promise<TResponse>;
   put<TRequest, TResponse>(path: string, object: TRequest): Promise<TResponse>;
   get<TResponse>(path: string): Promise<TResponse>;
-  getBlob<BlobPart>(path: string): Promise<BlobPart>;
   delete<TResponse>(path: string): Promise<TResponse>;
   patch<TRequest, TResponse>(path: string, object: TRequest): Promise<TResponse>;
 }
@@ -70,19 +69,6 @@ export default class ApiClient implements IApiClient {
     }
     return {} as TResponse;
   }
-   
-
-  async getBlob<BlobPart>(path: string): Promise<BlobPart> {
-    try {
-      const response = await this.client.get<BlobPart>(path, {
-        responseType: 'blob',
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-    return {} as BlobPart;
-}
 
   async delete<TResponse>(path: string): Promise<TResponse> {
     try {
