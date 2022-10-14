@@ -36,8 +36,10 @@ api-test:
 api-setup:
 	$(DOCKER_COMPOSE) $(EXEC_PHP) "composer install"
 	$(DOCKER_COMPOSE) $(EXEC_PHP) "php bin/console lexik:jwt:generate-keypair --skip-if-exists"
-	php api/vendor/bin/grumphp git:init --config='./api/grumphp.yml'
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "php bin/console load:fixtures --no-interaction"
 
+api-fixtures:
+	$(DOCKER_COMPOSE) $(EXEC_PHP) "php bin/console load:fixtures --no-interaction"
 
 api-fix:
 	$(DOCKER_COMPOSE) $(EXEC_PHP) "vendor/bin/php-cs-fixer fix src"
