@@ -83,7 +83,7 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('prv_availability_zone')
             ->setType(ResourceArgument::TYPE_SELECT)
-            ->setDefaultValue('us-east-1a')
+            ->setDefaultValue('us-east-1b')
             ->addValue('us-east-1a')
             ->addValue('us-east-1b')
             ->addValue('us-east-1c')
