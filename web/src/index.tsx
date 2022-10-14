@@ -5,7 +5,6 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Redirect from 'react-router-dom';
 import Home from './pages/HomePage';
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
@@ -41,10 +40,7 @@ root.render(
     <UserContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={isLogged() ? <App /> : <Navigate replace to={'/home'} />}
-          />
+          <Route path="/" element={<App />} />
           <Route
             path="/login"
             element={!isLogged() ? <Login /> : <Navigate replace to={'/'} />}
@@ -77,10 +73,7 @@ root.render(
               isLogged() ? <Profile /> : <Navigate replace to={'/home'} />
             }
           />
-          <Route
-            path="/home"
-            element={!isLogged() ? <Home /> : <Navigate replace to={'/'} />}
-          />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </UserContextProvider>
