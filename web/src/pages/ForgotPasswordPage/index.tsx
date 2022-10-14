@@ -64,12 +64,12 @@ export const ForgotPassword: FunctionComponent = () => {
                 id="emailInput"
                 placeholder="john.doe@gmail.com"
               />
+              {error !== '' && <Alert severity="error">{error} </Alert>}
               <Button fullWidth type="submit" size="large" variant="contained">
                 Continue
               </Button>
             </Stack>
           </form>
-          <div>{error}</div>
         </>
       </Container>
     </BaseLayout>

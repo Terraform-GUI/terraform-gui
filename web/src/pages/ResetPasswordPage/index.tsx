@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { userService } from '../../api';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import BaseLayout from '../../components/Layout/BaseLayout';
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Alert, Button, Container, Stack, Typography } from '@mui/material';
 
 export const ResetPassword: FunctionComponent = () => {
   const [error, setError] = useState('');
@@ -83,12 +83,12 @@ export const ResetPassword: FunctionComponent = () => {
               variant="outlined"
               label="New password confirmation"
             />
+            {error !== '' && <Alert severity="error">{error} </Alert>}
             <Button fullWidth size="large" type="submit" variant="contained">
               Continue
             </Button>
           </Stack>
         </form>
-        <div>{error}</div>
       </Container>
     </BaseLayout>
   );

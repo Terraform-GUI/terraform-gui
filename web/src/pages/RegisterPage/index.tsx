@@ -107,13 +107,12 @@ export const Register: FunctionComponent = () => {
                 variant="outlined"
                 label="Password confirmation"
               />
+              {error !== '' && <Alert severity="error">{error} </Alert>}
               <Button fullWidth size="large" type="submit" variant="contained">
                 Continue
               </Button>
             </Stack>
           </form>
-          <div>{error}</div>
-
           <Button
             fullWidth
             size="large"
