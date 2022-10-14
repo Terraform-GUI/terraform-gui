@@ -1,0 +1,8 @@
+.section-home__main {
+  background-image: url('../../../public/home.png');
+  min-height: 660px;
+  overflow: visible;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 50vw;
+}
