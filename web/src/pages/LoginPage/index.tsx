@@ -82,10 +82,11 @@ export const Login: FunctionComponent = () => {
               <TextField
                 fullWidth
                 required
-                id="emailInput"
                 label="Email"
-                placeholder="john.doe@gmail.com"
+                id="emailInput"
                 variant="outlined"
+                autoComplete="username"
+                placeholder="john.doe@gmail.com"
               />
               <TextField
                 fullWidth
