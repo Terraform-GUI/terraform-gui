@@ -83,7 +83,7 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('prv_availability_zone')
             ->setType(ResourceArgument::TYPE_SELECT)
-            ->setDefaultValue('us-east-1a')
+            ->setDefaultValue('us-east-1b')
             ->addValue('us-east-1a')
             ->addValue('us-east-1b')
             ->addValue('us-east-1c')
@@ -180,7 +180,7 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('engine')
             ->setType(ResourceArgument::TYPE_SELECT)
-            ->setDefaultValue('mysql')
+            ->setDefaultValue('postgres')
             ->addValue('mysql')
             ->addValue('postgres')
             ->addValue('sqlserver-ex')
@@ -191,12 +191,14 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('version')
             ->setType(ResourceArgument::TYPE_STRING)
+            ->setDefaultValue('13')
         ;
         $resource->addArgument($argument);
 
         $argument = (new ResourceArgument())
             ->setName('family')
             ->setType(ResourceArgument::TYPE_STRING)
+            ->setDefaultValue('postgres13')
         ;
         $resource->addArgument($argument);
 
@@ -209,6 +211,7 @@ class AwsResourceFixtures
         $argument = (new ResourceArgument())
             ->setName('password')
             ->setType(ResourceArgument::TYPE_STRING)
+            ->setMin('8')
         ;
         $resource->addArgument($argument);
 
