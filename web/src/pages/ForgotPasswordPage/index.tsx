@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { userService } from '../../api';
 import BaseLayout from '../../components/Layout/BaseLayout';
 import { Alert, Button, Container, Typography } from '@mui/material';
-import { Stack } from '@mui/system';
+import Stack from "@mui/material/Stack";
 export const ForgotPassword: FunctionComponent = () => {
   const [error, setError] = useState('');
   const [mailSent, setMailSent] = useState(false);
