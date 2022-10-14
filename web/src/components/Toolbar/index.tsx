@@ -59,11 +59,9 @@ const Toolbar = (props: ToolbarProps) => {
       </AppBar>
       <Drawer
         sx={{
-          width: drawerWidth,
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-          },
+          width: drawerWidth,
+          '& .MuiDrawer-paper': { width: drawerWidth },
         }}
         variant="persistent"
         anchor="right"

@@ -50,20 +50,15 @@ function Index(props: ResourceSideBarProps) {
     };
 
   return (
-    <Paper elevation={4} style={{ height: '100%' }}>
+    <Paper elevation={1}>
       <List>
-        <ListItem>
-          <ListItemText primary={'Provider'} />
-        </ListItem>
-        <ListItem>
-          <ListItemText inset={true} primary={'AWS'} />
-        </ListItem>
         <ListItem>
           <ListItemText primary={'Resources'} />
         </ListItem>
 
         {props.nodes.map((node: Node<INodeData>, index: number) => (
           <Accordion
+            elevation={0}
             key={index}
             expanded={expanded === node.id}
             onChange={handleAccordionChange(node.id)}
