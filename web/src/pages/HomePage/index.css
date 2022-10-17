@@ -4,5 +4,5 @@
   overflow: visible;
   background-repeat: no-repeat;
   background-position: bottom;
-  background-size: 50vw;
+  background-size: clamp(20vw, 700px, 50vw);
 }

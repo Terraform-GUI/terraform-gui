@@ -17,7 +17,6 @@ import { projectService, resourceService } from '../../api';
 import { Box, CircularProgress, Stack, Card } from '@mui/material';
 import BaseLayout from '../../components/Layout/BaseLayout';
 import { useNavigate } from 'react-router-dom';
-import StorageIcon from '@mui/icons-material/Storage';
 
 function BuilderPage() {
   const [isProjectSaved, setIsProjectSaved] = useState<boolean>(true);
@@ -139,14 +138,6 @@ function BuilderPage() {
     );
   }
 
-  // const actions = [
-  //   { icon: <StorageIcon />, name: 'VPC' },
-  //   { icon: <StorageIcon />, name: 'SQS' },
-  //   { icon: <StorageIcon />, name: 'RDS' },
-  //   { icon: <StorageIcon />, name: 'EC2' },
-  //   { icon: <StorageIcon />, name: 'S3' },
-  // ];
-
   return (
     <BaseLayout>
       <ResourcesProvider value={{ resources: resources }}>
@@ -166,41 +157,28 @@ function BuilderPage() {
             setNodes={setNodes}
             setEdges={setEdges}
           />
-          <Stack direction="column">
-            <Stack direction="row" m={2}>
-              <Box>
-                <ResourceSidebar nodes={nodes} setNodes={setNodes} />
-              </Box>
-              <Box flex={'auto'}>
+          <Stack direction="row" m={2} spacing={2}>
+            <Box minWidth="300px">
+              <ResourceSidebar nodes={nodes} setNodes={setNodes} />
+            </Box>
+            <Box flex="auto">
+              <Stack direction="column">
                 <Card variant="outlined">
-                  <SchemaUI
-                    nodes={nodes}
-                    edges={edges}
-                    setNodes={setNodes}
-                    setEdges={setEdges}
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
-                  />
+                  <Box maxHeight="60vh">
+                    <SchemaUI
+                      nodes={nodes}
+                      edges={edges}
+                      setNodes={setNodes}
+                      setEdges={setEdges}
+                      onNodesChange={onNodesChange}
+                      onEdgesChange={onEdgesChange}
+                    />
+                  </Box>
                 </Card>
-              </Box>
-              {/* <SpeedDial
-                ariaLabel="SpeedDial basic example"
-                sx={{ position: 'absolute', bottom: 16, right: 16 }}
-                icon={<SpeedDialIcon />}
-              >
-                {actions.map((action) => (
-                  <SpeedDialAction
-                    tooltipOpen
-                    key={action.name}
-                    icon={action.icon}
-                    tooltipTitle={action.name}
-                  />
-                ))}
-              </SpeedDial> */}
-            </Stack>
-
-            <Box p={2} m={2} bgcolor="white">
-              <Description nodes={nodes} />
+                <Box p={2} m={2} bgcolor="white">
+                  <Description nodes={nodes} />
+                </Box>
+              </Stack>
             </Box>
           </Stack>
         </ProjectProvider>
